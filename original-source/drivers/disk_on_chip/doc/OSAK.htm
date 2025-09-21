@@ -1,0 +1,3692 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+<META NAME="Generator" CONTENT="Microsoft Word 97">
+<TITLE>Guide to Using DiskOnChip 2000 O/S Adaptation Kit</TITLE>
+<META NAME="Template" CONTENT="C:\PROGRAM FILES\MICROSOFT OFFICE\OFFICE\html.dot">
+</HEAD>
+<BODY TEXT="#000000" LINK="#0000ff" VLINK="#800080">
+
+<H1><A NAME="home"></A>DiskOnChip O/S Adaptation Kit Ver. 1.21</H1>
+<H2>Integrator's Manual</H2>
+<H3>Warranty/Trademarks </H3>
+<FONT SIZE=2><P>This document is for information only and is subject to change without prior notice. No part of this document may be reproduced, transmitted, transcribed, stored in a retrieval system, or translated into any language or computer language, in any form or by any means, electronic, mechanical, magnetic, optical, chemical, manual, or otherwise, without the prior written consent of M-Systems Flash Disk Pioneers Ltd. </P>
+<P>(c) Copyright 1999 M-Systems Flash Disk Pioneers Ltd. </P>
+<P>TrueFFS and DiskOnChip are trademarks of M-Systems Flash Disk Pioneers Ltd. </P>
+<P>All other trade-marks, service-marks, trade names are the property of their respective owners. </P>
+</FONT><P><IMG SRC="JadeLn.gif" WIDTH=569 HEIGHT=17></P>
+<FONT SIZE=2><P>&nbsp;</P>
+</FONT><H2>Table of contents</H2>
+<TABLE CELLSPACING=0 BORDER=0 WIDTH=486>
+<TR><TD VALIGN="TOP" COLSPAN=4>
+<P><IMG SRC="openbw.gif" WIDTH=16 HEIGHT=15>&nbsp;&nbsp;<A HREF="#_Toc445477833">1. The DiskOnChip OSAK System</A></TD>
+</TR>
+<TR><TD WIDTH="15%" VALIGN="MIDDLE">
+<P>&nbsp;</TD>
+<TD WIDTH="85%" VALIGN="MIDDLE" COLSPAN=3>
+<P><IMG SRC="newbw.gif" WIDTH=16 HEIGHT=15>&nbsp;&nbsp;<A HREF="#_Toc445477834">1.1 Block-Device Functionality</A></TD>
+</TR>
+<TR><TD WIDTH="15%" VALIGN="MIDDLE">
+<P>&nbsp;</TD>
+<TD WIDTH="85%" VALIGN="MIDDLE" COLSPAN=3>
+<P><IMG SRC="newbw.gif" WIDTH=16 HEIGHT=15>&nbsp;&nbsp;<A HREF="#_Toc445477835">1.2 File-System Functionality</A></TD>
+</TR>
+<TR><TD WIDTH="15%" VALIGN="MIDDLE">
+<P>&nbsp;</TD>
+<TD WIDTH="85%" VALIGN="MIDDLE" COLSPAN=3>
+<P><IMG SRC="newbw.gif" WIDTH=16 HEIGHT=15>&nbsp;&nbsp;<A HREF="#_Toc403976832">1.3 Features</A></TD>
+</TR>
+<TR><TD WIDTH="15%" VALIGN="MIDDLE">
+<P>&nbsp;</TD>
+<TD WIDTH="85%" VALIGN="MIDDLE" COLSPAN=3>
+<P><IMG SRC="newbw.gif" WIDTH=16 HEIGHT=15>&nbsp;&nbsp;<A HREF="#_Toc351277781">1.4 Target Environments</A></TD>
+</TR>
+<TR><TD WIDTH="15%" VALIGN="MIDDLE">
+<P>&nbsp;</TD>
+<TD WIDTH="85%" VALIGN="MIDDLE" COLSPAN=3>
+<P><IMG SRC="newbw.gif" WIDTH=16 HEIGHT=15>&nbsp;&nbsp;<A HREF="#_Toc351277783">1.5 Customizability</A></TD>
+</TR>
+<TR><TD WIDTH="15%" VALIGN="MIDDLE">
+<P>&nbsp;</TD>
+<TD WIDTH="85%" VALIGN="MIDDLE" COLSPAN=3>
+<P><IMG SRC="newbw.gif" WIDTH=16 HEIGHT=15>&nbsp;&nbsp;<A HREF="#_Toc351277784">1.6 Low System Overhead</A></TD>
+</TR>
+<TR><TD VALIGN="MIDDLE" COLSPAN=4>
+<P><IMG SRC="copybw.gif" WIDTH=24 HEIGHT=23>&nbsp;<A HREF="#_Toc445477840">2. Files list</A></TD>
+</TR>
+<TR><TD VALIGN="MIDDLE" COLSPAN=4>
+<P><IMG SRC="openbw.gif" WIDTH=16 HEIGHT=15>&nbsp;&nbsp;<A HREF="#_Toc403976840">3. Guide to Integrating the DiskOnChip</A></TD>
+</TR>
+<TR><TD WIDTH="15%" VALIGN="MIDDLE">
+<P>&nbsp;</TD>
+<TD WIDTH="85%" VALIGN="MIDDLE" COLSPAN=3>
+<P><IMG SRC="newbw.gif" WIDTH=16 HEIGHT=15>&nbsp;&nbsp;<A HREF="#_Toc445477841">3.1 The DiskOnChip and the OSAK</A></TD>
+</TR>
+<TR><TD WIDTH="15%" VALIGN="MIDDLE">
+<P>&nbsp;</TD>
+<TD WIDTH="85%" VALIGN="MIDDLE" COLSPAN=3>
+<P><IMG SRC="newbw.gif" WIDTH=16 HEIGHT=15>&nbsp;&nbsp;<A HREF="#WrBlockDevIn">3.2 Writing a Block-Device Interface</A></TD>
+</TR>
+<TR><TD WIDTH="15%" VALIGN="MIDDLE">
+<P>&nbsp;</TD>
+<TD WIDTH="85%" VALIGN="MIDDLE" COLSPAN=3>
+<P><IMG SRC="newbw.gif" WIDTH=16 HEIGHT=15>&nbsp;&nbsp;<A HREF="#OsakSocksAnDrives">3.3 OSAK Sockets and Drives</A></TD>
+</TR>
+<TR><TD VALIGN="MIDDLE" COLSPAN=4>
+<P><IMG SRC="openbw.gif" WIDTH=16 HEIGHT=15>&nbsp;&nbsp;<A HREF="#_Toc445477848">4. Programmer's Interface</A></TD>
+</TR>
+<TR><TD WIDTH="15%" VALIGN="MIDDLE">
+<P>&nbsp;</TD>
+<TD WIDTH="85%" VALIGN="MIDDLE" COLSPAN=3>
+<P><IMG SRC="newbw.gif" WIDTH=16 HEIGHT=15>&nbsp;&nbsp;<A HREF="#_Toc445477849">4.1 Introduction</A></TD>
+</TR>
+<TR><TD WIDTH="15%" VALIGN="MIDDLE">
+<P>&nbsp;</TD>
+<TD WIDTH="85%" VALIGN="MIDDLE" COLSPAN=3>
+<P><IMG SRC="newbw.gif" WIDTH=16 HEIGHT=15>&nbsp;&nbsp;<A HREF="#_Toc351277793">4.2 Interface Terms</A></TD>
+</TR>
+<TR><TD WIDTH="15%" VALIGN="MIDDLE">
+<P>&nbsp;</TD>
+<TD WIDTH="85%" VALIGN="MIDDLE" COLSPAN=3>
+<P><IMG SRC="newbw.gif" WIDTH=16 HEIGHT=15>&nbsp;&nbsp;<A HREF="#funcGroups">4.3 OSAK Function Groups overview</A></TD>
+</TR>
+<TR><TD WIDTH="15%" VALIGN="MIDDLE">
+<P>&nbsp;</TD>
+<TD WIDTH="85%" VALIGN="MIDDLE" COLSPAN=3>
+<P><IMG SRC="newbw.gif" WIDTH=16 HEIGHT=15>&nbsp;&nbsp;<A HREF="#VolHandFuncRef">4.4 Basic Volume Handling function reference</A></TD>
+</TR>
+<TR><TD WIDTH="15%" VALIGN="MIDDLE">
+<P>&nbsp;</TD>
+<TD WIDTH="85%" VALIGN="MIDDLE" COLSPAN=3>
+<P><IMG SRC="newbw.gif" WIDTH=16 HEIGHT=15>&nbsp;&nbsp;<A HREF="#absiofuncref">4.5 Absolute Sector I/O function reference</A></TD>
+</TR>
+<TR><TD WIDTH="15%" VALIGN="MIDDLE">
+<P>&nbsp;</TD>
+<TD WIDTH="85%" VALIGN="MIDDLE" COLSPAN=3>
+<P><IMG SRC="newbw.gif" WIDTH=16 HEIGHT=15>&nbsp;&nbsp;<A HREF="#physfuncref">4.6 Physical Flash I/O function reference</A></TD>
+</TR>
+<TR><TD WIDTH="15%" VALIGN="MIDDLE">
+<P>&nbsp;</TD>
+<TD WIDTH="85%" VALIGN="MIDDLE" COLSPAN=3>
+<P><IMG SRC="newbw.gif" WIDTH=16 HEIGHT=15>&nbsp;&nbsp;<A HREF="#specialfuncref">4.7 Special Function reference</A></TD>
+</TR>
+<TR><TD WIDTH="15%" VALIGN="MIDDLE">
+<P>&nbsp;</TD>
+<TD WIDTH="85%" VALIGN="MIDDLE" COLSPAN=3>
+<P><IMG SRC="newbw.gif" WIDTH=16 HEIGHT=15>&nbsp;&nbsp;<A HREF="#fsfuncref">4.8 Basic File Operations function reference</A></TD>
+</TR>
+<TR><TD WIDTH="15%" VALIGN="MIDDLE">
+<P>&nbsp;</TD>
+<TD WIDTH="85%" VALIGN="MIDDLE" COLSPAN=3>
+<P><IMG SRC="newbw.gif" WIDTH=16 HEIGHT=15>&nbsp;&nbsp;<A HREF="#dirhandfuncref">4.9 Directory Handling function reference</A></TD>
+</TR>
+<TR><TD WIDTH="15%" VALIGN="MIDDLE">
+<P>&nbsp;</TD>
+<TD WIDTH="85%" VALIGN="MIDDLE" COLSPAN=3>
+<P><IMG SRC="newbw.gif" WIDTH=16 HEIGHT=15>&nbsp;&nbsp;<A HREF="#_Toc351277815">4.10 OSAK Status Codes</A></TD>
+</TR>
+<TR><TD VALIGN="MIDDLE" COLSPAN=4>
+<P><IMG SRC="openbw.gif" WIDTH=16 HEIGHT=15>&nbsp;&nbsp;<A HREF="#_Toc403976879">5. Special Topics:</A></TD>
+</TR>
+<TR><TD WIDTH="15%" VALIGN="MIDDLE">
+<P>&nbsp;</TD>
+<TD WIDTH="85%" VALIGN="MIDDLE" COLSPAN=3>
+<P><IMG SRC="newbw.gif" WIDTH=16 HEIGHT=15>&nbsp;&nbsp;<A HREF="#BDK">5.1 Boot image partition</A></TD>
+</TR>
+<TR><TD WIDTH="15%" VALIGN="MIDDLE">
+<P>&nbsp;</TD>
+<TD WIDTH="85%" VALIGN="MIDDLE" COLSPAN=3>
+<P><IMG SRC="newbw.gif" WIDTH=16 HEIGHT=15>&nbsp;&nbsp;<A HREF="#Defragmentation">5.2 Defragmentation</A></TD>
+</TR>
+<TR><TD WIDTH="15%" VALIGN="MIDDLE">
+<P>&nbsp;</TD>
+<TD WIDTH="85%" VALIGN="MIDDLE" COLSPAN=3>
+<P><IMG SRC="newbw.gif" WIDTH=16 HEIGHT=15>&nbsp;&nbsp;<A HREF="#_Toc445477845">5.3 "Audio" Editing Capability</A></TD>
+</TR>
+<TR><TD VALIGN="MIDDLE" COLSPAN=4>
+<P><IMG SRC="openbw.gif" WIDTH=16 HEIGHT=15>&nbsp;&nbsp;<A HREF="#_Toc351277816">6. Customization Guide</A></TD>
+</TR>
+<TR><TD WIDTH="15%" VALIGN="MIDDLE">
+<P>&nbsp;</TD>
+<TD WIDTH="85%" VALIGN="MIDDLE" COLSPAN=3>
+<P><IMG SRC="newbw.gif" WIDTH=16 HEIGHT=15>&nbsp;&nbsp;<A HREF="#_Toc351277817">6.1 Overview</A></TD>
+</TR>
+<TR><TD WIDTH="15%" VALIGN="MIDDLE">
+<P>&nbsp;</TD>
+<TD WIDTH="85%" VALIGN="MIDDLE" COLSPAN=3>
+<P><IMG SRC="newbw.gif" WIDTH=16 HEIGHT=15>&nbsp;&nbsp;<A HREF="#CusComp">6.2 Customizing for Your Compiler and Processor</A></TD>
+</TR>
+<TR><TD WIDTH="15%" VALIGN="MIDDLE">
+<P>&nbsp;</TD>
+<TD WIDTH="85%" VALIGN="MIDDLE" COLSPAN=3>
+<P><IMG SRC="openbw.gif" WIDTH=16 HEIGHT=15>&nbsp;&nbsp;<A HREF="#CusSysSer">6.3 Customizing System Services</A></TD>
+</TR>
+<TR><TD WIDTH="15%" VALIGN="MIDDLE">
+<P>&nbsp;</TD>
+<TD WIDTH="14%" VALIGN="MIDDLE">
+<P>&nbsp;</TD>
+<TD WIDTH="71%" VALIGN="MIDDLE" COLSPAN=2>
+<P><IMG SRC="newbw.gif" WIDTH=16 HEIGHT=15>&nbsp;&nbsp;<A HREF="#flSysModule">6.3.1 The FLSYSTEM Module</A></TD>
+</TR>
+<TR><TD WIDTH="15%" VALIGN="MIDDLE">
+<P>&nbsp;</TD>
+<TD WIDTH="14%" VALIGN="MIDDLE">
+<P>&nbsp;</TD>
+<TD WIDTH="71%" VALIGN="MIDDLE" COLSPAN=2>
+<P><IMG SRC="newbw.gif" WIDTH=16 HEIGHT=15>&nbsp;&nbsp;<A HREF="#sysFunDesc">6.3.2 System Functions Description</A></TD>
+</TR>
+<TR><TD WIDTH="15%" VALIGN="MIDDLE">
+<P>&nbsp;</TD>
+<TD WIDTH="85%" VALIGN="MIDDLE" COLSPAN=3>
+<P><IMG SRC="openbw.gif" WIDTH=16 HEIGHT=15>&nbsp;&nbsp;<A HREF="#cusmtd">6.4. Customizing DiskOnChip registers access routines.</A></TD>
+</TR>
+<TR><TD WIDTH="15%" VALIGN="MIDDLE">
+<P>&nbsp;</TD>
+<TD WIDTH="14%" VALIGN="MIDDLE">
+<P>&nbsp;</TD>
+<TD WIDTH="71%" VALIGN="MIDDLE" COLSPAN=2>
+<P><IMG SRC="newbw.gif" WIDTH=16 HEIGHT=15>&nbsp;&nbsp;<A HREF="#BasicTerms">6.4.1 Basic terms:</A></TD>
+</TR>
+<TR><TD WIDTH="15%" VALIGN="MIDDLE">
+<P>&nbsp;</TD>
+<TD WIDTH="14%" VALIGN="MIDDLE">
+<P>&nbsp;</TD>
+<TD WIDTH="71%" VALIGN="MIDDLE" COLSPAN=2>
+<P><IMG SRC="newbw.gif" WIDTH=16 HEIGHT=15>&nbsp;&nbsp;<A HREF="#FuncDesc">6.4.2 Functions Description:</A>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="15%" VALIGN="MIDDLE">
+<P>&nbsp;</TD>
+<TD WIDTH="85%" VALIGN="MIDDLE" COLSPAN=3>
+<P><IMG SRC="newbw.gif" WIDTH=16 HEIGHT=15>&nbsp;&nbsp;<A HREF="#CusAppSer">6.5 Customizing for Your OSAK Services Requirements</A></TD>
+</TR>
+<TR><TD WIDTH="15%" VALIGN="MIDDLE">
+<P>&nbsp;</TD>
+<TD WIDTH="85%" VALIGN="MIDDLE" COLSPAN=3>
+<P><IMG SRC="newbw.gif" WIDTH=16 HEIGHT=15>&nbsp;&nbsp;<A HREF="#CusReg">6.6 Customizing the OSAK Registration Routine</A></TD>
+</TR>
+<TR><TD VALIGN="MIDDLE" COLSPAN=4>
+<P><IMG SRC="openbw.gif" WIDTH=16 HEIGHT=15>&nbsp; <A HREF="#ROMRAMRequir">7. ROM and RAM Requirements</A></TD>
+</TR>
+<TR><TD WIDTH="15%" VALIGN="MIDDLE">
+<P>&nbsp;</TD>
+<TD WIDTH="85%" VALIGN="MIDDLE" COLSPAN=3>
+<P><IMG SRC="newbw.gif" WIDTH=16 HEIGHT=15>&nbsp;&nbsp;<A HREF="#ROMRAMintroduct">7.1 Introduction</A></TD>
+</TR>
+<TR><TD WIDTH="15%" VALIGN="MIDDLE">
+<P>&nbsp;</TD>
+<TD WIDTH="85%" VALIGN="MIDDLE" COLSPAN=3>
+<P><IMG SRC="newbw.gif" WIDTH=16 HEIGHT=15>&nbsp;&nbsp;<A HREF="#bdcodesize">7.2 Reference System based on Block Device API</A>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="15%" VALIGN="MIDDLE">
+<P>&nbsp;</TD>
+<TD WIDTH="14%" VALIGN="MIDDLE">
+<P>&nbsp;</TD>
+<TD WIDTH="71%" VALIGN="MIDDLE" COLSPAN=2>
+<P><IMG SRC="newbw.gif" WIDTH=16 HEIGHT=15>&nbsp;&nbsp;<A HREF="#codebreak">7.2.1 Code Breakdown</A>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="15%" VALIGN="MIDDLE">
+<P>&nbsp;</TD>
+<TD WIDTH="14%" VALIGN="MIDDLE">
+<P>&nbsp;</TD>
+<TD WIDTH="71%" VALIGN="MIDDLE" COLSPAN=2>
+<P><IMG SRC="newbw.gif" WIDTH=16 HEIGHT=15>&nbsp; <A HREF="#RAMbreak">7.2.2 RAM Breakdown</A>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="15%" VALIGN="MIDDLE">
+<P>&nbsp;</TD>
+<TD WIDTH="14%" VALIGN="MIDDLE">
+<P>&nbsp;</TD>
+<TD WIDTH="71%" VALIGN="MIDDLE" COLSPAN=2>
+<P><IMG SRC="newbw.gif" WIDTH=16 HEIGHT=15>&nbsp; <A HREF="#bdEffOfCusReq">7.2.3 Effect of Customization on Requirements</A></TD>
+</TR>
+<TR><TD WIDTH="15%" VALIGN="MIDDLE">
+<P>&nbsp;</TD>
+<TD WIDTH="85%" VALIGN="MIDDLE" COLSPAN=3>
+<P><IMG SRC="newbw.gif" WIDTH=16 HEIGHT=15>&nbsp;&nbsp;<A HREF="#FScodesize">7.3 Reference System based on file system API</A>&nbsp;&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="15%" VALIGN="MIDDLE">
+<P>&nbsp;</TD>
+<TD WIDTH="14%" VALIGN="MIDDLE" COLSPAN=2>
+<P>&nbsp;</TD>
+<TD WIDTH="71%" VALIGN="MIDDLE">
+<P><IMG SRC="newbw.gif" WIDTH=16 HEIGHT=15>&nbsp;&nbsp;<A HREF="#fsCodeBreak">7.3.1 Code Breakdown</A>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="15%" VALIGN="MIDDLE">
+<P>&nbsp;</TD>
+<TD WIDTH="14%" VALIGN="MIDDLE" COLSPAN=2>
+<P>&nbsp;</TD>
+<TD WIDTH="71%" VALIGN="MIDDLE">
+<P><IMG SRC="newbw.gif" WIDTH=16 HEIGHT=15>&nbsp; <A HREF="#fsRAMbreak">7.3.2 RAM Breakdown</A></TD>
+</TR>
+<TR><TD WIDTH="15%" VALIGN="MIDDLE">
+<P>&nbsp;</TD>
+<TD WIDTH="14%" VALIGN="MIDDLE" COLSPAN=2>
+<P>&nbsp;</TD>
+<TD WIDTH="71%" VALIGN="MIDDLE">
+<P><IMG SRC="newbw.gif" WIDTH=16 HEIGHT=15>&nbsp; <A HREF="#EffCustomizRequir">7.3.3 Effect of Customization on Requirements</A></TD>
+</TR>
+<TR><TD VALIGN="MIDDLE" COLSPAN=4>
+<P><IMG SRC="openbw.gif" WIDTH=16 HEIGHT=15>&nbsp;<A HREF="#samples">8. Sample Applications</A></TD>
+</TR>
+<TR><TD VALIGN="MIDDLE" COLSPAN=4>
+<P><IMG SRC="copybw.gif" WIDTH=24 HEIGHT=23>&nbsp;<A HREF="../util/DFORMAT/DFORMAT.htm">DFORMAT utility</A></TD>
+</TR>
+</TABLE>
+
+<P>&nbsp;</P>
+<P><IMG SRC="Leavln.gif" WIDTH=492 HEIGHT=19></P>
+<H1><A NAME="_Toc445477833">1. The DiskOnChip OSAK System</A></H1>
+<P>The OSAK is an integrated solution for managing high-level data on the DiskOnChip. It provides for disk-emulation of the device, enabling the construction of a standard block-device interface to it.</P>
+<P>&nbsp;</P>
+<H2><A NAME="_Toc445477834">1.1 Block-Device Functionality</A></H2>
+<P>The system is meant to be integrated into an operating system, and act as a block-device driver using read/write block commands. The block-device interface emulates the DiskOnChip as a disk, hiding all flash-related behavior and management in the driver itself.</P>
+<P>&nbsp;</P>
+<H2><A NAME="_Toc445477835">1.2 File-System Functionality</A></H2>
+<P>The system is meant to be integrated into an application or an operating system, and act as a Flash file system using a high-level file system interface. </P>
+<P>&nbsp;</P>
+<H2><A NAME="_Toc403976832">1.3 Features</A></H2>
+<P><IMG SRC="Bullet8.gif" WIDTH=12 HEIGHT=12>&nbsp;Full FAT file-system interface, including subdirectories, file date/time, file attributes and volume labels</P>
+<P><IMG SRC="Bullet8.gif" WIDTH=12 HEIGHT=12>&nbsp;Supports multiple DiskOnChips</P>
+<P><IMG SRC="Bullet8.gif" WIDTH=12 HEIGHT=12>&nbsp;Embedded formatting</P>
+<P><IMG SRC="Bullet8.gif" WIDTH=12 HEIGHT=12>&nbsp;Embedded defragmentation</P>
+<P><IMG SRC="Bullet8.gif" WIDTH=12 HEIGHT=12>&nbsp;Power failure and media abuse resistant</P>
+<P><IMG SRC="Bullet8.gif" WIDTH=12 HEIGHT=12>&nbsp;Physical Flash access and programming option</P>
+<P><IMG SRC="Bullet8.gif" WIDTH=12 HEIGHT=12>&nbsp;Low system overhead</P>
+<P><IMG SRC="Bullet8.gif" WIDTH=12 HEIGHT=12>&nbsp;Split/merge/insert/delete file-system capability</P>
+<P>&nbsp;</P>
+<H2><A NAME="_Toc351277781">1.4 Target Environments</A></H2>
+<P><IMG SRC="Bullet7.gif" WIDTH=15 HEIGHT=12>&nbsp;Customizable to all CPU's: 8-bit, 16-bit, and 32-bit processors supported. Little-endian and big-endian integer formats supported.</P>
+<P><IMG SRC="Bullet7.gif" WIDTH=15 HEIGHT=12>&nbsp;Customizable to all ANSI-C or C++ compilers. No Assembler code.</P>
+<P>&nbsp;</P>
+<H2><A NAME="_Toc351277783">1.5 Customizability</A></H2>
+<P>The OSAK is distributed in source code format, compilable on ANSI-C or C++ compilers. It is built for customization for the target application, and includes documentation and examples to guide the customizer.</P>
+<P>The customization deals with:</P>
+<P><IMG SRC="Bullet5.gif" WIDTH=12 HEIGHT=12>&nbsp;Customizing for the target CPU. Customizing for the compiler.</P>
+<P><IMG SRC="Bullet5.gif" WIDTH=12 HEIGHT=12>&nbsp;Customizing for the DiskOnChip socket interface.</P>
+<P><IMG SRC="Bullet5.gif" WIDTH=12 HEIGHT=12>&nbsp;Customizing for system hardware (interrupt controller, timer, and such).</P>
+<P><IMG SRC="Bullet5.gif" WIDTH=12 HEIGHT=12>&nbsp;Selecting options for building the system with parameters and functionality suitable for the target application.</P>
+<P>&nbsp;</P>
+<H2><A NAME="_Toc351277784">1.6 Low System Overhead</A></H2>
+<P>The OSAK system is designed to require minimal memory resources, both RAM and ROM. In addition, customization options enable the system integrator to remove unnecessary parts to further reduce the storage space requirements.</P>
+<P>&nbsp;</P>
+<P><IMG SRC="Leavln.gif" WIDTH=492 HEIGHT=19></P>
+<H1><A NAME="_Toc445477840">2. Files list</A></H1>
+<P>The OSAK distribution disk is organized into the following directory structure:</P>
+<TABLE CELLSPACING=0 BORDER=0 CELLPADDING=2 WIDTH=525>
+<TR><TD WIDTH="39%" VALIGN="TOP" COLSPAN=3>
+<P><B>OSAK.CHM</B></TD>
+<TD WIDTH="61%" VALIGN="TOP">
+<P>OSAK help. Requires Microsoft Internet Explorer 4.0. If you have not Microsoft Internet Explorer 4.0 then use help in HTML format (.\doc\osak.htm)</TD>
+</TR>
+<TR><TD WIDTH="39%" VALIGN="TOP" COLSPAN=3>
+<B><P>SRC\</B></TD>
+<TD WIDTH="61%" VALIGN="TOP">
+<P>OSAK source code</TD>
+</TR>
+<TR><TD WIDTH="7%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="32%" VALIGN="TOP" COLSPAN=2>
+<B><P>BDDEFS.H</B></TD>
+<TD WIDTH="61%" VALIGN="TOP">
+<P>Private type definitions which are used by blockdev.c and fatlite.c.</TD>
+</TR>
+<TR><TD WIDTH="7%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="32%" VALIGN="TOP" COLSPAN=2>
+<B><P>BLOCKDEV.C</B></TD>
+<TD WIDTH="61%" VALIGN="TOP">
+<P>OSAK API routines</TD>
+</TR>
+<TR><TD WIDTH="7%" VALIGN="MIDDLE">
+<P>&nbsp;</TD>
+<TD WIDTH="32%" VALIGN="MIDDLE" COLSPAN=2>
+<B><P>BLOCKDEV.H</B></TD>
+<TD WIDTH="61%" VALIGN="MIDDLE">
+<P>OSAK Block device driver API header</TD>
+</TR>
+<TR><TD WIDTH="7%" VALIGN="MIDDLE">
+<P>&nbsp;</TD>
+<TD WIDTH="32%" VALIGN="MIDDLE" COLSPAN=2>
+<B><P>DISKONC.C </B></TD>
+<TD WIDTH="61%" VALIGN="MIDDLE">
+<P>MTD for the DiskOnChip.</TD>
+</TR>
+<TR><TD WIDTH="7%" VALIGN="MIDDLE">
+<P>&nbsp;</TD>
+<TD WIDTH="32%" VALIGN="MIDDLE" COLSPAN=2>
+<B><P>DISKONC.H</B></TD>
+<TD WIDTH="61%" VALIGN="MIDDLE">
+<P>Type definitions of MTD for the DiskOnChip.</TD>
+</TR>
+<TR><TD WIDTH="7%" VALIGN="MIDDLE">
+<P>&nbsp;</TD>
+<TD WIDTH="32%" VALIGN="MIDDLE" COLSPAN=2>
+<B><P>DOCSOC.C</B></TD>
+<TD WIDTH="61%" VALIGN="MIDDLE">
+<P>Socket interface for M-Systems' DiskOnChip </TD>
+</TR>
+<TR><TD WIDTH="7%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="32%" VALIGN="TOP" COLSPAN=2>
+<B><P>DOCSYS.C</B></TD>
+<TD WIDTH="61%" VALIGN="TOP">
+<P>Customizable part of the MTD for the DiskOnChip.</TD>
+</TR>
+<TR><TD WIDTH="7%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="32%" VALIGN="TOP" COLSPAN=2>
+<B><P>DOCSYS.H</B></TD>
+<TD WIDTH="61%" VALIGN="TOP">
+<P>Header of customizable part of the MTD for the DiskOnChip</TD>
+</TR>
+<TR><TD WIDTH="7%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="32%" VALIGN="TOP" COLSPAN=2>
+<B><P>DOSFORMT.C</B></TD>
+<TD WIDTH="61%" VALIGN="TOP">
+<P>FAT formatter</TD>
+</TR>
+<TR><TD WIDTH="7%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="32%" VALIGN="TOP" COLSPAN=2>
+<B><P>DOSFORMT.H</B></TD>
+<TD WIDTH="61%" VALIGN="TOP">
+<P>Defines DOS-FAT structures and data types</TD>
+</TR>
+<TR><TD WIDTH="7%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="32%" VALIGN="TOP" COLSPAN=2>
+<B><P>FATLITE.C</B></TD>
+<TD WIDTH="61%" VALIGN="TOP">
+<P>FAT file-system manager</TD>
+</TR>
+<TR><TD WIDTH="7%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="32%" VALIGN="TOP" COLSPAN=2>
+<B><P>FATLITE.H</B></TD>
+<TD WIDTH="61%" VALIGN="TOP">
+<P>Obsolete, included for backward compatibility</TD>
+</TR>
+<TR><TD WIDTH="7%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="32%" VALIGN="TOP" COLSPAN=2>
+<B><P>FLBUFFER.H</B></TD>
+<TD WIDTH="61%" VALIGN="TOP">
+<P>Global buffer data structure definition</TD>
+</TR>
+<TR><TD WIDTH="7%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="32%" VALIGN="TOP" COLSPAN=2>
+<B><P>FLBASE.C </B></TD>
+<TD WIDTH="61%" VALIGN="TOP">
+<P>Basic type-handling routines</TD>
+</TR>
+<TR><TD WIDTH="7%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="32%" VALIGN="TOP" COLSPAN=2>
+<B><P>FLBASE.H </B></TD>
+<TD WIDTH="61%" VALIGN="TOP">
+<P>Basic type definitions</TD>
+</TR>
+<TR><TD WIDTH="7%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="32%" VALIGN="TOP" COLSPAN=2>
+<B><P>FLFLASH.C</B></TD>
+<TD WIDTH="61%" VALIGN="TOP">
+<P>Basic Flash and MTD manager.</TD>
+</TR>
+<TR><TD WIDTH="7%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="32%" VALIGN="TOP" COLSPAN=2>
+<B><P>FLFLASH.H</B></TD>
+<TD WIDTH="61%" VALIGN="TOP">
+<P>Defines internal interface to MTD's.</TD>
+</TR>
+<TR><TD WIDTH="7%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="32%" VALIGN="TOP" COLSPAN=2>
+<B><P>FLREQ.H</B></TD>
+<TD WIDTH="61%" VALIGN="TOP">
+<P>Input/Output Request Packet type definition.</TD>
+</TR>
+<TR><TD WIDTH="7%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="32%" VALIGN="TOP" COLSPAN=2>
+<B><P>FLSOCKET.C</B></TD>
+<TD WIDTH="61%" VALIGN="TOP">
+<P>General hardware-independent socket manager.</TD>
+</TR>
+<TR><TD WIDTH="7%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="32%" VALIGN="TOP" COLSPAN=2>
+<B><P>FLSOCKET.H</B></TD>
+<TD WIDTH="61%" VALIGN="TOP">
+<P>Defines internal interface to sockets.</TD>
+</TR>
+<TR><TD WIDTH="7%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="32%" VALIGN="TOP" COLSPAN=2>
+<B><P>FLSTATUS.H </B></TD>
+<TD WIDTH="61%" VALIGN="TOP">
+<P>Status codes definitions.</TD>
+</TR>
+<TR><TD WIDTH="7%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="32%" VALIGN="TOP" COLSPAN=2>
+<B><P>FLSYSFUN.H</B></TD>
+<TD WIDTH="61%" VALIGN="TOP">
+<P>Function prototypes for system-specific functions.</TD>
+</TR>
+<TR><TD WIDTH="7%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="32%" VALIGN="TOP" COLSPAN=2>
+<B><P>FLTL.C </B></TD>
+<TD WIDTH="61%" VALIGN="TOP">
+<P>Translation-layer manager</TD>
+</TR>
+<TR><TD WIDTH="7%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="32%" VALIGN="TOP" COLSPAN=2>
+<B><P>FLTL.H </B></TD>
+<TD WIDTH="61%" VALIGN="TOP">
+<P>Defines internal interface to all translation layers</TD>
+</TR>
+<TR><TD WIDTH="7%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="32%" VALIGN="TOP" COLSPAN=2>
+<B><P>FSAPI.H </B></TD>
+<TD WIDTH="61%" VALIGN="TOP">
+<P>Defines the File System API</TD>
+</TR>
+<TR><TD WIDTH="7%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="32%" VALIGN="TOP" COLSPAN=2>
+<B><P>NFDC2148.H </B></TD>
+<TD WIDTH="61%" VALIGN="TOP">
+<P>Obsolete, included for backward compatibility</TD>
+</TR>
+<TR><TD WIDTH="7%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="32%" VALIGN="TOP" COLSPAN=2>
+<B><P>NFTLLITE.C </B></TD>
+<TD WIDTH="61%" VALIGN="TOP">
+<P>NFTL translation-layer </TD>
+</TR>
+<TR><TD WIDTH="7%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="32%" VALIGN="TOP" COLSPAN=2>
+<B><P>NFTLLITE.H </B></TD>
+<TD WIDTH="61%" VALIGN="TOP">
+<P>NFTL translation-layer type definitions</TD>
+</TR>
+<TR><TD WIDTH="7%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="32%" VALIGN="TOP" COLSPAN=2>
+<B><P>OSAK.H </B></TD>
+<TD WIDTH="61%" VALIGN="TOP">
+<P>For backward compatibility</TD>
+</TR>
+<TR><TD WIDTH="7%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="32%" VALIGN="TOP" COLSPAN=2>
+<B><P>REEDSOL.C </B></TD>
+<TD WIDTH="61%" VALIGN="TOP">
+<P>Error correction algorithms for the DiskOnChip.</TD>
+</TR>
+<TR><TD WIDTH="7%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="32%" VALIGN="TOP" COLSPAN=2>
+<B><P>REEDSOL.H </B></TD>
+<TD WIDTH="61%" VALIGN="TOP">
+<P>Defines internal interface to error correction algorithms</TD>
+</TR>
+<TR><TD WIDTH="7%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="32%" VALIGN="TOP" COLSPAN=2>
+<B><P>STDCOMP.H </B></TD>
+<TD WIDTH="61%" VALIGN="TOP">
+<P>Defines function prototypes for components</TD>
+</TR>
+<TR><TD WIDTH="39%" VALIGN="TOP" COLSPAN=3>
+<B><P>CUSTOM\</B></TD>
+<TD WIDTH="61%" VALIGN="TOP">
+<P>Reference code for customization definitions</TD>
+</TR>
+<TR><TD WIDTH="7%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="32%" VALIGN="TOP" COLSPAN=2>
+<B><P>FLCUSTOM.C </B></TD>
+<TD WIDTH="61%" VALIGN="TOP">
+<P>OSAK application's component registration routine</TD>
+</TR>
+<TR><TD WIDTH="7%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="32%" VALIGN="TOP" COLSPAN=2>
+<B><P>FLCUSTOM.H </B></TD>
+<TD WIDTH="61%" VALIGN="TOP">
+<P>OSAK application's customization definitions (reference code)</TD>
+</TR>
+<TR><TD WIDTH="7%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="32%" VALIGN="TOP" COLSPAN=2>
+<B><P>FLREQ.H</B></TD>
+<TD WIDTH="61%" VALIGN="TOP">
+<P>OSAK programmer's interface type definitions</TD>
+</TR>
+<TR><TD WIDTH="39%" VALIGN="TOP" COLSPAN=3>
+<B><P>SYSTEMS\</B></TD>
+<TD WIDTH="61%" VALIGN="TOP">
+<P>System-specific OSAK code</TD>
+</TR>
+<TR><TD WIDTH="7%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="32%" VALIGN="TOP" COLSPAN=2>
+<B><P>BC31\</B></TD>
+<TD WIDTH="61%" VALIGN="TOP">
+<P>Code specific to PC targets compiled using Borland-C 3.1</TD>
+</TR>
+<TR><TD WIDTH="7%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="8%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="24%" VALIGN="TOP">
+<B><P>FLSYSTEM.C</B></TD>
+<TD WIDTH="61%" VALIGN="TOP">
+<P>Routines specific to the host system (reference code)</TD>
+</TR>
+<TR><TD WIDTH="7%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="8%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="24%" VALIGN="TOP">
+<B><P>FLSYSTEM.H</B></TD>
+<TD WIDTH="61%" VALIGN="TOP">
+<P>Customization definitions specific to the host system i.e. compiler, CPU, OS etc. (reference code)</TD>
+</TR>
+<TR><TD WIDTH="39%" VALIGN="TOP" COLSPAN=3>
+<B><P>DOC\</B></TD>
+<TD WIDTH="61%" VALIGN="TOP">
+<P>Documentation</TD>
+</TR>
+<TR><TD WIDTH="7%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="32%" VALIGN="TOP" COLSPAN=2>
+<B><P>OSAK.HTM </B></TD>
+<TD WIDTH="61%" VALIGN="TOP">
+<P>OSAK help in HTML format.</TD>
+</TR>
+<TR><TD WIDTH="7%" VALIGN="TOP" HEIGHT=75>
+<P>&nbsp;</TD>
+<TD WIDTH="93%" VALIGN="TOP" COLSPAN=3 HEIGHT=75>
+<B><P>BULLET2.GIF, BULLET5.GIF, BULLET7.GIF, BULLET8.GIF, COPYBW.GIF, GREENBAL.GIF, JADELN.GIF, LEAVLN.GIF, NEWBW.GIF, OPALN.GIF, OPENBW.GIF, PARTIT.GIF</B>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="39%" VALIGN="TOP" COLSPAN=3>
+<B><P>EXAMPLES\</B></TD>
+<TD WIDTH="61%" VALIGN="TOP">
+<P>&nbsp;Examples of writing applications using OSAK </TD>
+</TR>
+<TR><TD WIDTH="7%" VALIGN="TOP">&nbsp;</TD>
+<TD WIDTH="32%" VALIGN="TOP" COLSPAN=2>
+<B><P>FLCOPY\ </B></TD>
+<TD WIDTH="61%" VALIGN="TOP">
+<P>Simple and Portable File-System Examples</TD>
+</TR>
+<TR><TD WIDTH="7%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="32%" VALIGN="TOP" COLSPAN=2>
+<B><P>LOWLEVEL\</B></TD>
+<TD WIDTH="61%" VALIGN="TOP">
+<P>Example of using block-device interface functions: <A HREF="#flMountVolume">flMountVolume</A>, <A HREF="#flAbsWrite">flAbsWrite</A>, <A HREF="#flAbsRead">flAbsRead</A></TD>
+</TR>
+<TR><TD WIDTH="7%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="8%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="24%" VALIGN="TOP">
+<B><P>MAKEFILE</B></TD>
+<TD WIDTH="61%" VALIGN="TOP">
+<P>Makefile example specific to PC targets compiled using Borland-C 3.1</TD>
+</TR>
+<TR><TD WIDTH="7%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="8%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="24%" VALIGN="TOP">
+<B><P>LOWLEVEL.C</B></TD>
+<TD WIDTH="61%" VALIGN="TOP">
+<P>This file includes simple application that mounts volume, writes 10 logical sectors from 100 to 110 then reads it and verifies.</TD>
+</TR>
+<TR><TD WIDTH="7%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="8%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="24%" VALIGN="TOP">
+<B><P>LOWLEVEL.EXE</B></TD>
+<TD WIDTH="61%" VALIGN="TOP">
+<P>Executable file compiled using Borland-C 3.1</TD>
+</TR>
+<TR><TD WIDTH="39%" VALIGN="TOP" COLSPAN=3>
+<B><P>UTIL\</B></TD>
+<TD WIDTH="61%" VALIGN="TOP">
+<P>Utilities based on OSAK&nbsp;source code</TD>
+</TR>
+<TR><TD WIDTH="7%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="32%" VALIGN="TOP" COLSPAN=2>
+<B><P>DFORMAT\</B></TD>
+<TD WIDTH="61%" VALIGN="TOP">
+<P>Utility that allows formatting DiskOnChip.</TD>
+</TR>
+<TR><TD WIDTH="7%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="8%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="24%" VALIGN="TOP">
+<B><P>MAKEFILE</B></TD>
+<TD WIDTH="61%" VALIGN="TOP">
+<P>Makefile specific to PC targets compiled using Borland-C 3.1</TD>
+</TR>
+<TR><TD WIDTH="7%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="8%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="24%" VALIGN="TOP">
+<B><P>DFORMAT.C</B></TD>
+<TD WIDTH="61%" VALIGN="TOP">
+<P>ANSI C Source of the format utility</TD>
+</TR>
+<TR><TD WIDTH="7%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="8%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="24%" VALIGN="TOP">
+<B><P>FLCUSTOM.C</B></TD>
+<TD WIDTH="61%" VALIGN="TOP">
+<P>DFORMAT application component registration routine</TD>
+</TR>
+<TR><TD WIDTH="7%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="8%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="24%" VALIGN="TOP">
+<B><P>DFORMAT.EXE</B></TD>
+<TD WIDTH="61%" VALIGN="TOP">
+<P>Executable file compiled using Borland-C 3.1</TD>
+</TR>
+<TR><TD WIDTH="7%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="8%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="24%" VALIGN="TOP">
+<B><P>DFORMAT.HTM</B></TD>
+<TD WIDTH="61%" VALIGN="TOP">
+<P>User manual of DFORMAT utility in HTML format.</TD>
+</TR>
+<TR><TD WIDTH="7%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="8%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="24%" VALIGN="TOP">
+<B><P>GREENBAL.GIF</B></TD>
+<TD WIDTH="61%" VALIGN="TOP">
+<P>&nbsp;</TD>
+</TR>
+</TABLE>
+
+<P>&nbsp;</P>
+<P><IMG SRC="Leavln.gif" WIDTH=492 HEIGHT=19></P>
+<H1><A NAME="_Toc403976840">3. Guide to Integrating the DiskOnChip</A></H1>
+<H2><A NAME="_Toc445477841">3.1 The DiskOnChip and the OSAK</A></H2>
+<P>The DiskOnChip is a Flash Disk acting in the role of a fixed disk in the system in which it is incorporated. The OSAK enables the DiskOnChip hardware to achieve its system role. Data is stored on the DiskOnChip in a format called NFTL. The NFTL data formats are managed by the NFTL translation-layer algorithms, incorporated in the module <I>NFTLLITE.C</I>. The data management done by the translation-layer hides all special aspects of Flash, enabling the DiskOnChip to act as a block-device capable of reading and writing blocks freely.</P>
+<P>&nbsp;</P>
+<H2><A NAME="WrBlockDevIn">3.2 Writing a Block-Device Interface</A></H2>
+<P>The OSAK API contains functions that enable the user to implement a complete block-device driver interface.</P>
+<P>A block device driver is a software that handles sector read and write requests by address (sector number). Such a driver usually works in conjunction with an operating system, or with a device-independent file system that is incorporated in an operating system (such as the FAT file system in the DOS and Windows operating systems).</P>
+<P>The main API functions used to implement the block device are<A HREF="#flAbsRead"> flAbsRead</A><I> </I>and <A HREF="#flAbsWrite">flAbsWrite</A>, which read and write sectors, respectively, by absolute sector number.</P>
+<P>Other functions that are typically needed for a block-device implementation are <A HREF="#flMountVolume">flMountVolume</A> or <A HREF="#flAbsMountVolume">flAbsMountVolume</A>. The block device will mount a volume either automatically when necessary, or in response to its own client's request. The <A HREF="#flMountVolume">flMountVolume</A> function does all necessary work in verifying that both the NFTL and FAT formats are valid. It also locates the DOS boot sector and identifies it as absolute sector 0.If you use <A HREF="#flMountVolume">flMountVolume</A> then the sectors preceding the DOS boot sector, including the Master Boot Record and the Partition Table are not accessible through the block device interface.</P>
+<P>The mounting procedure of a block device driver often needs to access the media BPB (BIOS Parameter Block), which is a part of the DOS boot sector. A simple way to do this is to read sector 0 and access the BPB part of it. Since this requires a complete sector buffer, OSAK provides a special function <A HREF="#flGetBPB">flGetBPB</A>, which returns the BPB only and requires much less RAM.</P>
+<P>The <A HREF="#flAbsMountVolume">flAbsMountVolume</A> is useful for those users who work with file system different from DOS file system. It is verifying only NFTL format and ignores FAT format if exists.</P>
+<P>The <A HREF="#flAbsDelete">flAbsDelete</A> function is also provided to delete sectors by absolute sector number. This function marks sectors as logically deleted, making them candidates for space reclamation. This function is never strictly necessary except to improve performance in some special cases, typically when the file system using the OSAK block-device interface is not DOS-FAT compatible. A block device that handles a FAT file-system need not use the delete-sector function even for performance reasons since OSAK automatically monitors the File Allocation Tables for deleted sectors and marks them for Flash recycling.</P>
+<P>&nbsp;</P>
+<H2><A NAME="OsakSocksAnDrives"></A>3.3 OSAK Sockets and Drives </H2>
+<B><P>See also</B> <A HREF="#_Toc351277793">Interface terms</A></P>
+<P>In the OSAK system, a <B>socket</B> is a physical location where a DiskOnChip media may be placed. There may be one or more sockets in the system. A <B>drive </B>is a synonym for a socket. The number of drives in the system is given by the global variable <I>noOfDrives</I>. Drives are numbered 0, 1,..., <I>noOfDrives </I>- 1.</P>
+<P>A <A HREF="#defDRIVES">customization variable DRIVES</A>, defined in <I>FLCUSTOM.H</I>, defines the <B>maximum </B>number of drives that can be registered. If a socket component cannot register its sockets because that would exceed the drives limit, it will fail with an error status.</P>
+<P>&nbsp;</P>
+<P><IMG SRC="Leavln.gif" WIDTH=492 HEIGHT=19></P>
+<H1><A NAME="_Toc445477848">4. Programmer's Interface</A></H1>
+<H2><A NAME="_Toc445477849">4.1 Introduction</A></H2>
+<P>The OSAK package is designed to be integrated and linked into an application or a driver. OSAK exports an application programmer's interface (API) featuring block-device and file-system functionality. The <I>FSAPI.H</I> and <I>BLOCKDEV.H</I> include files define this API.</P>
+<P>All calls to OSAK (with the exception of the<A HREF="#flExit"> flExit</A><I> </I>function) take the following form:</P>
+<I><P>status = flSomeFileOperation(&amp;ioRequestPacket);</P>
+<P>flSomeFileOperation&#9;</I>Name of the OSAK function called. All function names begin with <I>fl</I>. The set of OSAK functions will be described in detail below.</P>
+<I><P>ioRequestPacket&#9;</I>A parameter structure supplied by the caller. The structure is defined by the <I>Ioreq </I>type (in <I>FLREQ.H)</I>. All OSAK functions take the same parameter structure, although the meaning of fields in it vary from function to function. The <I>Ioreq </I>fields are described below on a function-specific basis.</P>
+<I><P>status&#9;</I>Completion status of the OSAK operation. The status is defined with an <I>FLStatus </I>type, and its values are found in <I>FLSTATUS.H</I>. A successful operation always returns the value <I>flOK </I>(0). Other values indicate an error or a special condition.</P>
+<P>&nbsp;</P>
+<H2><A NAME="_Toc351277793">4.2 Interface Terms</A></H2>
+<B><FONT SIZE=4><P>Drive</P>
+</FONT><P>See also</B> <A HREF="#OsakSocksAnDrives">Osak sockets and drives</A></P>
+<P>A physical location where a DiskOnChip may reside. The number of drives in OSAK system depends on the number of sockets found and reported by the socket components registered in OSAK application. The maximum number of drives is defined by the <A HREF="#defDRIVES">DRIVES definition in FLCUSTOM.H</A>. Drives are numbered from zero: 0, 1,..., and the drive number serves as the <B><I>drive handle</B></I>. The <I>ioreq.irHandle </I>field specifies the drive handle wherever there may be ambiguity about the drive referred to. In the special case where there is only one drive, no ambiguity may occur, so the drive handle parameter is always ignored.</P>
+<H3>Volume</H3>
+<P>A DiskOnChip that is located on a drive. Before any file operation is done on a volume, the volume must be mounted. It means that the OSAK system should acknowledge its presence and check the validity of the NFTL and/or FAT data formats on it. A volume may be dismounted through an OSAK call.</P>
+<H3>File Handle</H3>
+<P>When a file is opened, it is given a unique identifier by the OSAK system, which serves as the file handle. This handle is used by subsequent operations on the open file, and is the value of <I>ioreq.irHandle</I> for such operations.</P>
+<P>The number of available file handles is defined by the <A HREF="#defFILES">FILES definition in FLCUSTOM.H</A>. The handle is actually an index into a file table, so its numerical value is in the range of 0 to <I>FILES </I>- 1.</P>
+<H3>Path</H3>
+<P>A path specifies the name of a file and the hierarchy of directories to it. In DOS and other operating systems a path is specified as a string, and may be relative to the root directory or to the current directory. OSAK paths are different in these respects:</P>
+<P>There is no current directory. All paths are always specified relative to the root directory.</P>
+<P>The paths may be specified as an array of <I>FLSimplePath </I>structures (see the definition in <I>FLREQ.H</I>), or, more conveniently, as strings, but in such a manner that both the name and the extension are specified in their full 8.3 specification, padded with blanks if necessary, and without any '.', '/' or '\' delimiters. The length of OSAK path strings is therefore always a multiple of 11. The function <I>flParsePath </I>may be used to convert conventional paths to OSAK paths.</P>
+<P>&nbsp;</P>
+<H2><A NAME="funcGroups">4.3 OSAK Function Groups overview</A></H2>
+<H3>Basic Volume Handling</H3>
+<P><A HREF="#flAbsMountVolume">flAbsMountVolume</A></P>
+<P><A HREF="#flCheckVolume">flCheckVolume</A></P>
+<P><A HREF="#flDismountVolume">flDismountVolume</A></P>
+<P><A HREF="#flExit">flExit</A></P>
+<P><A HREF="#flFormatVolume">flFormatVolume</A></P>
+<P><A HREF="#flGetDiskInfo">flGetDiskInfo</A></P>
+<P><A HREF="#flInit">flInit</A></P>
+<P><A HREF="#flMountVolume">flMountVolume</A></P>
+<H3>Absolute Sector I/O</H3>
+<P><A HREF="#flAbsDelete">flAbsDelete</A></P>
+<P><A HREF="#flAbsRead">flAbsRead</A></P>
+<P><A HREF="#flAbsWrite">flAbsWrite</A></P>
+<P><A HREF="#flGetBPB">flGetBPB</A></P>
+<H3><A NAME="PhysicalGroup"></A>Physical Flash I/O</H3>
+<P><A HREF="#flGetPhysicalInfo">flGetPhysicalInfo</A></P>
+<P><A HREF="#flPhysicalErase">flPhysicalErase</A></P>
+<P><A HREF="#flPhysicalRead">flPhysicalRead</A></P>
+<P><A HREF="#flPhysicalWrite">flPhysicalWrite</A></P>
+<H3>Special Functions</H3>
+<P><A HREF="#flDefragmentVolume">flDefragmentVolume</A></P>
+<P><A HREF="#flFlushBuffer">flFlushBuffer</A></P>
+<P><A HREF="#flJoinFile">flJoinFile</A></P>
+<P><A HREF="#flParsePath">flParsePath</A></P>
+<P><A HREF="#flSplitFile">flSplitFile</A></P>
+<H3>Basic File Operations</H3>
+<P><A HREF="#flCloseFile">flCloseFile</A></P>
+<P><A HREF="#flDeleteFile">flDeleteFile</A></P>
+<P><A HREF="#flOpenFile">flOpenFile</A></P>
+<P><A HREF="#flReadFile">flReadFile</A></P>
+<P><A HREF="#flSeekFile">flSeekFile</A></P>
+<P><A HREF="#flWriteFile">flWriteFile</A></P>
+<H3>Directory Handling</H3>
+<P><A HREF="#flFindFile">flFindFile</A></P>
+<P><A HREF="#flFindFirstFile">flFindFirstFile</A></P>
+<P><A HREF="#flFindNextFile">flFindNextFile</A></P>
+<P><A HREF="#flMakeDir">flMakeDir</A></P>
+<P><A HREF="#flRemoveDir">flRemoveDir</A></P>
+<P><A HREF="#flRenameFile">flRenameFile</A></P>
+<P>&nbsp;</P>
+<H2><A NAME="VolHandFuncRef">4.4 Basic Volume Handling function reference</A></H2>
+<H3><A NAME="flAbsMountVolume"></A></H3>
+<H3>flAbsMountVolume</H3>
+<B><I><P>Function</P>
+</B></I><P>Mounts the Flash medium, preparing it for further access. This function may be used only for <A HREF="#WrBlockDevIn">Block Device Interface</A>. If you want to access file system then you have to call <A HREF="#flMountVolume">flMountVolume</A>. As distinct from <A HREF="#flMountVolume">flMountVolume</A> <I>flAbsMountVolume</I> verifies only NFTL format and does not check FAT format. It ignores DOS boot sector and identifies absolute sector 0 of NFTL format as absolute sector 0 of the media.</P>
+<P>In case the inserted volume has changed, or on the first access to the media, it should be mounted before any operations can be done on it.</P>
+<P>The volume automatically becomes dismounted if it is removed or changed.</P>
+<TABLE CELLSPACING=0 BORDER=0 CELLPADDING=7 WIDTH=637>
+<TR><TD WIDTH="44%" VALIGN="TOP">
+<P><B><I>Ioreq Parameters</B></I></TD>
+<TD WIDTH="56%" VALIGN="TOP">
+<P>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="44%" VALIGN="TOP">
+<I><P>irHandle</I></TD>
+<TD WIDTH="56%" VALIGN="TOP">
+<P>Drive number (0, 1, ...)</TD>
+</TR>
+<TR><TD WIDTH="44%" VALIGN="TOP">
+<B><I><P>Returns</B></I></TD>
+<TD WIDTH="56%" VALIGN="TOP">
+<P>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="44%" VALIGN="TOP">
+<I><P>FLStatus</I></TD>
+<TD WIDTH="56%" VALIGN="TOP">
+<P>0 on success otherwise failed.</TD>
+</TR>
+<TR><TD WIDTH="44%" VALIGN="TOP">
+<B><I><P>FLCUSTOM.H definitions required</B></I></TD>
+<TD WIDTH="56%" VALIGN="TOP">
+<P>None</TD>
+</TR>
+</TABLE>
+
+<P><IMG SRC="Opaln.gif" WIDTH=569 HEIGHT=9></P>
+<P>&nbsp;</P>
+<H3><A NAME="flCheckVolume"></A>flCheckVolume</H3>
+<B><I><P>Function</P>
+</B></I><P>Checks that the current volume is mounted.</P>
+<TABLE CELLSPACING=0 BORDER=0 CELLPADDING=7 WIDTH=636>
+<TR><TD WIDTH="44%" VALIGN="TOP">
+<P><B><I>Ioreq Parameters</B></I></TD>
+<TD WIDTH="56%" VALIGN="TOP">
+<P>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="44%" VALIGN="TOP">
+<I><P>irHandle</I></TD>
+<TD WIDTH="56%" VALIGN="TOP">
+<P>Drive number (0, 1, ...)</TD>
+</TR>
+<TR><TD WIDTH="44%" VALIGN="TOP">
+<B><I><P>Returns</B></I></TD>
+<TD WIDTH="56%" VALIGN="TOP">
+<P>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="44%" VALIGN="TOP">
+<I><P>FLStatus</I></TD>
+<TD WIDTH="56%" VALIGN="TOP">
+<P>0 if the volume is mounted and unchanged, otherwise the volume is not mounted.</TD>
+</TR>
+<TR><TD WIDTH="44%" VALIGN="TOP">
+<B><I><P>FLCUSTOM.H definitions required</B></I></TD>
+<TD WIDTH="56%" VALIGN="TOP">
+<P>None</TD>
+</TR>
+</TABLE>
+
+<P><IMG SRC="Opaln.gif" WIDTH=569 HEIGHT=9></P>
+<P>&nbsp;</P>
+<H3><A NAME="flDismountVolume"></H3>
+<H3>flDismountVolume</A></H3>
+<B><I><P>Function</P>
+</B></I><P>Dismounts the volume, closing all files. This call is not normally necessary, unless it is known the volume will soon be removed.</P>
+<TABLE CELLSPACING=0 BORDER=0 CELLPADDING=7 WIDTH=482>
+<TR><TD WIDTH="58%" VALIGN="TOP">
+<P><B><I>Ioreq Parameters</B></I>&nbsp;</TD>
+<TD WIDTH="42%" VALIGN="MIDDLE">
+<P>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="58%" VALIGN="TOP">
+<I><P>irHandle</I></TD>
+<TD WIDTH="42%" VALIGN="TOP">
+<P>Drive number (0, 1, ...)</TD>
+</TR>
+<TR><TD WIDTH="58%" VALIGN="TOP">
+<B><I><P>Returns</B></I></TD>
+<TD WIDTH="42%" VALIGN="TOP">
+<P>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="58%" VALIGN="TOP">
+<I><P>FLStatus</I></TD>
+<TD WIDTH="42%" VALIGN="TOP">
+<P>0 on success, otherwise failed.</TD>
+</TR>
+<TR><TD WIDTH="58%" VALIGN="TOP">
+<B><I><P>FLCUSTOM.H definitions required</B></I></TD>
+<TD WIDTH="42%" VALIGN="TOP">
+<P>None</TD>
+</TR>
+</TABLE>
+
+<P><IMG SRC="Opaln.gif" WIDTH=569 HEIGHT=9></P>
+<P>&nbsp;</P>
+<H3><A NAME="flExit"></H3>
+<H3>flExit</A></H3>
+<B><I><P>Function</P>
+</B></I><P>Last call to OSAK: Dismounts all volumes and closes all files.</P>
+<P>This function does not take the standard OSAK function prototype. Its prototype is: <I>void flExit(void);</P></I>
+<TABLE CELLSPACING=0 BORDER=0 CELLPADDING=7 WIDTH=349>
+<TR><TD WIDTH="80%" VALIGN="TOP">
+<P><B><I>Parameters</B></I>&nbsp;</TD>
+<TD WIDTH="20%" VALIGN="TOP">
+<P>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="80%" VALIGN="TOP">
+<P>None</TD>
+<TD WIDTH="20%" VALIGN="TOP">
+<P>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="80%" VALIGN="TOP">
+<B><I><P>Returns</B></I></TD>
+<TD WIDTH="20%" VALIGN="TOP">
+<P>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="80%" VALIGN="TOP">
+<P>Nothing</TD>
+<TD WIDTH="20%" VALIGN="TOP">
+<P>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="80%" VALIGN="TOP">
+<B><I><P>FLCUSTOM.H definitions required</B></I></TD>
+<TD WIDTH="20%" VALIGN="TOP">
+<B><I><P>EXIT</B></I></TD>
+</TR>
+</TABLE>
+
+<P><IMG SRC="Opaln.gif" WIDTH=569 HEIGHT=9></P>
+<P>&nbsp;</P>
+<H3><A NAME="flFormatVolume"></A></H3>
+<H3>flFormatVolume</H3>
+<B><I><P>Function</P>
+</B></I><P>Formats a volume, writing a new and empty file-system. All existing data is destroyed. Optionally, a low-level NFTL formatting is also done.</P>
+<P>Formatting leaves the volume in the dismounted state, so that a <A HREF="#flMountVolume">flMountVolume</A> call is necessary after it.</P>
+<P>The formatting is controlled by a set of parameters defined in a <I><U>FormatParams</I></U> structure and passed through the <I>irData</I> pointer. This structure is defined in <I>DOSFORMT.H </I>as follows:</P>
+<I><P><A NAME="FormatParams"></A>typedef struct {</P>
+</I><P>/* NFTL formatting section */</P>
+<I><P>long int bootImageLen;</P>
+</I><P>/* Space to reserve for a boot-image at the start of the medium. The OSAK volume will begin at the next higher erase unit boundary. A <A HREF="#BDK">boot image</A> can contain any binary data. This data will not be moved around on the media, even during garbage collection. </P>
+<P>If this you want to reformat DiskOnChip that was formatted before and to leave on it an old boot image then assign -1 to <I>bootImageLen</I> */</P>
+<I><P>unsigned percentUse;</P>
+</I><P>/* NFTL performance depends on how full the Flash media is, getting slower when the media is close to 100% full. It is possible to avoid the worst consequences of this effect by&#9; formatting the media to less than 100% capacity, thus guaranteeing some free space at all times. This of course sacrifices some capacity. The standard value to use is 98 */</P>
+<I><P>unsigned noOfSpareUnits;</P>
+</I><P>/* NFTL needs at least one spare erase unit in order to function as a read/write media. It is possible to specify more than one spare unit, which costs more media space. The advantage in specifying more than one spare unit, is that in case one of the Flash erase units becomes bad and unerasable in the future, one of the spare units will need to replace it. A second spare unit will then enable OSAK to continue read/write functionality. If a spare unit is unavailable, the media will go into read-only mode. The standard value to use is 1 */</P>
+<I><P>unsigned long&#9;vmAddressingLimit;</P>
+</I><P>/* Reserved */</P>
+<I><P>FLStatus&#9;(*progressCallback)(int totalUnitsToFormat, int totalUnitsFormattedSoFar);</P>
+</I><P>/* DOS formatting section */</P>
+<I><P>char volumeId[4];</P>
+</I><P>/* Volume identification number */</P>
+<I><P>char FAR1 * volumeLabel;</P>
+</I><P>/* Volume label string. If NULL, no label */</P>
+<I><P>unsigned noOfFATcopies;</P>
+</I><P>/* It is customary to format DOS media with 2 FAT copies.</P>
+<P>The first copy is always used, but more copies make it possible to recover if the FAT becomes corrupted (a rare occurrence). On the other hand, this slows down performance and uses media space. The standard value to use is 2. */</P>
+<I><P>unsigned embeddedCISlength;</P>
+</I><P>/* Reserved */</P>
+<I><P>char FAR1 * embeddedCIS;</P>
+<P>} FormatParams;</P>
+</I><P>To perform a standard format with all the default parameters, the following definition is available in <I>DOSFORMT.H</I>.</P>
+<I><P>/* Standard initializer for FormatParams structure */</P>
+<P>#define STD_FORMAT_PARAMS&#9;{0, 99, 1, 0x10000l, NULL, {0,0,0,0}, NULL,2, 0, NULL}</P></I>
+<TABLE CELLSPACING=0 BORDER=0 CELLPADDING=7 WIDTH=632>
+<TR><TD VALIGN="TOP" COLSPAN=4>
+<P><B><I>Ioreq Parameters</B></I></TD>
+</TR>
+<TR><TD WIDTH="18%" VALIGN="TOP">
+<I><P>irHandle</I></TD>
+<TD WIDTH="82%" VALIGN="TOP" COLSPAN=3>
+<P>Drive number (0, 1, ...)</TD>
+</TR>
+<TR><TD WIDTH="18%" VALIGN="TOP">
+<I><P>irData</I></TD>
+<TD WIDTH="82%" VALIGN="TOP" COLSPAN=3>
+<P>Address of format parameter structure</TD>
+</TR>
+<TR><TD WIDTH="18%" VALIGN="TOP">
+<I><P>irFlags</I></TD>
+<TD WIDTH="39%" VALIGN="TOP" COLSPAN=2>
+<I><P>FAT_ONLY_FORMAT</I>:</TD>
+<TD WIDTH="43%" VALIGN="TOP">
+<P>Do FAT formatting only</TD>
+</TR>
+<TR><TD WIDTH="18%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="39%" VALIGN="TOP" COLSPAN=2>
+<I><P>TL_FORMAT</I>:</TD>
+<TD WIDTH="43%" VALIGN="TOP">
+<P>Do NFTL &amp; FAT formatting</TD>
+</TR>
+<TR><TD WIDTH="18%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="39%" VALIGN="TOP" COLSPAN=2>
+<I><P>TL_FORMAT_IF_NEEDED</I>:</TD>
+<TD WIDTH="43%" VALIGN="TOP">
+<P>Do NFTL &amp; FAT formatting only if the current format is invalid</TD>
+</TR>
+<TR><TD WIDTH="18%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="39%" VALIGN="TOP" COLSPAN=2>
+<I><P>TL_FORMAT_ ONLY:</I></TD>
+<TD WIDTH="43%" VALIGN="TOP">
+<P>Do only NFTL format without FAT format</TD>
+</TR>
+<TR><TD VALIGN="TOP" COLSPAN=4>
+<B><I><P>Returns</B></I>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="36%" VALIGN="TOP" COLSPAN=2>
+<I><P>FLStatus</I></TD>
+<TD WIDTH="64%" VALIGN="TOP" COLSPAN=2>
+<P>0 on success, otherwise failed.</TD>
+</TR>
+<TR><TD WIDTH="36%" VALIGN="TOP" COLSPAN=2>
+<B><I><P>FLCUSTOM.H definitions required</B></I></TD>
+<TD WIDTH="64%" VALIGN="TOP" COLSPAN=2>
+<B><I><P>FORMAT_VOLUME</B></I></TD>
+</TR>
+</TABLE>
+
+<P><IMG SRC="Opaln.gif" WIDTH=569 HEIGHT=9></P>
+<P>&nbsp;</P>
+<H3><A NAME="flGetDiskInfo"></A></H3>
+<H3>flGetDiskInfo</H3>
+<B><I><P>Function</P>
+</B></I><P>Returns general volume allocation information.</P>
+<P>A DiskInfo structure is returned to a user buffer containing information about sector size, cluster size, total and currently free clusters on the FLite volume.</P>
+<P><A NAME="DiskInfoStruct"></A>The DiskInfo structure is defined as:</P>
+<I><P>typedef struct {</P>
+<P>unsigned bytesPerSector;</P>
+<P>unsigned sectorsPerCluster;</P>
+<P>unsigned totalClusters;</P>
+<P>unsigned freeClusters;</P>
+<P>} DiskInfo;</P></I>
+<TABLE CELLSPACING=0 BORDER=0 CELLPADDING=7 WIDTH=613>
+<TR><TD WIDTH="51%" VALIGN="TOP">
+<P><B><I>Ioreq Parameters</B></I></TD>
+<TD WIDTH="49%" VALIGN="TOP">
+<P>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="51%" VALIGN="TOP">
+<I><P>irHandle</I></TD>
+<TD WIDTH="49%" VALIGN="TOP">
+<P>Drive number (0, 1, ...)</TD>
+</TR>
+<TR><TD WIDTH="51%" VALIGN="TOP">
+<I><P>irData</I></TD>
+<TD WIDTH="49%" VALIGN="TOP">
+<P>Address of buffer which will get the <A HREF="#DiskInfostruct">DiskInfo structure</A></TD>
+</TR>
+<TR><TD WIDTH="51%" VALIGN="TOP">
+<B><I><P>Returns</B></I></TD>
+<TD WIDTH="49%" VALIGN="TOP">
+<P>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="51%" VALIGN="TOP">
+<I><P>FLStatus</I></TD>
+<TD WIDTH="49%" VALIGN="TOP">
+<P>0 on success, otherwise failed.</TD>
+</TR>
+<TR><TD WIDTH="51%" VALIGN="TOP">
+<B><I><P>FLCUSTOM.H definitions required</B></I></TD>
+<TD WIDTH="49%" VALIGN="TOP">
+<B><I><P>FILES &gt; 0</B></I></TD>
+</TR>
+</TABLE>
+
+<P><IMG SRC="Opaln.gif" WIDTH=569 HEIGHT=9></P>
+<P>&nbsp;</P>
+<H3><A NAME="flInit"></A>flInit</H3>
+<B><I><P>Function</P>
+</B></I><P>Initializes the OSAK system, sockets, and timer.</P>
+<P>This function is optional, and if not called, will be activated automatically when the first OSAK call is made. Calling this function after initialization has no effect.</P>
+<TABLE CELLSPACING=0 BORDER=0 CELLPADDING=7 WIDTH=613>
+<TR><TD WIDTH="51%" VALIGN="TOP">
+<P><B><I>Ioreq Parameters</B></I></TD>
+<TD WIDTH="49%" VALIGN="TOP">
+<P>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="51%" VALIGN="TOP">
+<I><P>irHandle</I></TD>
+<TD WIDTH="49%" VALIGN="TOP">
+<P>Drive number (0, 1, ...)</TD>
+</TR>
+<TR><TD WIDTH="51%" VALIGN="TOP">
+<B><I><P>Returns</B></I></TD>
+<TD WIDTH="49%" VALIGN="TOP">
+<P>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="51%" VALIGN="TOP">
+<I><P>FLStatus</I></TD>
+<TD WIDTH="49%" VALIGN="TOP">
+<P>0 on success, otherwise failed.</TD>
+</TR>
+<TR><TD WIDTH="51%" VALIGN="TOP">
+<B><I><P>FLCUSTOM.H definitions required</B></I></TD>
+<TD WIDTH="49%" VALIGN="TOP">
+<P>None</TD>
+</TR>
+</TABLE>
+
+<P><IMG SRC="Opaln.gif" WIDTH=569 HEIGHT=9></P>
+<P>&nbsp;</P>
+<H3><A NAME="flMountVolume"></A></H3>
+<H3>flMountVolume</H3>
+<B><I><P>Function</P>
+</B></I><P>Mounts the Flash medium, preparing it for further access.</P>
+<P>In case the inserted volume has changed, or on the first access to the file system, it should be mounted before file operations can be done on it.</P>
+<P>Mounting a volume has the effect of discarding all open files (the files cannot be properly closed since the original volume is gone), and turning off the media-change indication to allow file processing calls.</P>
+<P>A status code of flNonFATformat indicates that OSAK succeeded to mount the translation-layer correctly, but did not find a valid FAT file-system. Operations on the media are restricted to absolute sector read/writes.&#9;&#9;&#9;</P>
+<P>The volume automatically becomes dismounted if it is removed or changed.</P>
+<TABLE CELLSPACING=0 BORDER=0 CELLPADDING=7 WIDTH=637>
+<TR><TD WIDTH="44%" VALIGN="TOP">
+<P><B><I>Ioreq Parameters</B></I></TD>
+<TD WIDTH="56%" VALIGN="TOP">
+<P>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="44%" VALIGN="TOP">
+<I><P>irHandle</I></TD>
+<TD WIDTH="56%" VALIGN="TOP">
+<P>Drive number (0, 1, ...)</TD>
+</TR>
+<TR><TD WIDTH="44%" VALIGN="TOP">
+<B><I><P>Returns</B></I></TD>
+<TD WIDTH="56%" VALIGN="TOP">
+<P>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="44%" VALIGN="TOP">
+<I><P>FLStatus</I></TD>
+<TD WIDTH="56%" VALIGN="TOP">
+<P>0 on success <I>flNonFATformat</I> if translation-layer mounted correctly, but did not detect a valid FAT file-system otherwise failed.</TD>
+</TR>
+<TR><TD WIDTH="44%" VALIGN="TOP">
+<B><I><P>FLCUSTOM.H definitions required</B></I></TD>
+<TD WIDTH="56%" VALIGN="TOP">
+<P>None</TD>
+</TR>
+</TABLE>
+
+<P><IMG SRC="Opaln.gif" WIDTH=569 HEIGHT=9></P>
+<P>&nbsp;</P>
+<H2><A NAME="absiofuncref"></A>4.5 Absolute Sector I/O function reference</H2>
+<H3><A NAME="flAbsDelete">flAbsDelete</A></H3>
+<B><I><P>Function</P>
+</B></I><P>Marks one or more consecutive absolute sectors as logically deleted.</P>
+<P>This function is not needed except in special circumstances. The reasons for this function is the fact that OSAK write performance depends to some degree on the amount of free space on the Flash volume. A volume that is close to being full will exhibit slower write performance. This is the result of the necessity to perform space reclamation more often. This function is used to increase the amount of logically free space by informing OSAK of absolute sectors that it considers used but actually no longer contain useful data, i.e. they can be deleted.</P>
+<P>Normally OSAK considers all sectors that currently belong to files and directories to contain valid data. The normal way of informing OSAK that certain data sectors are no longer valid and needed is the obvious one of deleting the files containing the data. The <I>flAbsDelete</I> function is provided for cases where this is not possible, e.g. if the entire medium contains one large database file.</P>
+<TABLE CELLSPACING=0 BORDER=0 CELLPADDING=7 WIDTH=638>
+<TR><TD WIDTH="44%" VALIGN="TOP">
+<P><B><I>Ioreq Parameters</B></I>&nbsp;</TD>
+<TD WIDTH="56%" VALIGN="MIDDLE">
+<P>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="44%" VALIGN="TOP">
+<I><P>irHandle</I></TD>
+<TD WIDTH="56%" VALIGN="TOP">
+<P>Drive number (0, 1, ...)</TD>
+</TR>
+<TR><TD WIDTH="44%" VALIGN="TOP">
+<I><P>irSectorNo</I></TD>
+<TD WIDTH="56%" VALIGN="TOP">
+<P>First absolute sector to delete (sector numbers are counted starting at the DOS boot sector, whose number is 0)</TD>
+</TR>
+<TR><TD WIDTH="44%" VALIGN="TOP">
+<I><P>irSectorCount</I></TD>
+<TD WIDTH="56%" VALIGN="TOP">
+<P>Number of absolute sectors to delete</TD>
+</TR>
+<TR><TD WIDTH="44%" VALIGN="TOP">
+<B><I><P>Returns</B></I></TD>
+<TD WIDTH="56%" VALIGN="TOP">
+<P>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="44%" VALIGN="TOP">
+<I><P>FLStatus</I></TD>
+<TD WIDTH="56%" VALIGN="TOP">
+<P>0 on success, otherwise failed.</TD>
+</TR>
+<TR><TD WIDTH="44%" VALIGN="TOP">
+<B><I><P>FLCUSTOM.H definitions required</B></I></TD>
+<TD WIDTH="56%" VALIGN="TOP">
+<B><I><P>ABS_READ_WRITE</B></I></TD>
+</TR>
+</TABLE>
+
+<B><FONT SIZE=4><P><A NAME="flAbsRead"></A></P>
+<P>flAbsRead</P>
+</FONT><I><P>Function</P>
+</B></I><P>Reads one or more consecutive absolute sectors.</P>
+<TABLE CELLSPACING=0 BORDER=0 CELLPADDING=7 WIDTH=637>
+<TR><TD WIDTH="44%" VALIGN="TOP">
+<P><B><I>Ioreq Parameters</B></I></TD>
+<TD WIDTH="56%" VALIGN="TOP">
+<P>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="44%" VALIGN="TOP">
+<I><P>irHandle</I></TD>
+<TD WIDTH="56%" VALIGN="TOP">
+<P>Drive number (0, 1, ...)</TD>
+</TR>
+<TR><TD WIDTH="44%" VALIGN="TOP">
+<I><P>irSectorNo</I></TD>
+<TD WIDTH="56%" VALIGN="TOP">
+<P>First absolute sector to read (sector numbers are counted starting at the DOS boot sector, whose number is 0)</TD>
+</TR>
+<TR><TD WIDTH="44%" VALIGN="TOP">
+<I><P>irSectorCount</I></TD>
+<TD WIDTH="56%" VALIGN="TOP">
+<P>Number of absolute sectors to read</TD>
+</TR>
+<TR><TD WIDTH="44%" VALIGN="TOP">
+<I><P>irData</I></TD>
+<TD WIDTH="56%" VALIGN="TOP">
+<P>Buffer to read into</TD>
+</TR>
+<TR><TD WIDTH="44%" VALIGN="TOP">
+<B><I><P>Returns</B></I></TD>
+<TD WIDTH="56%" VALIGN="TOP">
+<P>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="44%" VALIGN="TOP">
+<I><P>FLStatus</I></TD>
+<TD WIDTH="56%" VALIGN="TOP">
+<P>0 on success, otherwise failed.</TD>
+</TR>
+<TR><TD WIDTH="44%" VALIGN="TOP">
+<B><I><P>FLCUSTOM.H definitions required</B></I></TD>
+<TD WIDTH="56%" VALIGN="TOP">
+<B><I><P>ABS_READ_WRITE</B></I></TD>
+</TR>
+</TABLE>
+
+<P><IMG SRC="Opaln.gif" WIDTH=569 HEIGHT=9></P>
+<P>&nbsp;</P>
+<H3><A NAME="flAbsWrite"></A></H3>
+<H3>flAbsWrite</H3>
+<B><I><P>Function</P>
+</B></I><P>Writes one or more consecutive absolute sectors.</P>
+<TABLE CELLSPACING=0 BORDER=0 CELLPADDING=7 WIDTH=637>
+<TR><TD WIDTH="44%" VALIGN="TOP">
+<P><B><I>Ioreq Parameters</B></I></TD>
+<TD WIDTH="56%" VALIGN="TOP">
+<P>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="44%" VALIGN="TOP">
+<I><P>irHandle</I></TD>
+<TD WIDTH="56%" VALIGN="TOP">
+<P>Drive number (0, 1, ...)</TD>
+</TR>
+<TR><TD WIDTH="44%" VALIGN="TOP">
+<I><P>irSectorNo</I></TD>
+<TD WIDTH="56%" VALIGN="TOP">
+<P>First absolute sector to write (sector numbers are counted starting at the DOS boot sector, whose number is 0)</TD>
+</TR>
+<TR><TD WIDTH="44%" VALIGN="TOP">
+<I><P>irSectorCount</I></TD>
+<TD WIDTH="56%" VALIGN="TOP">
+<P>Number of absolute sectors to write</TD>
+</TR>
+<TR><TD WIDTH="44%" VALIGN="TOP">
+<I><P>irData</I></TD>
+<TD WIDTH="56%" VALIGN="TOP">
+<P>Buffer to write from</TD>
+</TR>
+<TR><TD WIDTH="44%" VALIGN="TOP">
+<B><I><P>Returns</B></I></TD>
+<TD WIDTH="56%" VALIGN="TOP">
+<P>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="44%" VALIGN="TOP">
+<I><P>FLStatus</I></TD>
+<TD WIDTH="56%" VALIGN="TOP">
+<P>0 on success, otherwise failed.</TD>
+</TR>
+<TR><TD WIDTH="44%" VALIGN="TOP">
+<B><I><P>FLCUSTOM.H definitions required</B></I></TD>
+<TD WIDTH="56%" VALIGN="TOP">
+<B><I><P>ABS_READ_WRITE</B></I></TD>
+</TR>
+</TABLE>
+
+<P><IMG SRC="Opaln.gif" WIDTH=569 HEIGHT=9></P>
+<P>&nbsp;</P>
+<H3><A NAME="flGetBPB"></A></H3>
+<H3>flGetBPB</H3>
+<B><I><P>Function</P>
+</B></I><P>Returns the BIOS Parameter Block (BPB) from the volume's DOS boot sector to a user buffer.</P>
+<P>This function is needed only in very special cases, such as implementing a standard DOS device-driver with the OSAK absolute read-write feature.</P>
+<P><A NAME="BPBstruct"></A>The BPB structure is defined as:</P>
+<I><P>typedef struct {</P>
+<P>unsigned short&#9;bytesPerSector;</P>
+<P>unsigned char&#9;sectorsPerCluster;</P>
+<P>unsgined short&#9;reservedSectors;</P>
+<P>unsigned char&#9;noOfFATS;</P>
+<P>unsigned short&#9;rootDirectoryEntries;</P>
+<P>unsigned short&#9;totalSectorsInVolumeDOS3;</P>
+<P>unsigned char&#9;mediaDescriptor;</P>
+<P>unsigned short&#9;sectorsPerFAT;</P>
+<P>unsigned short&#9;sectorsPerTrack;</P>
+<P>unsigned short&#9;noOfHeads;</P>
+<P>unsigned long&#9;noOfHiddenSectors;</P>
+<P>unsigned long&#9;totalSectorsInVolume;</P>
+<P>} BPB;</P></I>
+<TABLE CELLSPACING=0 BORDER=0 CELLPADDING=7 WIDTH=612>
+<TR><TD WIDTH="43%" VALIGN="TOP">
+<P><B><I>Ioreq Parameters</B></I></TD>
+<TD WIDTH="57%" VALIGN="TOP">
+<P>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="43%" VALIGN="TOP">
+<I><P>irHandle</I></TD>
+<TD WIDTH="57%" VALIGN="TOP">
+<P>Drive number (0, 1, ...)</TD>
+</TR>
+<TR><TD WIDTH="43%" VALIGN="TOP">
+<I><P>irData</I></TD>
+<TD WIDTH="57%" VALIGN="TOP">
+<P>Address of buffer which will get the <A HREF="#BPBstruct">BPB structure</A></TD>
+</TR>
+<TR><TD WIDTH="43%" VALIGN="TOP">
+<B><I><P>Returns</B></I></TD>
+<TD WIDTH="57%" VALIGN="TOP">
+<P>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="43%" VALIGN="TOP">
+<I><P>FLStatus</I></TD>
+<TD WIDTH="57%" VALIGN="TOP">
+<P>0 on success, otherwise failed.</TD>
+</TR>
+<TR><TD WIDTH="43%" VALIGN="TOP">
+<B><I><P>FLCUSTOM.H definitions required</B></I></TD>
+<TD WIDTH="57%" VALIGN="TOP">
+<P>None</TD>
+</TR>
+</TABLE>
+
+<P><IMG SRC="Opaln.gif" WIDTH=569 HEIGHT=9></P>
+<P>&nbsp;</P>
+<H2><A NAME="physfuncref"></A>4.6 Physical Flash I/O function reference</H2>
+<H3><A NAME="flGetPhysicalInfo"></A>flGetPhysicalInfo</H3>
+<B><I><P>Function</P>
+</B></I><P>Returns information about the physical Flash media.</P>
+<P><A NAME="PhysicalInfoStruct"></A>A <I>PhysicalInfo</I> structure is returned to the caller's buffer, structured as follows:</P>
+<I><P>typedef struct {</P>
+<P>FlashType type; /* Flash device type (JEDEC id) */</P>
+<P>long int unitSize; /* Smallest physically erasable size (with interleaving taken in account) */</P>
+<P>long int mediaSize; /* media size */</P>
+<P>} PhysicalInfo;</P>
+</I><P>This function requires that the volume <B>not </B>be mounted.</P>
+<TABLE CELLSPACING=0 BORDER=0 CELLPADDING=7 WIDTH=613>
+<TR><TD WIDTH="51%" VALIGN="TOP">
+<P><B><I>Ioreq Parameters</B></I></TD>
+<TD WIDTH="49%" VALIGN="TOP">
+<P>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="51%" VALIGN="TOP">
+<I><P>irHandle</I></TD>
+<TD WIDTH="49%" VALIGN="TOP">
+<P>Drive number (0, 1, ...)</TD>
+</TR>
+<TR><TD WIDTH="51%" VALIGN="TOP">
+<I><P>irData</I></TD>
+<TD WIDTH="49%" VALIGN="TOP">
+<P>Address of buffer which will get the <A HREF="#PhysicalInfoStruct">PhysicalInfo structure</A> to</TD>
+</TR>
+<TR><TD WIDTH="51%" VALIGN="TOP">
+<B><I><P>Returns</B></I></TD>
+<TD WIDTH="49%" VALIGN="TOP">
+<P>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="51%" VALIGN="TOP">
+<I><P>FLStatus</I></TD>
+<TD WIDTH="49%" VALIGN="TOP">
+<P>0 on success, otherwise failed.</TD>
+</TR>
+<TR><TD WIDTH="51%" VALIGN="TOP">
+<B><I><P>FLCUSTOM.H definitions required</B></I></TD>
+<TD WIDTH="49%" VALIGN="TOP">
+<B><I><P>LOW_LEVEL</B></I></TD>
+</TR>
+</TABLE>
+
+<P><IMG SRC="Opaln.gif" WIDTH=569 HEIGHT=9></P>
+<P>&nbsp;</P>
+<H3><A NAME="flPhysicalErase"></A></H3>
+<H3>flPhysicalErase</H3>
+<B><I><P>Function</P>
+</B></I><P>Erases one or several consecutive Flash erase units.</P>
+<P>This function performs a Flash erase of the specified units using the MTD appropriate to the Flash technology. The effect is to change all bits in the erased area to binary 1's.</P>
+<P><A HREF="#flGetPhysicalInfo">flGetPhysicalInfo</A><I> </I>may be used to inquire about the size of the erase unit.</P>
+<P>This function requires that the volume <B>not </B>be mounted.</P>
+<TABLE CELLSPACING=0 BORDER=0 CELLPADDING=7 WIDTH=557>
+<TR><TD WIDTH="46%" VALIGN="TOP">
+<P><B><I>Ioreq Parameters</B></I>&nbsp;</TD>
+<TD WIDTH="54%" VALIGN="MIDDLE">
+<P>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="46%" VALIGN="TOP">
+<I><P>irHandle</I></TD>
+<TD WIDTH="54%" VALIGN="TOP">
+<P>Drive number (0, 1, ...)</TD>
+</TR>
+<TR><TD WIDTH="46%" VALIGN="TOP">
+<I><P>irUnitNo</I></TD>
+<TD WIDTH="54%" VALIGN="TOP">
+<P>Physical erase unit at which to erase</TD>
+</TR>
+<TR><TD WIDTH="46%" VALIGN="TOP">
+<I><P>irUnitCount</I></TD>
+<TD WIDTH="54%" VALIGN="TOP">
+<P>Number of units to erase</TD>
+</TR>
+<TR><TD WIDTH="46%" VALIGN="TOP">
+<B><I><P>Returns</B></I></TD>
+<TD WIDTH="54%" VALIGN="TOP">
+<P>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="46%" VALIGN="TOP">
+<I><P>FLStatus</I></TD>
+<TD WIDTH="54%" VALIGN="TOP">
+<P>0 on success, otherwise failed</TD>
+</TR>
+<TR><TD WIDTH="46%" VALIGN="TOP">
+<B><I><P>FLCUSTOM.H definitions required</B></I></TD>
+<TD WIDTH="54%" VALIGN="TOP">
+<B><I><P>LOW_LEVEL</B></I></TD>
+</TR>
+</TABLE>
+
+<P><IMG SRC="Opaln.gif" WIDTH=569 HEIGHT=9></P>
+<P>&nbsp;</P>
+<H3><A NAME="flPhysicalRead"></A></H3>
+<H3>flPhysicalRead</H3>
+<B><I><P>Function</P>
+</B></I><P>Reads bytes from a physical Flash location. A read may not cross erase unit boundaries.</P>
+<P>This function requires that the volume <B>not </B>be mounted.</P>
+<TABLE CELLSPACING=0 BORDER=0 CELLPADDING=7 WIDTH=349>
+<TR><TD VALIGN="TOP" COLSPAN=4>
+<P><B><I>Ioreq Parameters</B></I>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="30%" VALIGN="TOP">
+<I><P>irHandle</I></TD>
+<TD WIDTH="70%" VALIGN="TOP" COLSPAN=3>
+<P>Drive number (0, 1, ...)</TD>
+</TR>
+<TR><TD WIDTH="30%" VALIGN="TOP">
+<I><P>irAddress</I></TD>
+<TD WIDTH="70%" VALIGN="TOP" COLSPAN=3>
+<P>Physical byte address to read from</TD>
+</TR>
+<TR><TD WIDTH="30%" VALIGN="TOP">
+<I><P>irByteCount</I></TD>
+<TD WIDTH="70%" VALIGN="TOP" COLSPAN=3>
+<P>Number of bytes to read</TD>
+</TR>
+<TR><TD WIDTH="30%" VALIGN="TOP">
+<I><P>irData</I></TD>
+<TD WIDTH="70%" VALIGN="TOP" COLSPAN=3>
+<P>Buffer to read into</TD>
+</TR>
+<TR><TD WIDTH="30%" VALIGN="TOP">
+<I><P>irFlags</I></TD>
+<TD WIDTH="21%" VALIGN="TOP" COLSPAN=2>
+<I><P>EDC:</I></TD>
+<TD WIDTH="49%" VALIGN="TOP">
+<P>Activate ECC/EDC</TD>
+</TR>
+<TR><TD WIDTH="30%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="21%" VALIGN="TOP" COLSPAN=2>
+<I><P>EXTRA:</I></TD>
+<TD WIDTH="49%" VALIGN="TOP">
+<P>Read spare area</TD>
+</TR>
+<TR><TD VALIGN="TOP" COLSPAN=4>
+<B><I><P>Returns</B></I></TD>
+</TR>
+<TR><TD WIDTH="39%" VALIGN="TOP" COLSPAN=2>
+<I><P>FLStatus</I></TD>
+<TD WIDTH="61%" VALIGN="TOP" COLSPAN=2>
+<P>0 on success, otherwise failed</TD>
+</TR>
+<TR><TD WIDTH="39%" VALIGN="TOP" COLSPAN=2>
+<B><I><P>FLCUSTOM.H definitions required</B></I></TD>
+<TD WIDTH="61%" VALIGN="TOP" COLSPAN=2>
+<B><I><P>LOW_LEVEL</B></I></TD>
+</TR>
+</TABLE>
+
+<P><IMG SRC="Opaln.gif" WIDTH=569 HEIGHT=9></P>
+<P>&nbsp;</P>
+<P><A NAME="flPhysicalWrite"></A></P>
+<H3>flPhysicalWrite</H3>
+<B><I><P>Function</P>
+</B></I><P>Writes bytes to a physical Flash location.</P>
+<P>This function performs Flash programming of the data to the specified location using the MTD that is appropriate to the Flash technology. The operation will not succeed if it tries to modify binary 0's to binary 1's.</P>
+<P>A write may not cross erase unit boundaries.</P>
+<P>This function requires that the volume <B>not </B>be mounted.</P>
+<TABLE CELLSPACING=0 BORDER=0 CELLPADDING=7 WIDTH=472>
+<TR><TD VALIGN="TOP" COLSPAN=4>
+<P><B><I>Ioreq Parameters</B></I>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="24%" VALIGN="TOP">
+<I><P>irHandle</I></TD>
+<TD WIDTH="76%" VALIGN="TOP" COLSPAN=3>
+<P>Drive number (0, 1, ...)&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="24%" VALIGN="TOP">
+<I><P>irAddress</I></TD>
+<TD WIDTH="76%" VALIGN="TOP" COLSPAN=3>
+<P>Physical byte address to read from</TD>
+</TR>
+<TR><TD WIDTH="24%" VALIGN="TOP">
+<I><P>irByteCount</I></TD>
+<TD WIDTH="76%" VALIGN="TOP" COLSPAN=3>
+<P>Number of bytes to read</TD>
+</TR>
+<TR><TD WIDTH="24%" VALIGN="TOP">
+<I><P>irData</I></TD>
+<TD WIDTH="76%" VALIGN="TOP" COLSPAN=3>
+<P>Buffer to read into</TD>
+</TR>
+<TR><TD WIDTH="24%" VALIGN="TOP">
+<I><P>irFlags</I></TD>
+<TD WIDTH="32%" VALIGN="TOP" COLSPAN=2>
+<I><P>EDC:</I></TD>
+<TD WIDTH="44%" VALIGN="TOP">
+<P>Activate ECC/EDC</TD>
+</TR>
+<TR><TD WIDTH="24%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="32%" VALIGN="TOP" COLSPAN=2>
+<I><P>EXTRA:</I></TD>
+<TD WIDTH="44%" VALIGN="TOP">
+<P>Write spare area</TD>
+</TR>
+<TR><TD WIDTH="24%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="32%" VALIGN="TOP" COLSPAN=2>
+<I><P>OVERWRITE:</I></TD>
+<TD WIDTH="44%" VALIGN="TOP">
+<P>Overwriting non-erased area</TD>
+</TR>
+<TR><TD VALIGN="TOP" COLSPAN=4>
+<B><I><P>Returns</B></I></TD>
+</TR>
+<TR><TD WIDTH="38%" VALIGN="TOP" COLSPAN=2>
+<I><P>FLStatus</I></TD>
+<TD WIDTH="62%" VALIGN="TOP" COLSPAN=2>
+<P>0 on success, otherwise failed</TD>
+</TR>
+<TR><TD WIDTH="38%" VALIGN="TOP" COLSPAN=2>
+<B><I><P>FLCUSTOM.H definitions required</B></I></TD>
+<TD WIDTH="62%" VALIGN="TOP" COLSPAN=2>
+<B><I><P>LOW_LEVEL</P>
+</B></I><P>&nbsp;</TD>
+</TR>
+</TABLE>
+
+<P><IMG SRC="Opaln.gif" WIDTH=569 HEIGHT=9></P>
+<P>&nbsp;</P>
+<H2><A NAME="specialfuncref"></A>4.7 Special Function reference</H2>
+<H3><A NAME="flDefragmentVolume"></A>flDefragmentVolume</H3>
+<B><I><P>Function</P>
+</B></I><P>Performs a general defragmentation (this is also called garbage collection) and recycling of non-writeable Flash areas, to achieve optimal write speed.</P>
+<P>The function specifies the minimum number of sectors that should be made available for immediate writes. If it is necessary to write some data without interruption for Flash space reclamation, defragmentation should be done before starting to write. The minimum number of bytes specified should include about 20% extra for FAT &amp; NFTL overhead. For example, if you need to write a 16 Kbytes file, specify about 40 sectors as a defragmentation target.</P>
+<P>OSAK performs the minimum amount of operations required to achieve the defragmentation target. If the space required is already available, this function returns immediately. If the space required is more than is actually available on the volume, OSAK performs a general defragmentation and returns a <I>flGeneralFailure </I>status. If this situation is expected by the OSAK application, then this status code should not be treated as an error.</P>
+<B><P>NOTE: </B>Changing the value of the <I>irLength </I>parameter before the defragmentation operation is complete may affect the operation. This feature may be put to actual use, as described in <A HREF="#Defragmentation">Defragmentation</A>.</P>
+<TABLE CELLSPACING=0 BORDER=0 CELLPADDING=7 WIDTH=635>
+<TR><TD WIDTH="44%" VALIGN="TOP">
+<P><B><I>Ioreq Parameters</B></I></TD>
+<TD WIDTH="56%" VALIGN="TOP">
+<P>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="44%" VALIGN="TOP">
+<I><P>irHandle</I></TD>
+<TD WIDTH="56%" VALIGN="TOP">
+<P>Drive number (0, 1, ...)</TD>
+</TR>
+<TR><TD WIDTH="44%" VALIGN="TOP">
+<I><P>irLength</I></TD>
+<TD WIDTH="56%" VALIGN="TOP">
+<P>Minimum number of sectors to make available for writes</TD>
+</TR>
+<TR><TD WIDTH="44%" VALIGN="TOP">
+<B><I><P>Returns</B></I></TD>
+<TD WIDTH="56%" VALIGN="TOP">
+<P>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="44%" VALIGN="TOP">
+<I><P>ioreq.irLength</I>&#9;</TD>
+<TD WIDTH="56%" VALIGN="TOP">
+<P>Actual number of sectors available for writes</TD>
+</TR>
+<TR><TD WIDTH="44%" VALIGN="TOP">
+<I><P>FLStatus</I></TD>
+<TD WIDTH="56%" VALIGN="TOP">
+<P>0 if the volume is mounted and unchanged, otherwise the volume is not mounted.</TD>
+</TR>
+<TR><TD WIDTH="44%" VALIGN="TOP">
+<B><I><P>FLCUSTOM.H definitions required</B></I></TD>
+<TD WIDTH="56%" VALIGN="TOP">
+<B><I><P>DEFRAGMENT_VOLUME</B></I></TD>
+</TR>
+</TABLE>
+
+<P><IMG SRC="Opaln.gif" WIDTH=569 HEIGHT=9></P>
+<P>&nbsp;</P>
+<H3><A NAME="flFlushBuffer">flFlushBuffer</A></H3>
+<B><I><P>Function</P>
+</B></I><P>Ensures all previous write operations to the media are complete by flushing all data kept in RAM. This operation is not necessarily needed, and the OSAK will occasionally buffer data in RAM in order to improve performance. Flushing of buffers should be done if there is need to establish a checkpoint where all data is physically written.</P>
+<P>Note that there is no need to flush buffers after closing a file, or dismounting a volume, since these operations anyway flush buffers.</P>
+<TABLE CELLSPACING=0 BORDER=0 CELLPADDING=7 WIDTH=636>
+<TR><TD WIDTH="44%" VALIGN="TOP">
+<P><B><I>Ioreq Parameters</B></I></TD>
+<TD WIDTH="56%" VALIGN="TOP">
+<P>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="44%" VALIGN="TOP">
+<I><P>irHandle</I></TD>
+<TD WIDTH="56%" VALIGN="TOP">
+<P>Drive number (0, 1, ...)</TD>
+</TR>
+<TR><TD WIDTH="44%" VALIGN="TOP">
+<B><I><P>Returns</B></I></TD>
+<TD WIDTH="56%" VALIGN="TOP">
+<P>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="44%" VALIGN="TOP">
+<I><P>FLStatus</I></TD>
+<TD WIDTH="56%" VALIGN="TOP">
+<P>0 on success, otherwise failed.</TD>
+</TR>
+<TR><TD WIDTH="44%" VALIGN="TOP">
+<B><I><P>FLCUSTOM.H definitions required</B></I></TD>
+<TD WIDTH="56%" VALIGN="TOP">
+<B><I><P>FILES &gt; 0</B></I></TD>
+</TR>
+</TABLE>
+
+<P><IMG SRC="Opaln.gif" WIDTH=569 HEIGHT=9></P>
+<P>&nbsp;</P>
+<H3><A NAME="flJoinFile"></A>flJoinFile</H3>
+<B><I><P>Function</P>
+</B></I><P>Appends a file to a currently open file. The appended file is deleted, and its contents are appended to the end of the open file.</P>
+<P>The appended file must reside on the volume of the open file.</P>
+<P>If the original file does not end on a full cluster boundary, i.e. the file size is not a multiple of the volume's cluster size, then the first cluster of the appended file is appended only partially. Only the tail end of the first cluster, which is necessary to complete the last cluster of the original file to a full cluster, is appended. The beginning of the first cluster of the appended file is not appended and is lost. Note this means that if the appended file spans less than one cluster and is small enough, then nothing will be appended and the only effect will be to delete the appended file.</P>
+<P>The original file remains open and its current position becomes the join position, the original end-of-file.</P>
+<P>A file may not be joined to itself.</P>
+<P>This<I> </I>function is the reverse of the <A HREF="#flSplitFile">flSplitFile</A><I> </I>function, and if called immediately after <I>flSplitFile </I>will recreate the original file contents.</P>
+<TABLE CELLSPACING=0 BORDER=0 CELLPADDING=7 WIDTH=613>
+<TR><TD WIDTH="51%" VALIGN="TOP">
+<P><B><I>Ioreq Parameters</B></I></TD>
+<TD WIDTH="49%" VALIGN="TOP">
+<P>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="51%" VALIGN="TOP">
+<I><P>irHandle</I></TD>
+<TD WIDTH="49%" VALIGN="TOP">
+<P>Handle of file to append to.</TD>
+</TR>
+<TR><TD WIDTH="51%" VALIGN="TOP">
+<I><P>irPath</I></TD>
+<TD WIDTH="49%" VALIGN="TOP">
+<P>Name of file to be appended to the opened file.</TD>
+</TR>
+<TR><TD WIDTH="51%" VALIGN="TOP">
+<B><I><P>Returns</B></I></TD>
+<TD WIDTH="49%" VALIGN="TOP">
+<P>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="51%" VALIGN="TOP">
+<I><P>FLStatus</I></TD>
+<TD WIDTH="49%" VALIGN="TOP">
+<P>0 on success, otherwise failed.</TD>
+</TR>
+<TR><TD WIDTH="51%" VALIGN="TOP">
+<B><I><P>FLCUSTOM.H definitions required</B></I></TD>
+<TD WIDTH="49%" VALIGN="TOP">
+<B><I><P>FILES &gt; 0 and SPLIT_JOIN_FILE</B></I></TD>
+</TR>
+</TABLE>
+
+<P><IMG SRC="Opaln.gif" WIDTH=569 HEIGHT=9></P>
+<P>&nbsp;</P>
+<H3><A NAME="flParsePath"></A>flParsePath</H3>
+<B><I><P>Function</P>
+</B></I><P>Converts a DOS-like path string to an FLite path.</P>
+<TABLE CELLSPACING=0 BORDER=0 CELLPADDING=7 WIDTH=622>
+<TR><TD VALIGN="MIDDLE" COLSPAN=3>
+<P><B><I>Ioreq Parameters</B></I> </TD>
+</TR>
+<TR><TD WIDTH="41%" VALIGN="TOP">
+<P>&nbsp;<I>irHandle</I></TD>
+<TD WIDTH="59%" VALIGN="TOP" COLSPAN=2>
+<P>Drive number (0, 1, ...)</TD>
+</TR>
+<TR><TD WIDTH="41%" VALIGN="TOP">
+<I><P>irData</I></TD>
+<TD WIDTH="59%" VALIGN="TOP" COLSPAN=2>
+<P>address of path string to convert</TD>
+</TR>
+<TR><TD WIDTH="41%" VALIGN="TOP">
+<I><P>irPath</I></TD>
+<TD WIDTH="59%" VALIGN="TOP" COLSPAN=2>
+<P>address of array to receive parsed path</TD>
+</TR>
+<TR><TD WIDTH="41%" VALIGN="TOP">
+<B><I><P>Returns</B></I></TD>
+<TD WIDTH="59%" VALIGN="TOP" COLSPAN=2>
+<P>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="41%" VALIGN="TOP">
+<I><P>FLStatus</I></TD>
+<TD WIDTH="59%" VALIGN="TOP" COLSPAN=2>
+<P>0 on success, otherwise failed</TD>
+</TR>
+<TR><TD WIDTH="41%" VALIGN="TOP">
+<B><I><P>FLCUSTOM.H definitions required</B></I></TD>
+<TD WIDTH="59%" VALIGN="TOP" COLSPAN=2>
+<B><I><P>PARSE_PATH</B></I></TD>
+</TR>
+</TABLE>
+
+<P><IMG SRC="Opaln.gif" WIDTH=569 HEIGHT=9></P>
+<P>&nbsp;</P>
+<H3><A NAME="flSplitFile"></A>flSplitFile</H3>
+<B><I><P>Function</P>
+</B></I><P>Splits a file at the current position into two parts. The original file is truncated at the current position. A new file is created containing the truncated part of the original file. The new file is created on the same volume as the original file.</P>
+<P>If the file is split at a location that is not on a full cluster boundary (the current position is not a multiple of the volume's cluster size), then the new file will start at the beginning of the last cluster of the original file, and all the data contained in this last cluster is duplicated in the tail of the truncated file and in the beginning of the new file.</P>
+<P>The original file remains open and its current position does not change.</P>
+<P>The <A HREF="#flJoinFile">flJoinFile</A><I> </I>function is the reverse of this function, and if called immediately after <I>flSplitFile </I>will recreate the original file contents.</P>
+<TABLE CELLSPACING=0 BORDER=0 CELLPADDING=7 WIDTH=613>
+<TR><TD WIDTH="43%" VALIGN="TOP">
+<P><B><I>Ioreq Parameters</B></I></TD>
+<TD WIDTH="57%" VALIGN="TOP">
+<P>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="43%" VALIGN="TOP">
+<I><P>irHandle</I></TD>
+<TD WIDTH="57%" VALIGN="TOP">
+<P>Handle of file to split.</TD>
+</TR>
+<TR><TD WIDTH="43%" VALIGN="TOP">
+<I><P>irPath</I></TD>
+<TD WIDTH="57%" VALIGN="TOP">
+<P>Path and name of new file to create containing the tail of the original file.</TD>
+</TR>
+<TR><TD WIDTH="43%" VALIGN="TOP">
+<B><I><P>Returns</B></I></TD>
+<TD WIDTH="57%" VALIGN="TOP">
+<P>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="43%" VALIGN="TOP">
+<I><P>FLStatus</I></TD>
+<TD WIDTH="57%" VALIGN="TOP">
+<P>0 on success, otherwise failed.</TD>
+</TR>
+<TR><TD WIDTH="43%" VALIGN="TOP">
+<B><I><P>FLCUSTOM.H definitions required</B></I></TD>
+<TD WIDTH="57%" VALIGN="TOP">
+<B><I><P>FILES &gt; 0 and SPLIT_JOIN_FILE</B></I></TD>
+</TR>
+</TABLE>
+
+<P><IMG SRC="Opaln.gif" WIDTH=569 HEIGHT=9></P>
+<P>&nbsp;</P>
+<H2><A NAME="fsfuncref"></A>4.8 Basic File Operations function reference</H2>
+<H3><A NAME="flCloseFile">flCloseFile</A></H3>
+<B><I><P>Function</P>
+</B></I><P>Closes an open file, records file size and dates in the directory and releases the file handle.</P>
+<TABLE CELLSPACING=0 BORDER=0 CELLPADDING=7 WIDTH=491>
+<TR><TD WIDTH="57%" VALIGN="TOP">
+<P><B><I>Ioreq Parameters</B></I></TD>
+<TD WIDTH="43%" VALIGN="TOP">
+<P>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="57%" VALIGN="TOP">
+<I><P>irHandle</I></TD>
+<TD WIDTH="43%" VALIGN="TOP">
+<P>Handle of file to close.</TD>
+</TR>
+<TR><TD WIDTH="57%" VALIGN="TOP">
+<B><I><P>Returns</B></I></TD>
+<TD WIDTH="43%" VALIGN="TOP">
+<P>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="57%" VALIGN="TOP">
+<I><P>FLStatus</I></TD>
+<TD WIDTH="43%" VALIGN="TOP">
+<P>0 on success, otherwise failed.</TD>
+</TR>
+<TR><TD WIDTH="57%" VALIGN="TOP">
+<B><I><P>FLCUSTOM.H definitions required</B></I></TD>
+<TD WIDTH="43%" VALIGN="TOP">
+<B><I><P>FILES &gt; 0</B></I></TD>
+</TR>
+</TABLE>
+
+<P><IMG SRC="Opaln.gif" WIDTH=569 HEIGHT=9></P>
+<P>&nbsp;</P>
+<H3><A NAME="flDeleteFile"></A>flDeleteFile</H3>
+<B><I><P>Function</P>
+</B></I><P>Deletes a file.</P>
+<TABLE CELLSPACING=0 BORDER=0 CELLPADDING=7 WIDTH=491>
+<TR><TD WIDTH="57%" VALIGN="TOP">
+<P><B><I>Ioreq Parameters</B></I></TD>
+<TD WIDTH="43%" VALIGN="TOP">
+<P>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="57%" VALIGN="TOP">
+<I><P>irHandle</I></TD>
+<TD WIDTH="43%" VALIGN="TOP">
+<P>Drive number (0, 1, ...)</TD>
+</TR>
+<TR><TD WIDTH="57%" VALIGN="TOP">
+<I><P>irPath</I></TD>
+<TD WIDTH="43%" VALIGN="TOP">
+<P>Path of file to delete</TD>
+</TR>
+<TR><TD WIDTH="57%" VALIGN="TOP">
+<B><I><P>Returns</B></I></TD>
+<TD WIDTH="43%" VALIGN="TOP">
+<P>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="57%" VALIGN="TOP">
+<I><P>FLStatus</I></TD>
+<TD WIDTH="43%" VALIGN="TOP">
+<P>0 on success, otherwise failed.</TD>
+</TR>
+<TR><TD WIDTH="57%" VALIGN="TOP">
+<B><I><P>FLCUSTOM.H definitions required</B></I></TD>
+<TD WIDTH="43%" VALIGN="TOP">
+<B><I><P>FILES &gt; 0</B></I></TD>
+</TR>
+</TABLE>
+
+<P><IMG SRC="Opaln.gif" WIDTH=569 HEIGHT=9></P>
+<P>&nbsp;</P>
+<H3><A NAME="flOpenFile"></A>flOpenFile</H3>
+<B><I><P>Function</P>
+</B></I><P>Opens an existing file or creates a new file. Creates a file handle for further file processing.</P>
+<TABLE CELLSPACING=0 BORDER=0 CELLPADDING=7 WIDTH=633>
+<TR><TD WIDTH="24%" VALIGN="TOP">
+<P><B><I>Ioreq Parameters</B></I></TD>
+<TD WIDTH="33%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="43%" VALIGN="TOP">
+<P>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="24%" VALIGN="TOP">
+<I><P>irHandle</I></TD>
+<TD WIDTH="33%" VALIGN="TOP">
+<P>Drive number (0, 1, ...)</TD>
+<TD WIDTH="43%" VALIGN="TOP">
+<P>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="24%" VALIGN="TOP">
+<I><P>irFlags</I></TD>
+<TD WIDTH="33%" VALIGN="TOP">
+<P>Access and action options:</TD>
+<TD WIDTH="43%" VALIGN="TOP">
+<P>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="24%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="33%" VALIGN="TOP">
+<I><P>OPEN_FOR_READ:</I></TD>
+<TD WIDTH="43%" VALIGN="TOP">
+<P>Open an existing file for read-only.</TD>
+</TR>
+<TR><TD WIDTH="24%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="33%" VALIGN="TOP">
+<I><P>OPEN_FOR_WRITE:</I></TD>
+<TD WIDTH="43%" VALIGN="TOP">
+<P>Create a new file for read &amp; write. If a file with that name already exists, it is deleted and recreated.</TD>
+</TR>
+<TR><TD WIDTH="24%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="33%" VALIGN="TOP">
+<I><P>OPEN_FOR_UPDATE:</I></TD>
+<TD WIDTH="43%" VALIGN="TOP">
+<P>Open an existing file for read &amp; write.</TD>
+</TR>
+<TR><TD WIDTH="24%" VALIGN="TOP">
+<I><P>irPath</I></TD>
+<TD WIDTH="33%" VALIGN="TOP">
+<P>Path and filename of file to open</TD>
+<TD WIDTH="43%" VALIGN="TOP">
+<P>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="24%" VALIGN="TOP">
+<B><I><P>Returns</B></I></TD>
+<TD WIDTH="33%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="43%" VALIGN="TOP">
+<P>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="24%" VALIGN="TOP">
+<I><P>ioreq.irHandle</I></TD>
+<TD WIDTH="33%" VALIGN="TOP">
+<P>New file handle for open file</TD>
+<TD WIDTH="43%" VALIGN="TOP">
+<P>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="24%" VALIGN="TOP">
+<I><P>FLStatus</I></TD>
+<TD WIDTH="33%" VALIGN="TOP">
+<P>0 on success, otherwise failed</TD>
+<TD WIDTH="43%" VALIGN="TOP">
+<P>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="24%" VALIGN="TOP">
+<B><I><P>FLCUSTOM.H definitions required</B></I></TD>
+<TD WIDTH="33%" VALIGN="TOP">
+<B><I><P>FILES &gt; 0</B></I></TD>
+<TD WIDTH="43%" VALIGN="TOP">
+<P>&nbsp;</TD>
+</TR>
+</TABLE>
+
+<P><IMG SRC="Opaln.gif" WIDTH=569 HEIGHT=9></P>
+<P>&nbsp;</P>
+<H3><A NAME="flReadFile"></A>flReadFile</H3>
+<B><I><P>Function</P>
+</B></I><P>Reads from the current position in the file to the user-buffer</P>
+<TABLE CELLSPACING=0 BORDER=0 CELLPADDING=7 WIDTH=538>
+<TR><TD WIDTH="37%" VALIGN="TOP">
+<P><B><I>Ioreq Parameters</B></I></TD>
+<TD WIDTH="63%" VALIGN="TOP">
+<P>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="37%" VALIGN="TOP">
+<I><P>irHandle</I></TD>
+<TD WIDTH="63%" VALIGN="TOP">
+<P>Handle of file to read.</TD>
+</TR>
+<TR><TD WIDTH="37%" VALIGN="TOP">
+<I><P>irData</I></TD>
+<TD WIDTH="63%" VALIGN="TOP">
+<P>Address of user buffer</TD>
+</TR>
+<TR><TD WIDTH="37%" VALIGN="TOP">
+<I><P>irLength</I></TD>
+<TD WIDTH="63%" VALIGN="TOP">
+<P>Number of bytes to read. If the read extends beyond the end-of-file, the function will not fail, but the read is truncated at the end-of-file.</TD>
+</TR>
+<TR><TD WIDTH="37%" VALIGN="TOP">
+<B><I><P>Returns</B></I></TD>
+<TD WIDTH="63%" VALIGN="TOP">
+<P>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="37%" VALIGN="TOP">
+<I><P>FLStatus</I></TD>
+<TD WIDTH="63%" VALIGN="TOP">
+<P>0 on success, otherwise failed</TD>
+</TR>
+<TR><TD WIDTH="37%" VALIGN="TOP">
+<I><P>ioreq.irLength&#9;</I>&#9;</TD>
+<TD WIDTH="63%" VALIGN="TOP">
+<P>Actual number of bytes read</TD>
+</TR>
+<TR><TD WIDTH="37%" VALIGN="TOP">
+<B><I><P>FLCUSTOM.H definitions required</B></I></TD>
+<TD WIDTH="63%" VALIGN="TOP">
+<B><I><P>FILES &gt; 0</B></I></TD>
+</TR>
+</TABLE>
+
+<P><IMG SRC="Opaln.gif" WIDTH=569 HEIGHT=9></P>
+<P>&nbsp;</P>
+<H3><A NAME="flSeekFile"></A>flSeekFile</H3>
+<B><I><P>Function</P>
+</B></I><P>Sets the current position in the file, relative to file start, end or current position.</P>
+<P>Note: This function will not move the file pointer beyond the beginning or end of file, so the actual file position may be different from the position requested. The actual position is indicated on return.</P>
+<P>This function may be used to find the size of a file, by setting the file pointer to the file end and reading the current position in <I>ioreq.irLength</I>.</P>
+<TABLE CELLSPACING=0 BORDER=0 CELLPADDING=7 WIDTH=585>
+<TR><TD WIDTH="26%" VALIGN="TOP">
+<P><B><I>Ioreq Parameters</B></I></TD>
+<TD WIDTH="39%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="35%" VALIGN="TOP">
+<P>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="26%" VALIGN="TOP">
+<I><P>irHandle</I></TD>
+<TD WIDTH="39%" VALIGN="TOP">
+<P>Handle of file to seek.</TD>
+<TD WIDTH="35%" VALIGN="TOP">
+<P>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="26%" VALIGN="TOP">
+<I><P>irLength</I></TD>
+<TD WIDTH="39%" VALIGN="TOP">
+<P>Offset to set position.</TD>
+<TD WIDTH="35%" VALIGN="TOP">
+<P>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="26%" VALIGN="TOP">
+<I><P>irFlags</I></TD>
+<TD WIDTH="39%" VALIGN="TOP">
+<P>Method code:</TD>
+<TD WIDTH="35%" VALIGN="TOP">
+<P>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="26%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="39%" VALIGN="TOP">
+<I><P>SEEK_START</I>:</TD>
+<TD WIDTH="35%" VALIGN="TOP">
+<P>absolute offset from start of file</TD>
+</TR>
+<TR><TD WIDTH="26%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="39%" VALIGN="TOP">
+<I><P>SEEK_CURR</I>:</TD>
+<TD WIDTH="35%" VALIGN="TOP">
+<P>signed offset from current position</TD>
+</TR>
+<TR><TD WIDTH="26%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="39%" VALIGN="TOP">
+<I><P>SEEK_END</I>:</TD>
+<TD WIDTH="35%" VALIGN="TOP">
+<P>signed offset from end of file</TD>
+</TR>
+<TR><TD WIDTH="26%" VALIGN="TOP">
+<B><I><P>Returns</B></I></TD>
+<TD WIDTH="39%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="35%" VALIGN="TOP">
+<P>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="26%" VALIGN="TOP">
+<I><P>FLStatus</I></TD>
+<TD WIDTH="39%" VALIGN="TOP">
+<P>0 on success, otherwise failed</TD>
+<TD WIDTH="35%" VALIGN="TOP">
+<P>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="26%" VALIGN="TOP" HEIGHT=35>
+<I><P>ioreq.irLength</I>&#9;</TD>
+<TD WIDTH="39%" VALIGN="TOP" HEIGHT=35>
+<P>Actual absolute offset from start of file</TD>
+<TD WIDTH="35%" VALIGN="TOP" HEIGHT=35><P></P></TD>
+</TR>
+<TR><TD WIDTH="26%" VALIGN="TOP">
+<B><I><P>FLCUSTOM.H definitions required</B></I></TD>
+<TD WIDTH="39%" VALIGN="TOP">
+<B><P>FILES <I>&gt; 0</B></I></TD>
+<TD WIDTH="35%" VALIGN="TOP">
+<P>&nbsp;</TD>
+</TR>
+</TABLE>
+
+<P><IMG SRC="Opaln.gif" WIDTH=569 HEIGHT=9></P>
+<P>&nbsp;</P>
+<H3><A NAME="flWriteFile"></A>flWriteFile</H3>
+<B><I><P>Function</P>
+</B></I><P>Writes the data in the user-buffer starting at the file's current location.</P>
+<P>If the current location is not at the end of file, a part of the file's contents are overwritten. When the current location reaches the end-of-file position, the file is extended.</P>
+<TABLE CELLSPACING=0 BORDER=0 CELLPADDING=7 WIDTH=538>
+<TR><TD WIDTH="37%" VALIGN="TOP">
+<P><B><I>Ioreq Parameters</B></I></TD>
+<TD WIDTH="63%" VALIGN="TOP">
+<P>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="37%" VALIGN="TOP">
+<I><P>irHandle</I></TD>
+<TD WIDTH="63%" VALIGN="TOP">
+<P>Handle of file to write.</TD>
+</TR>
+<TR><TD WIDTH="37%" VALIGN="TOP">
+<I><P>irData</I></TD>
+<TD WIDTH="63%" VALIGN="TOP">
+<P>Address of user buffer</TD>
+</TR>
+<TR><TD WIDTH="37%" VALIGN="TOP">
+<I><P>irLength</I></TD>
+<TD WIDTH="63%" VALIGN="TOP">
+<P>Number of bytes to write.</TD>
+</TR>
+<TR><TD WIDTH="37%" VALIGN="TOP">
+<B><I><P>Returns</B></I></TD>
+<TD WIDTH="63%" VALIGN="TOP">
+<P>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="37%" VALIGN="TOP">
+<I><P>FLStatus</I></TD>
+<TD WIDTH="63%" VALIGN="TOP">
+<P>0 on success, otherwise failed</TD>
+</TR>
+<TR><TD WIDTH="37%" VALIGN="TOP">
+<I><P>ioreq.irLength&#9;</I>&#9;</TD>
+<TD WIDTH="63%" VALIGN="TOP">
+<P>Actual number of bytes written</TD>
+</TR>
+<TR><TD WIDTH="37%" VALIGN="TOP">
+<B><I><P>FLCUSTOM.H definitions required</B></I></TD>
+<TD WIDTH="63%" VALIGN="TOP">
+<B><I><P>FILES &gt; 0</B></I></TD>
+</TR>
+</TABLE>
+
+<P><IMG SRC="Opaln.gif" WIDTH=569 HEIGHT=9></P>
+<P>&nbsp;</P>
+<H2><A NAME="dirhandfuncref"></A>4.9 Directory Handling function reference</H2>
+<H3><A NAME="flFindFile">flFindFile</A></H3>
+<B><I><P>Function</P>
+</B></I><P>Finds a file entry in a directory, optionally modifying the file's time/date and/or attributes. Only the Hidden, System or Read-only attributes may be modified.</P>
+<P>Files may be found by name or by handle, provided they are currently open.</P>
+<P>Entries may be found for any existing file or directory other than the root. A <I>DirectoryEntry</I> structure describing the file is copied to a user buffer.</P>
+<TABLE CELLSPACING=0 BORDER=0 WIDTH=360>
+<TR><TD VALIGN="TOP" COLSPAN=4>
+<P><A NAME="DirectoryEntryStructure"></A>typedef struct {</TD>
+</TR>
+<TR><TD WIDTH="42%" VALIGN="TOP">
+<P>char</TD>
+<TD WIDTH="58%" VALIGN="TOP" COLSPAN=3>
+<P>name[11];</TD>
+</TR>
+<TR><TD WIDTH="42%" VALIGN="TOP">
+<P>unsigned char</TD>
+<TD WIDTH="58%" VALIGN="TOP" COLSPAN=3>
+<P>attributes;</TD>
+</TR>
+<TR><TD WIDTH="42%" VALIGN="TOP">
+<P>unsigned char</TD>
+<TD WIDTH="58%" VALIGN="TOP" COLSPAN=3>
+<P>reserved[10];</TD>
+</TR>
+<TR><TD WIDTH="42%" VALIGN="TOP">
+<P>unsigned short</TD>
+<TD WIDTH="58%" VALIGN="TOP" COLSPAN=3>
+<P>updateTime;</TD>
+</TR>
+<TR><TD VALIGN="TOP" COLSPAN=4>
+<P>/* The date field is encoded as follows: */&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="42%" VALIGN="TOP">
+<P>/* bit 0-4:</TD>
+<TD WIDTH="58%" VALIGN="TOP" COLSPAN=3>
+<P>Day of month (1-31)*/</TD>
+</TR>
+<TR><TD WIDTH="42%" VALIGN="TOP">
+<P>/*bit 5-8:</TD>
+<TD WIDTH="58%" VALIGN="TOP" COLSPAN=3>
+<P>Month (1-12)*/</TD>
+</TR>
+<TR><TD WIDTH="42%" VALIGN="TOP">
+<P>/*bit 9-15:</TD>
+<TD WIDTH="58%" VALIGN="TOP" COLSPAN=3>
+<P>Year relative to 1980*/</TD>
+</TR>
+<TR><TD WIDTH="42%" VALIGN="TOP">
+<P>unsigned short</TD>
+<TD WIDTH="58%" VALIGN="TOP" COLSPAN=3>
+<P>updateDate;</TD>
+</TR>
+<TR><TD VALIGN="TOP" COLSPAN=4>
+<P>/*The DOS time field is encoded as follows:*/</TD>
+</TR>
+<TR><TD WIDTH="42%" VALIGN="TOP">
+<P>/*bit 0-4:</TD>
+<TD WIDTH="58%" VALIGN="TOP" COLSPAN=3>
+<P>seconds divided by 2 (0-29)*/</TD>
+</TR>
+<TR><TD WIDTH="42%" VALIGN="TOP">
+<P>/*bit 5-10:</TD>
+<TD WIDTH="58%" VALIGN="TOP" COLSPAN=3>
+<P>minutes (0-59)*/</TD>
+</TR>
+<TR><TD WIDTH="42%" VALIGN="TOP">
+<P>/*bit 11-15:&nbsp;</TD>
+<TD WIDTH="58%" VALIGN="TOP" COLSPAN=3>
+<P>hours (0-23) */</TD>
+</TR>
+<TR><TD WIDTH="42%" VALIGN="TOP">
+<P>unsigned short</TD>
+<TD WIDTH="58%" VALIGN="TOP" COLSPAN=3>
+<P>startingCluster;</TD>
+</TR>
+<TR><TD WIDTH="42%" VALIGN="TOP">
+<P>long int</TD>
+<TD WIDTH="58%" VALIGN="TOP" COLSPAN=3>
+<P>fileSize;</TD>
+</TR>
+<TR><TD WIDTH="42%" VALIGN="TOP">
+<P>} DirectoryEntry;&nbsp;</TD>
+<TD WIDTH="58%" VALIGN="MIDDLE" COLSPAN=3>
+<P>&nbsp;</TD>
+</TR>
+<TR><TD VALIGN="TOP" COLSPAN=4>
+<I><P>// Directory entry attribute bits</I></TD>
+</TR>
+<TR><TD WIDTH="42%" VALIGN="TOP">
+<I><P>ATTR_READ_ONLY</I></TD>
+<TD WIDTH="58%" VALIGN="TOP" COLSPAN=3>
+<I><P>1</I></TD>
+</TR>
+<TR><TD WIDTH="42%" VALIGN="TOP">
+<I><P>ATTR_HIDDEN</I></TD>
+<TD WIDTH="58%" VALIGN="TOP" COLSPAN=3>
+<I><P>2</I></TD>
+</TR>
+<TR><TD WIDTH="42%" VALIGN="TOP">
+<I><P>ATTR_SYSTEM</I></TD>
+<TD WIDTH="58%" VALIGN="TOP" COLSPAN=3>
+<I><P>4</I></TD>
+</TR>
+<TR><TD WIDTH="42%" VALIGN="TOP">
+<I><P>ATTR_VOL_LABEL</I></TD>
+<TD WIDTH="58%" VALIGN="TOP" COLSPAN=3>
+<I><P>8</I></TD>
+</TR>
+<TR><TD WIDTH="42%" VALIGN="TOP">
+<I><P>ATTR_DIRECTORY</I></TD>
+<TD WIDTH="58%" VALIGN="TOP" COLSPAN=3>
+<I><P>0x10</I></TD>
+</TR>
+<TR><TD WIDTH="42%" VALIGN="TOP">
+<I><P>ATTR_ARCHIVE</I></TD>
+<TD WIDTH="58%" VALIGN="TOP" COLSPAN=3>
+<I><P>0x20</I></TD>
+</TR>
+</TABLE>
+
+
+<TABLE CELLSPACING=0 BORDER=0 CELLPADDING=7 WIDTH=628>
+<TR><TD VALIGN="TOP" COLSPAN=3>
+<P><B><I>Ioreq Parameters</B></I></TD>
+</TR>
+<TR><TD WIDTH="29%" VALIGN="TOP">
+<I><P>irHandle</I></TD>
+<TD WIDTH="71%" VALIGN="TOP" COLSPAN=2>
+<P>If by name: Drive number (0, 1, ...)</P>
+<P>If by handle: Handle of open file</TD>
+</TR>
+<TR><TD WIDTH="29%" VALIGN="TOP">
+<I><P>irPath</I></TD>
+<TD WIDTH="71%" VALIGN="TOP" COLSPAN=2>
+<P>Specifies a file or directory path</TD>
+</TR>
+<TR><TD WIDTH="29%" VALIGN="TOP">
+<I><P>irFlags</I></TD>
+<TD WIDTH="25%" VALIGN="TOP">
+<P>Options flags: </TD>
+<TD WIDTH="46%" VALIGN="TOP">
+<P>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="29%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="25%" VALIGN="TOP">
+<I><P>FIND_BY_HANDLE</I></TD>
+<TD WIDTH="46%" VALIGN="TOP">
+<P>Find file by handle. Default is find by name.</TD>
+</TR>
+<TR><TD WIDTH="29%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="25%" VALIGN="TOP">
+<I><P>SET_DATETIME</I></TD>
+<TD WIDTH="46%" VALIGN="TOP">
+<P>Update time/date from buffer</TD>
+</TR>
+<TR><TD WIDTH="29%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="25%" VALIGN="TOP">
+<I><P>SET_ATTRIBUTES</I></TD>
+<TD WIDTH="46%" VALIGN="TOP">
+<P>Update attributes from buffer</TD>
+</TR>
+<TR><TD WIDTH="29%" VALIGN="TOP">
+<I><P>irData</I></TD>
+<TD WIDTH="71%" VALIGN="TOP" COLSPAN=2>
+<P>Address of user buffer to receive a <A HREF="#DirectoryEntryStructure">DirectoryEntry structure</A></TD>
+</TR>
+<TR><TD VALIGN="TOP" COLSPAN=3>
+<B><I><P>Returns</B></I></TD>
+</TR>
+<TR><TD WIDTH="29%" VALIGN="TOP">
+<I><P>FLStatus</I></TD>
+<TD WIDTH="71%" VALIGN="TOP" COLSPAN=2>
+<P>0 on success, otherwise failed.</TD>
+</TR>
+<TR><TD WIDTH="29%" VALIGN="TOP">
+<B><I><P>FLCUSTOM.H definitions required</B></I></TD>
+<TD WIDTH="71%" VALIGN="TOP" COLSPAN=2>
+<B><I><P>FILES &gt; 0</B></I></TD>
+</TR>
+</TABLE>
+
+<P><IMG SRC="Opaln.gif" WIDTH=569 HEIGHT=9></P>
+<P>&nbsp;</P>
+<H3><A NAME="flFindFirstFile">flFindFirstFile</A></H3>
+<B><I><P>Function</P>
+</B></I><P>Finds the first file entry in a directory. This function is used in combination with the <A HREF="#flFindNextFile">flFindNextFile</A> call, which returns the remaining file entries in a directory sequentially. Entries are returned according to the unsorted directory order. <I>flFindFirstFile</I> creates a file handle, which is returned by it. Calls to <I>flFindNextFile</I> need to provide this file handle. When <I>flFindNextFile</I> returns <I>flNoMoreEntries</I>, the file handle is automatically closed. Alternatively the file handle can be closed by an <A HREF="#flCloseFile">flCloseFile</A> call before actually reaching the end of directory. A <A HREF="#DirectoryEntryStructure">DirectoryEntry structure</A> (described under <A HREF="#flFindFile">flFindFile</A>) is copied to the user buffer describing each file found.</P>
+<TABLE CELLSPACING=0 BORDER=0 CELLPADDING=7 WIDTH=614>
+<TR><TD WIDTH="51%" VALIGN="TOP">
+<P><B><I>Ioreq Parameters</B></I></TD>
+<TD WIDTH="49%" VALIGN="TOP">
+<P>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="51%" VALIGN="TOP">
+<I><P>irHandle</I></TD>
+<TD WIDTH="49%" VALIGN="TOP">
+<P>Drive number (0, 1, ...)</TD>
+</TR>
+<TR><TD WIDTH="51%" VALIGN="TOP">
+<I><P>irPath</I></TD>
+<TD WIDTH="49%" VALIGN="TOP">
+<P>Specifies a file or directory path</TD>
+</TR>
+<TR><TD WIDTH="51%" VALIGN="TOP">
+<I><P>irData</I></TD>
+<TD WIDTH="49%" VALIGN="TOP">
+<P>Address of user buffer to receive a <A HREF="#DirectoryEntryStructure">DirectoryEntry structure</A>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="51%" VALIGN="TOP">
+<B><I><P>Returns</B></I></TD>
+<TD WIDTH="49%" VALIGN="TOP">
+<P>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="51%" VALIGN="TOP">
+<I><P>ioreq.irHandle</I></TD>
+<TD WIDTH="49%" VALIGN="TOP">
+<P>File handle to use for subsequent <A HREF="#flFindNextFile">flFindNextFile</A><I> </I>operations</TD>
+</TR>
+<TR><TD WIDTH="51%" VALIGN="TOP">
+<I><P>FLStatus</I></TD>
+<TD WIDTH="49%" VALIGN="TOP">
+<P>0 on success, otherwise failed.</TD>
+</TR>
+<TR><TD WIDTH="51%" VALIGN="TOP">
+<B><I><P>FLCUSTOM.H definitions required</B></I></TD>
+<TD WIDTH="49%" VALIGN="TOP">
+<B><I><P>FILES &gt; 0</B></I></TD>
+</TR>
+</TABLE>
+
+<P><IMG SRC="Opaln.gif" WIDTH=569 HEIGHT=9></P>
+<P>&nbsp;</P>
+<H3><A NAME="flFindNextFile">flFindNextFile</A></H3>
+<B><I><P>Function</P>
+</B></I><P>See the description of <A HREF="#flFindFirstFile">flFindFirstFile</A>.</P>
+<TABLE CELLSPACING=0 BORDER=0 CELLPADDING=7 WIDTH=614>
+<TR><TD WIDTH="51%" VALIGN="TOP">
+<P><B><I>Ioreq Parameters</B></I></TD>
+<TD WIDTH="49%" VALIGN="TOP">
+<P>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="51%" VALIGN="TOP">
+<I><P>irHandle</I></TD>
+<TD WIDTH="49%" VALIGN="TOP">
+<P>File handle returned by<I> flFindFirstFile</I></TD>
+</TR>
+<TR><TD WIDTH="51%" VALIGN="TOP">
+<I><P>irPath</I></TD>
+<TD WIDTH="49%" VALIGN="TOP">
+<P>Specifies a file or directory path</TD>
+</TR>
+<TR><TD WIDTH="51%" VALIGN="TOP">
+<I><P>irData</I></TD>
+<TD WIDTH="49%" VALIGN="TOP">
+<P>Address of user buffer to receive a <A HREF="#DirectoryEntryStructure">DirectoryEntry structure</A>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="51%" VALIGN="TOP">
+<B><I><P>Returns</B></I></TD>
+<TD WIDTH="49%" VALIGN="TOP">
+<P>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="51%" VALIGN="TOP">
+<I><P>ioreq.irHandle</I></TD>
+<TD WIDTH="49%" VALIGN="TOP">
+<P>File handle to use for subsequent <I><U>flFindNextFile</I></U> operations</TD>
+</TR>
+<TR><TD WIDTH="51%" VALIGN="TOP">
+<I><P>FLStatus</I></TD>
+<TD WIDTH="49%" VALIGN="TOP">
+<P>0 on success, otherwise failed.</TD>
+</TR>
+<TR><TD WIDTH="51%" VALIGN="TOP">
+<B><I><P>FLCUSTOM.H definitions required</B></I></TD>
+<TD WIDTH="49%" VALIGN="TOP">
+<B><I><P>FILES &gt; 0</B></I></TD>
+</TR>
+</TABLE>
+
+<P><IMG SRC="Opaln.gif" WIDTH=569 HEIGHT=9></P>
+<P>&nbsp;</P>
+<H3><A NAME="flMakeDir"></A>flMakeDir</H3>
+<B><I><P>Function</P>
+</B></I><P>Creates a new directory.</P>
+<P>As in DOS-FAT file systems, directory names may be up to 8 characters long, optionally with an extension of up to 3 characters.</P>
+<TABLE CELLSPACING=0 BORDER=0 CELLPADDING=7 WIDTH=613>
+<TR><TD WIDTH="51%" VALIGN="TOP">
+<P><B><I>Ioreq Parameters</B></I></TD>
+<TD WIDTH="49%" VALIGN="TOP">
+<P>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="51%" VALIGN="TOP">
+<I><P>irHandle</I></TD>
+<TD WIDTH="49%" VALIGN="TOP">
+<P>Drive number (0, 1, ...)</TD>
+</TR>
+<TR><TD WIDTH="51%" VALIGN="TOP">
+<I><P>irPath</I></TD>
+<TD WIDTH="49%" VALIGN="TOP">
+<P>Path of new directory</TD>
+</TR>
+<TR><TD WIDTH="51%" VALIGN="TOP">
+<B><I><P>Returns</B></I></TD>
+<TD WIDTH="49%" VALIGN="TOP">
+<P>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="51%" VALIGN="TOP">
+<I><P>FLStatus</I></TD>
+<TD WIDTH="49%" VALIGN="TOP">
+<P>0 on success, otherwise failed.</TD>
+</TR>
+<TR><TD WIDTH="51%" VALIGN="TOP">
+<B><I><P>FLCUSTOM.H definitions required</B></I></TD>
+<TD WIDTH="49%" VALIGN="TOP">
+<B><I><P>FILES &gt; 0 and SUB_DIRECTORY</B></I></TD>
+</TR>
+</TABLE>
+
+<P><IMG SRC="Opaln.gif" WIDTH=569 HEIGHT=9></P>
+<P>&nbsp;</P>
+<H3><A NAME="flRemoveDir"></A>flRemoveDir</H3>
+<B><I><P>Function</P>
+</B></I><P>Removes (deletes) a directory. The directory must be empty.</P>
+<TABLE CELLSPACING=0 BORDER=0 CELLPADDING=7 WIDTH=510>
+<TR><TD WIDTH="50%" VALIGN="TOP">
+<P><B><I>Ioreq Parameters</B></I></TD>
+<TD WIDTH="50%" VALIGN="TOP">
+<P>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="50%" VALIGN="TOP">
+<I><P>irHandle</I></TD>
+<TD WIDTH="50%" VALIGN="TOP">
+<P>Drive number (0, 1, ...)</TD>
+</TR>
+<TR><TD WIDTH="50%" VALIGN="TOP">
+<I><P>irPath</I></TD>
+<TD WIDTH="50%" VALIGN="TOP">
+<P>Path of directory to remove.</TD>
+</TR>
+<TR><TD WIDTH="50%" VALIGN="TOP">
+<B><I><P>Returns</B></I></TD>
+<TD WIDTH="50%" VALIGN="TOP">
+<P>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="50%" VALIGN="TOP">
+<I><P>FLStatus</I></TD>
+<TD WIDTH="50%" VALIGN="TOP">
+<P>0 on success, otherwise failed</TD>
+</TR>
+<TR><TD WIDTH="50%" VALIGN="TOP">
+<B><I><P>FLCUSTOM.H definitions required</B></I></TD>
+<TD WIDTH="50%" VALIGN="TOP">
+<B><I><P>FILES &gt; 0 and SUB_DIRECTORY</B></I></TD>
+</TR>
+</TABLE>
+
+<P><IMG SRC="Opaln.gif" WIDTH=569 HEIGHT=9></P>
+<P>&nbsp;</P>
+<H3><A NAME="flRenameFile"></A>flRenameFile</H3>
+<B><I><P>Function</P>
+</B></I><P>Renames a file to another name. Files may be renamed across directories but not across volumes.</P>
+<TABLE CELLSPACING=0 BORDER=0 CELLPADDING=7 WIDTH=510>
+<TR><TD WIDTH="50%" VALIGN="TOP">
+<P><B><I>Ioreq Parameters</B></I></TD>
+<TD WIDTH="50%" VALIGN="TOP">
+<P>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="50%" VALIGN="TOP">
+<I><P>irHandle</I></TD>
+<TD WIDTH="50%" VALIGN="TOP">
+<P>Drive number (0, 1, ...)</TD>
+</TR>
+<TR><TD WIDTH="50%" VALIGN="TOP">
+<I><P>irPath</I></TD>
+<TD WIDTH="50%" VALIGN="TOP">
+<P>Path and filename of existing file</TD>
+</TR>
+<TR><TD WIDTH="50%" VALIGN="TOP">
+<I><P>irPath</I>2</TD>
+<TD WIDTH="50%" VALIGN="TOP">
+<P>New path and filename for file.</TD>
+</TR>
+<TR><TD WIDTH="50%" VALIGN="TOP">
+<B><I><P>Returns</B></I></TD>
+<TD WIDTH="50%" VALIGN="TOP">
+<P>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="50%" VALIGN="TOP">
+<I><P>FLStatus</I></TD>
+<TD WIDTH="50%" VALIGN="TOP">
+<P>0 on success, otherwise failed</TD>
+</TR>
+<TR><TD WIDTH="50%" VALIGN="TOP">
+<B><I><P>FLCUSTOM.H definitions required</B></I></TD>
+<TD WIDTH="50%" VALIGN="TOP">
+<B><I><P>FILES &gt; 0 and RENAME_FILE</B></I></TD>
+</TR>
+</TABLE>
+
+<P><IMG SRC="Opaln.gif" WIDTH=569 HEIGHT=9></P>
+<P>&nbsp;</P>
+<H2><A NAME="_Toc351277815">4.10 OSAK Status Codes</A></H2>
+<P>All OSAK calls return a status code, of type <I>FLStatus. </I>An <I>flOK</I> (value 0) status indicates success. Any other value indicates failure to execute the requested function or an abnormal condition.</P>
+<P>The OSAK status codes are defined as an enumerated type in <I>FLBASE.H</I>. Their numerical value is always positive.</P>
+<P>The following describes the meaning of status codes (codes are ordered alphabetically):</P>
+<B><I><P><A NAME="flAdapterNotFound"></A>flAdapterNotFound</P>
+</B></I><P>This status indicates that on initializing the socket interface, the socket hardware was not detected, or it failed to initialize correctly. Further OSAK calls after receiving this status are useless.</P>
+<B><I><P><A NAME="flBadDriveHandle"></A>flBadDriveHandle</P>
+</B></I><P>The <I>ioreq.irHandle </I>field of a OSAK call specifies a drive number, but the number is invalid. Valid drives are numbered 0 to <I>DRIVES </I>- 1.</P>
+<B><I><P><A NAME="flBadFileHandle"></A>flBadFileHandle</P>
+</B></I><P>A OSAK call supplied a file handle in <I>ioreq.irHandle </I>that does not belong to any currently open file.</P>
+<B><I><P><A NAME="flBadFormat"></A>flBadFormat</P>
+</B></I><P>Problems were found in the NFTL format of the Flash volume. The error signifies:</P>
+<P><IMG SRC="Bullet5.gif" WIDTH=12 HEIGHT=12>&nbsp;If returned when mounting a volume: The NFTL headers are inconsistent with the detected physical characteristics of the DiskOnChip array.</P>
+<P><IMG SRC="Bullet5.gif" WIDTH=12 HEIGHT=12>&nbsp;If returned after a successful mount: The NFTL format is damaged. The volume was mounted anyway, but writing to it is not allowed to prevent further damage.</P>
+<B><I><P><A NAME="flBadFunction"></A>flBadFunction</P>
+</B></I><P>A non-existent OSAK function was called. This may have occurred if the function was called using the form:</P>
+<I><P>flCall(&lt;function code&gt;, &lt;ioreq&gt;)</P>
+</I><P>but <I>&lt;function code&gt; </I>is not a valid OSAK function.</P>
+<B><I><P>flBadParameter</P>
+</B></I><P>A OSAK function was called with an illegal parameter value. This is reported by <I>flSeekFile </I>when the seek mode (<I>irFlags) </I>is unknown.</P>
+<B><I><P>flDataError</B></I> </P>
+<P>An uncorrectable error occurred while reading from DiskOnChip. This may occur with low to very low probability. The DiskOnChip provides hardware generated EDC (Error Detection Code) and ECC (Error Correction Code) to ensure highly reliable data storage with minimal CPU time or memory space overhead. </P>
+<B><I><P>flDirectoryNotEmpty</P>
+</B></I><P>A call to <I>flRemoveDir </I>specified a directory that is not empty.</P>
+<B><I><P>flDiskChange</P>
+</B></I><P>Reported by <I>flCheckVolume </I>when it discovers that the volume was changed since the last mount operation.</P>
+<B><I><P>flDriveNotAvailable</P>
+</B></I><P>A call to a OSAK function was made referring to a drive, which is already busy with another OSAK operation on a different execution thread. The call cannot take place until the original operation terminates.</P>
+<B><I><P>flDriveNotReady</P>
+</B></I><P>There is no media in the socket, as reported by the customizable routine <I>flCardDetected</I>.</P>
+<B><I><P>flFileAlreadyExists&#9;</P>
+</B></I><P>This status may be returned by <I>flMakeDir </I>or <I>flRenameFile</I> and indicates that the pathname that should be created by either function already exists.</P>
+<B><I><P>flFileIsADirectory</P>
+</B></I><P>A call to <I>flOpenFile </I>or <I>flDeleteFile </I>specified a path that is a directory.</P>
+<B><I><P>flFileNotFound</P>
+</B></I><P>The path specified to an OSAK function refers to a file that does not exist although its directory path does exist.</P>
+<B><I><P>flFormatNotSupported</P>
+</B></I><P>OSAK cannot mount the volume because its FAT formatting is not supported by the current OSAK system. This may occur for one of the following reasons:</P>
+<P><IMG SRC="Bullet5.gif" WIDTH=12 HEIGHT=12>&nbsp;The sector size of the mounted volume is not the same as the <A HREF="#defSECSZ">OSAK sector size selected in FLCUSTOM.H</A>.</P>
+<P><IMG SRC="Bullet5.gif" WIDTH=12 HEIGHT=12>&nbsp;The volume uses 12-bit FAT, but 12-bit FAT support was not selected.</P>
+<B><I><P>flGeneralFailure</P>
+</B></I><P>If returned by <A HREF="#flDefragmentVolume">flDefragmentVolume</A>, this indicates that the requested number of bytes is not available on the volume. However, defragmentation reclaimed the maximum number of bytes possible.</P>
+<P>Otherwise, this status is reported by various modules when an internally inconsistent state is discovered. In most cases this will indicate a malfunction of the MTD/socket layer.</P>
+<B><I><P>flInvalidFATchain&#9;</P>
+</B></I><P>The FAT cluster chain of a file ends unexpectedly (its length is inconsistent with the file size as recorded in the directory), or contains pointers to non-existent clusters.</P>
+<P>This error indicates damage to the FAT format. Running a disk doctor utility may fix the problem.</P>
+<B><I><P>flNoMoreFiles</P>
+</B></I><P>Returned by <A HREF="#flFindFirstFile">flFindFirstFile</A><I> </I>or <A HREF="#flFindNextFile">flFindNextFile</A><I> </I>when there are no more files in the directory scanned. The file handle connected with the directory scan is closed.</P>
+<B><I><P>flNoSpaceInVolume</P>
+</B></I><P>A file or directory needs to be extended, but there is no more space on the volume.</P>
+<B><I><P>flNoWriteAccess</P>
+</B></I><P>An OSAK call tried to write to a file or to extend a file which is not writeable, either because the file was opened for read-only operations, or because the file attributes mark it as read-only.</P>
+<B><I><P>flNonFATFormat</P>
+</B></I><P>A OSAK media contains proper NFTL format, but no valid DOS-FAT format. This status code is informatory, and the media was mounted anyway.</P>
+<B><I><P>flNotADirectory</P>
+</B></I><P>A <A HREF="#flFindFirstFile">flFindFirstFile</A><I> </I>or <A HREF="#flRemoveDir">flRemoveDir</A><I> </I>call specified a path that is not a directory.</P>
+<B><I><P>flNotEnoughMemory</P>
+</B></I><P>This status is returned by <A HREF="#flMountVolume">flMountVolume</A><I> </I>when it fails to allocate enough space for NFTL tables necessary to handle the volume. The volume is larger than the OSAK system can support according to the customization options selected.</P>
+<B><I><P>flNotMounted</P>
+</B></I><P>A OSAK function accessed a drive, but there is no mounted volume. A mount-volume call is necessary. Either of these occurred:</P>
+<P><IMG SRC="Bullet5.gif" WIDTH=12 HEIGHT=12>&nbsp;A <A HREF="#flMountVolume">flMountVolume</A><I> </I>call was never issued for this drive.</P>
+<P><IMG SRC="Bullet5.gif" WIDTH=12 HEIGHT=12>&nbsp;The volume that was previously mounted on this drive was removed , replaced, reinserted, or dismounted by a OSAK call.</P>
+<B><I><P>flPathIsRootDirectory</P>
+</B></I><P>A call to <A HREF="#flFindFile">flFindFile</A><I> </I>with options of <I>SET_DATETIME </I>or <I>SET_ATTRIBUTES </I>specified the root directory as the path. <I>flFindFile </I>cannot change directory information for the root directory.</P>
+<B><I><P>flPathNotFound</P>
+</B></I><P>The path specified to an OSAK function has a directory segment that does not exist.</P>
+<B><I><P>flRootDirectoryFull</P>
+</B></I><P>In the FAT file format, the root directory is allocated during formatting and cannot be extended. This error indicates that an OSAK function needs to open a new entry in the root directory but the directory is full.</P>
+<B><I><P>flSectorNotFound</P>
+</B></I><P>The NFTL layer was asked to read or write a sector outside the valid range of the volume. This error is an internal consistency problem and probably indicates damage to the FAT format or an MTD/socket malfunction.</P>
+<B><I><P>flTooManyComponents</P>
+</B></I><P>The component registration routine tried to exceed the maximum <A HREF="#defDRIVES">number of drives defined by FLCUSTOM.H</A>.</P>
+<B><I><P>flTooManyOpenFiles</P>
+</B></I><P>A OSAK function needs to allocate a new file handle (<A HREF="#flOpenFile">flOpenFile</A><I> </I>or <A HREF="#flFindFirstFile">flFindFirstFile</A>), but all available file handles are already in use. The number of file handles is specified by the <A HREF="#defFILES">customization variable FILES</A>.</P>
+<P>If the number of file handles seems adequate, check that the application is not "losing" handles by opening files and not closing them. Remember that<A HREF="#flFindFirstFile"> flFindFirstFile</A> opens a file handle, and this handle is closed only on a <I>noMoreFiles </I>condition or by a direct <A HREF="#flCloseFile">flCloseFile</A><I> </I>call.</P>
+<B><I><P>flUnknownMedia</P>
+</B></I><P>Returned by <A HREF="#flMountVolume">flMountVolume</A><I> </I>when mounting a volume that does not contain the proper NFTL and FAT formats.</P>
+<P>This problem usually indicates that the volume is indeed unformatted, but may also be caused by malfunctions of the MTD/socket layers.</P>
+<B><I><P><A NAME="flVolumeTooSmall"></A>flVolumeTooSmall</P>
+</B></I><P>This status is reported by <A HREF="#flFormatVolume">flFormatVolume</A><I> </I>if the Flash media is too small to contain a valid FAT and NFTL format.</P>
+<B><I><P>flWriteFault</P>
+</B></I><P>A physical error occurred while writing to DiskOnChip. This may occur with low to very low probability. OSAK performs an automatic retry after the occurrence of a DiskOnChip write fault, so the reporting of this error indicates that a DiskOnChip 2000 write fault occurred twice in a row.</P>
+<B><I><P>flWriteProtect</P>
+</B></I><P>Returned when it is not possible to write to the Flash media for one of the following reasons:</P>
+<P><IMG SRC="Bullet5.gif" WIDTH=12 HEIGHT=12>&nbsp;The volume is hardware write-protected (as reported by the customizable routine <I>writeProtected</I>).</P>
+<P><IMG SRC="Bullet5.gif" WIDTH=12 HEIGHT=12>&nbsp;There is no spare NFTL erase unit.</P>
+<P>&nbsp;</P>
+<P><IMG SRC="Leavln.gif" WIDTH=492 HEIGHT=19></P>
+<H1><A NAME="_Toc403976879">5. Special Topics:</A> </H1>
+<H2><A NAME="BDK"></A>5.1 Boot Image partition</H2>
+<P>Booting a system from the DiskOnChip is of utmost importance for engineers that design the DiskOnChip into their target platform. It allows them to use only a very small boot ROM and store the Operating System itself on the DiskOnChip.</P>
+<P>For this purpose we suggest to format DiskOnChip with two partitions: </P>
+<P><IMG SRC="Bullet7.gif" WIDTH=15 HEIGHT=12>&nbsp;The first partition holds the OS image. This partition will be called boot image partition</P>
+<P><IMG SRC="Bullet7.gif" WIDTH=15 HEIGHT=12>&nbsp;The second partition holds Flash disk partition.</P>
+<P><IMG SRC="partit.gif" WIDTH=564 HEIGHT=174></P>
+<P>The <A HREF="#flFormatVolume">flFormatVolume</A> function allows formatting the DiskOnChip with two partitions as described above. In addition, it may reformat the media by initializing the Flash disk partition but leaving the boot image partition contents unchanged.</P>
+<P>Use the <A HREF="../util/DFORMAT/DFORMAT.htm#_Toc385343156">DFORMAT utility</A> to create a boot image partition and copy the boot image contents from a file.</P>
+<P>Use the <A HREF="#PhysicalGroup">OSAK Physical Flash I/O functions</A> to access the boot image partition in your application.</P>
+<P>M-Systems has an extended set of utilities that allows advanced handling of the boot image partition. Contact M-Systems for information on these additional utilities.</P>
+<P>&nbsp;</P>
+<H2><A NAME="Defragmentation">5.2 Defragmentation</A></H2>
+<P>The defragmentation process, performed by the <A HREF="#flDefragmentVolume">flDefragmentVolume</A><I> </I>function, consists of doing early Flash space reclamation. Regular writing to the Flash through the OSAK interface makes periodic space reclamation, or garbage collection, necessary. OSAK performs such space reclamation automatically, usually on an immediate need basis, but this process takes time and slows down both the average and maximum time to perform a write operation.</P>
+<P>If an application needs to write a burst of data, and has some idle time before the burst arrives, it can write the data more quickly if it performs an early defragmentation through <A HREF="#flDefragmentVolume">flDefragmentVolume</A>.</P>
+<P>This function accepts as a parameter (in <I>irLength</I>) the minimum number of sectors that need to be available for immediate write. If the current amount of free writeable space is currently higher, the function returns immediately. If not, it will perform garbage collection operations until the amount of free space is at least as requested.</P>
+<P>In all cases,<A HREF="#flDefragmentVolume"> flDefragmentVolume</A><I> </I>returns the actual number of free writable sectors currently available. Note that this number is <B>not </B>the same as the free space on the volume, but represents only the amount of Flash memory that is in the erased state. A volume may be empty of files yet have no free writeable sectors.</P>
+<P>You can find the current available space by requesting defragmentation for 0 (zero) sectors. No defragmentation will be done, but the current number of free sectors will be returned. You can perform a general defragmentation of the volume by requesting a very large number of sectors. In this case defragmentation will complete with a failing status, since the number requested cannot be achieved.</P>
+<P>Note that the requested number of sectors (parameter <I>irLength</I>) is checked <B>dynamically</B>. This means that it can be changed while defragmentation is in progress, and the new value will be the new target. Of course, this can be done only from an asynchronous process, such as an interrupt routine, since the main process is currently executing the OSAK defragmentation command.</P>
+<P>This feature enables applications to abort a long defragmentation at any time, by modifying <I>irLength </I>to 0. Applications that want to defragment the volume in their spare time, but do not know how much spare time they actually have, can start a general defragmentation of the volume. When an external event occurs that makes it necessary to perform other work, the application can abort the defragmentation by zeroing out the requested number of sectors.</P>
+<P>&nbsp;</P>
+<H2><A NAME="_Toc445477845">5.3 "Audio" Editing Capability</A></H2>
+<P>A common paradigm in audio OSAK applications is where a file plays the part of a voice or sound-recorded "tape". Frequently, some tape editing functionality is required, such as cutting or pasting parts of the tape.</P>
+<P>Although in theory this can be done using regular file writing capabilities, in practice it is not practical. The practice of text editors and word processors to do such editing by holding the entire file or a large part of it in system memory needs a large amount of RAM, and to cut and paste parts of a file using <A HREF="#flWriteFile">flWriteFile</A><I> </I>commands means that for every such operation the entire tail of the file must be rewritten.</P>
+<P>To enable implementing editing functions in a more efficient manner, OSAK provides the <A HREF="#flSplitFile">flSplitFile</A><I> </I>and <A HREF="#flJoinFile">flJoinFile</A><I> </I>functions. These functions are building blocks for most editing requirements.</P>
+<P>To insert data at some point in a file, split the file at the point of insertion, so that the tail becomes a new file and the original file is truncated. Then write the data to be inserted, extending the original file. Finally, join the tail that was previously split. Note that the length of the inserted data must be a multiple of a cluster (but it need not be aligned on a cluster) for perfect insertion. If it is not, a part of the original data (in the tail) will be lost.</P>
+<P>To "cut out" a section of the tape, first position the file to the end of the section to be edited out, and split the file at that point, thereby truncating the file and creating a new file for the tail. Then position the file at the beginning of the section to be edited out, and split the file again, truncating the file again and creating a second tail file. Delete the second tail, and finally join the file with the first tail. Note again that the length of data to be cut must be a multiple of a cluster, otherwise part of the original data (in the tail) will be lost.</P>
+<P>&nbsp;</P>
+<P><IMG SRC="Leavln.gif" WIDTH=492 HEIGHT=19></P>
+<H1><A NAME="_Toc351277816">6. Customization Guide</A></H1>
+<H2><A NAME="_Toc351277817">6.1 Overview</A></H2>
+<P>The OSAK system is written in a form that is able to suit any target configuration through relatively easy configuration and customization. Its code is supplied in source code form that is compilable by any ANSI-C or C++ compiler. </P>
+<P>Many features or properties of the OSAK system are selectable by compile-time customization options. These options make the system itself very flexible in order to meet your requirements but ensures that the resulting code includes exactly the options you need and no others and does not unnecessarily burden your RAM, ROM or performance requirements.</P>
+<P>You customize a system by providing C definitions and functions in several customization source-code files, which are then compiled with your application.</P>
+<P>The OSAK customization is divided into two major divisions, and then into sub-categories. The two divisions are:</P>
+<P><A HREF="#SysCus">System Customization:</A> Customizing for your computer platform, independently of what your OSAK application does. You specify this customization in source files <I>FLSYSTEM.H, FLSYSTEM.C, DOCSYS.C, DOCSYS.H</P>
+</I><P><A HREF="#CusApp">&nbsp;Application Customization:</A> Customizing for the needs of your OSAK application. You specify this customization in source files <I>FLCUSTOM.H </I>and <I>FLCUSTOM.C</I>.</P>
+<P>&nbsp;</P>
+<H3><A NAME="SysCus"></A>System Customization is concerned with:</H3>
+<P><A HREF="#CusComp">Customizing for your compiler and your processor :</A>This consists of selecting customization options to make the OSAK code compile correctly and generate the code that will run on your processor. You specify this customization in source file <I>FLSYSTEM.H.</P>
+</I><P><A HREF="#CusSysSer">Customizing for your system:</A> This consists of providing to the OSAK package various services that depend on the computer system and operating system, if such exists: current date/time and other timing functions, memory management and task synchronization (on such systems where these issues are of relevance). You specify this customization in source files <I>FLSYSTEM.C</P>
+</I><P><A HREF="#cusmtd">Customizing DiskOnChip registers access routines.</A></P>
+<P>&nbsp;</P>
+<H3><A NAME="CusApp"></A>Application customization is concerned with:</H3>
+<P><A HREF="#CusAppSer">Customizing for your OSAK services requirements:</A> This consists of specifying file-system features that your application needs and the limits that you require, such as the maximum number of open files, the maximum size of Flash media you need to support.</P>
+<P><A HREF="#CusReg">Registering the DiskOnChip socket interface:</A> Registering the socket interface used by the OSAK application. This consists of coding the routine <I>flRegisterComponents</I> in <I>FLCUSTOM.C</I> to register the DiskOnChip socket interface <I>DOCSOC </I>with the parameters that are suitable for your target</P>
+<P>&nbsp;</P>
+<H2><A NAME="CusComp">6.2 Customizing for Your Compiler and Processor</A></H2>
+<P>To customize the OSAK code to suit your target processor, you should:</P>
+<P><IMG SRC="Bullet7.gif" WIDTH=15 HEIGHT=12>&nbsp;Have available an ANSI-C or C++ compiler that is able to generate code for your target processor.</P>
+<P><IMG SRC="Bullet7.gif" WIDTH=15 HEIGHT=12>&nbsp;Customize the options in <I>FLSYSTEM.H </I>so as to produce code that will compile and execute correctly.</P>
+<P>The following are the customization issues in <I>FLSYSTEM.H</I>:</P>
+<B><P>NULL constant</P>
+</B><P>The NULL pointer is usually defined simply as 0 (zero). Some compilers will not accept this, and will require an alternative definition such as <I>(void *) 0</I>. Make sure that the definition in <I>FLSYSTEM.H </I>is the appropriate one.</P>
+<B><P>Little-endian/Big-endian</P>
+</B><P>The FAT and translation-layer structures use the little-endian (Intel) format for integers, in which low-order digits are in lower addresses. If your processor uses the big-endian (Motorola) format, in which high-order digits are in lower addresses, you should uncomment the definition of <I>BIG_ENDIAN</I>.</P>
+<B><P>Far pointers</P>
+</B><I><P>Far</I> pointers are usually associated with Intel 80x86 architectures, and are usually irrelevant on other architectures. If your processor/compiler has no <I>far</I> pointers, simply define <I>FAR_LEVEL </I>to be 0.</P>
+<P>On 80x86 architectures, you are expected to define which pointers are <I>far</I>, by specifying a value of 0 to 3 for <I>FAR_LEVEL</I>.</P>
+<P>If using a flat 32-bit addressing model, define <I>FAR_LEVEL </I>as 0. Otherwise:</P>
+<P><IMG SRC="Bullet7.gif" WIDTH=15 HEIGHT=12>&nbsp;If all data areas and the socket window are near (in the OSAK data segment), <I>FAR_LEVEL = 0.</P>
+</I><P><IMG SRC="Bullet7.gif" WIDTH=15 HEIGHT=12>&nbsp;If only the socket window is <I>far</I>, define <I>FAR_LEVEL = 1</I>.</P>
+<P><IMG SRC="Bullet7.gif" WIDTH=15 HEIGHT=12>&nbsp;If the socket window and the user read/write buffers may be far, define <I>FAR_LEVEL = 2</I>.</P>
+<P><IMG SRC="Bullet7.gif" WIDTH=15 HEIGHT=12>&nbsp;If the socket window, the user read/write buffers, and the user I/O request (<I>ioreq</I>) structures may be <I>far</I>, define <I>FAR_LEVEL = 3</I>.</P>
+<B><P>&nbsp;Memory routines</P>
+</B><P>The library routines <I>memcpy/memset/memcmp</I> are standard for ANSI-C compilers, but there may be variations in which #include defines them, and variations such as Borland's <I>_fmemcpy/...</I> routines also exist.</P>
+<P>To overcome such nuances, the OSAK code uses memory handling macros called <I>tffscpy, tffsset, </I>and <I>tffscmp</I> with prototypes identical to the standard <I>memcpy, memset, memcmp</I>.</P>
+<P>You should provide the correct #include directive, and incorporate C macros that define the <I>tffsxxx</I> routines to the names of your library routines (or user supplied routines if you wish to code these routines yourself).</P>
+<B><P>&nbsp;Pointer arithmetic</P>
+</B><P>Here, you are asked to code two macros (or short routines) for two pointer arithmetic operations that may depend on your processor or compiler.</P>
+<B><I><P>physicalToPointer(address,length,driveNo):</P>
+</B></I><P>This is a macro that takes a number that signifies a physical address, and returns a (far) pointer that points to that address. In a real-mode Intel 80x86 architecture, your implementation would be to convert a linear address (say hex 0D8000), to a segment:offset far pointer (say 0D800:0).</P>
+<P>In a system that uses virtual addressing, this macro would be more complex: It would need to know the correspondence between physical and virtual addresses, and would have the task of mapping the physical address to virtual address-space so that a pointer can be returned for it. For this reason the 2nd parameter <I>length </I>is supplied. This parameter shows the amount of space starting at <I>address </I>that should be mapped to the virtual address-space.</P>
+<B><I><P>addToFarPointer(pointer,increment)</P>
+</B></I><P>This macro defines how to add an offset to a (far) pointer and return a new (far) pointer. The increment may be as large as the socket window size.</P>
+<P>In most cases this can be coded simply as (<I>(char *) </I>(<I>pointer)) + (increment)</I>, but sometimes this may be inappropriate. For example: in a real-mode 80x86 system where the increment may be larger than 64 Kbytes, there is a need to perform "huge" pointer arithmetic because segment offsets may not exceed 64 Kbytes.</P>
+<B><P>&nbsp;Signed/unsigned char</P>
+</B><P>The OSAK code assumes the default for type <I>char</I> is signed. This is the default for most C compilers. If the default for your compiler is signed, you do not need to do anything here. Otherwise, override the default using compilation switches or pragmas.</P>
+<B><P>&nbsp;Mutex type definition</P>
+</B><P>A "Mutex" is a type of semaphore that enforces mutual exclusion between agents that want to own it, and manages access to a non-sharable resource.</P>
+<P>On multi-threaded or multi-tasking systems, OSAK is able to handle concurrent requests so long as each request is targeted at a different OSAK drive. On any single OSAK drive, however, calls must be handled serially, and the access to a drive is managed by a mutex.</P>
+<P>A simple and "cheap" way to implement a mutex is through an integer that counts that is zero when the resource is free, and otherwise is non-zero. The reference code for <I>FLSYSTEM.H </I>and <I>FLSYSTEM.C </I>that is provided includes such a simple mutex implementation. If your system does not have multiple tasks working with OSAK, or if the simple mutex implementation suits your need, use the definitions provided in the reference code.</P>
+<P>If you intend to have multiple tasks accessing OSAK and you have native methods of your operating system, or of your own to handle mutual-exclusion, you should define here the mutex data type you intend to use. You will then also need to provide implementations for the various mutex functions in <I>FLSYSTEM.C</I>.</P>
+<B><P>Memory allocation</P>
+</B><P>OSAK has several tables and buffers for various purposes. These may either be statically allocated during compilation, or dynamically allocated using a heap manager. Dynamic allocation is usually more efficient in terms of RAM usage, since memory is allocated only when actually needed. On the other hand, dynamic allocation needs the use of several run-time library routines such as <I>malloc</I>, which add to code size.</P>
+<P>If you want to use the standard C routines <I>malloc</I> and <I>free</I> for memory allocation, define here:</P>
+<I><P>#define MALLOC malloc</P>
+<P>#define FREE free</P>
+</I><P>You also need to add here the correct <I>#include </I>directive for these functions (usually <I>&lt;malloc.h&gt; </I>or <I>&lt;stdlib.h&gt;</I>).</P>
+<P>You may define here any other routines for memory allocation, provided they have the same function prototypes as <I>malloc</I> and <I>free</I>.</P>
+<P>To select static allocation of all memory, <I>MALLOC</I> should be undefined.</P>
+<B><P>Debug mode</P>
+</B><P>To help in debugging OSAK applications, debug mode may be enabled. This will cause OSAK to print messages about various OSAK activities. The messages are printed by the routine defined as <I>DEBUG_PRINT</I>. Normally <I>DEBUG_PRINT </I>will be defined as <I>printf</I>, and messages are routed to standard output. You may however define <I>DEBUG_PRINT </I>to be any routine that has the same function prototype as <I>printf</I>.</P>
+<P>If <I>DEBUG_PRINT </I>is not defined, debug mode is disabled.</P>
+<P>&nbsp;</P>
+<H2><A NAME="CusSysSer">6.3 Customizing System Services</A></H2>
+<H3><A NAME="flSysModule"></A>6.3.1 The FLSYSTEM Module</H3>
+<P>OSAK makes use of several functions that may need to be implemented differently on each system. Most of these functions are related to the following:</P>
+<P><IMG SRC="Bullet7.gif" WIDTH=15 HEIGHT=12>&nbsp;System clock</P>
+<P><IMG SRC="Bullet7.gif" WIDTH=15 HEIGHT=12>&nbsp;Mutex and critical-section handling</P>
+<P>Functions implemented in <I>FLSYSTEM.C </I>all have their prototypes defined in <I>FLSYSFUN.H </I>(not <I>FLSYSTEM.H</I>, which contains system-dependent definitions).</P>
+<P>The implementation of these functions is tied to the target system and so cannot be provided by OSAK. Their implementation is usually a simple matter for someone familiar with the target system.A full-featured OSAK system needs a correct implementation of all the <I>FLSYSFUN.H</I>. However, the following considerations may shorten and simplify the customization effort:</P>
+<P><IMG SRC="Bullet7.gif" WIDTH=15 HEIGHT=12>&nbsp;Several system functions can actually be implemented in a system-independent manner, unless some special considerations apply to the target system. In such cases, the reference code of <I>FLSYSTEM.C </I>supplied with the OSAK system can be used as is. A relevant example is all the Mutex-related functions, which on almost every system can be used as coded in the reference example.</P>
+<P><IMG SRC="Bullet7.gif" WIDTH=15 HEIGHT=12>&nbsp;Most system functions are needed only when using some optional OSAK feature or component, and are not needed in the context of all applications. </P>
+<P><IMG SRC="Bullet7.gif" WIDTH=15 HEIGHT=12>&nbsp;For fast prototyping, many functions can be implemented in a fast, even trivial manner that does not significantly affect functionality. For example, the date/time functions can be implemented in a trivial manner, the only implication of which will be that times and dates in directory entries will not be correct.</P>
+<P>&nbsp;</P>
+<H3><A NAME="sysFunDesc"></A>6.3.2 System Functions Description</H3>
+<P>These are the system services defined by <I>FLSYSFUN.H</I> and implemented in <I>FLSYSTEM.C</I>:</P>
+<P><A NAME="flSysFunInit"></A>&nbsp;<B><I>flSysFunInit</P>
+</B><P>extern void flSysfunInit(void);</P>
+<P>flSysFunInit </I>does not actually provide any service to OSAK, but gives you a chance to do any necessary initializations for other system functions. It is called once only during OSAK initialization.</P>
+<P>This function is called from <I>BLOCKDEV.C</I> <I>(</I><A HREF="#flInit">flInit</A><I>)</P>
+<B><P>flDelayMsecs</P>
+</B></I><P>Delays execution for a number of microseconds. If there is no msec-accuracy to the clock, this routine should wait at least the time specified.</P>
+<I><P>extern void flDelayMsecs(unsigned milliseconds /* Milliseconds to wait */);</P>
+</I><P>This function is called from the <I>DISKONC</I> MTD.</P>
+<H4><A NAME="flCreateMutex"></A>These functions handle a mutex (mutual exclusion semaphore):</H4>
+<P><A HREF="#flCreateMutex">flCreateMutex</A></P>
+<P><A HREF="#flDeleteMutex">flDeleteMutex</A></P>
+<P><A HREF="#flTakeMutex">&nbsp;flTakeMutex</A></P>
+<P><A HREF="#flFreeMutex">flFreeMutex</A></P>
+<B><I><P><A NAME="flDelayMsecs"></A>flCreateMutex</P>
+</B></I><P>Creates and initializes a mutex(mutual exclusion semaphore) object The mutex is initializes as not owned by anyone.</P>
+<I><P>extern FLStatus flCreateMutex(FLMutex mutex <B>/</B>* Pointer to mutex object */);</P>
+</I><P>Returns 0 on success, otherwise failure.</P>
+<B><I><P><A NAME="flDeleteMutex"></A>flDeleteMutex</P>
+</B></I><P>Destroys a mutex object. This function frees any resources taken by <A HREF="#flCreateMutex">flCreateMutex</A><I>.</P>
+<P>extern void flDeleteMutex(FLMutex mutex<B> /</B>* Pointer to mutex object */);</P>
+<P><A NAME="flTakeMutex"></A>&nbsp;<B>flTakeMutex</P>
+</B></I><P>Attempts to take ownership of a mutex. If the mutex is currently not owned, TRUE is returned and the mutex becomes owned. If the mutex is currently owned, FALSE is returned and ownership is not taken.</P>
+<I><P>extern Boolean flTakeMutex(FLMutex mutex<B> /</B>* Pointer to mutex object */);</P>
+</I><P>Returns TRUE if ownership taken, FALSE otherwise</P>
+<B><I><P><A NAME="flFreeMutex"></A>flFreeMutex</P>
+</B></I><P>Frees ownership of a mutex</P>
+<I><P>extern void flFreeMutex(FLMutex mutex<B> /</B>* Pointer to mutex object */);</P>
+</I><P>These functions handle a mutex (mutual exclusion semaphore):</P>
+<I><P>flCreateMutex</I>&#9;creates a mutex object.</P>
+<I><P>flDeleteMutex </I>destroys a mutex object.</P>
+<I><P>flTakeMutex </I>tries to take ownership of a mutex. The function returns <I>TRUE </I>if ownership was obtained, <I>FALSE </I>if the mutex is currently owned.</P>
+<I><P>flFreeMutex </I>frees ownership of a mutex.</P>
+<P>&nbsp;</P>
+<H2><A NAME="cusmtd">6.4 Customizing DiskOnChip Registers Access Routines. </H2>
+<P>This consists of implementation of basic functions (to read and write DiskOnChip registers) which are required by the DiskOnChip Memory Technology Driver (MTD). </P>
+<P>The default implementation is relevant for 8-bit <A HREF="#AccessTpEx">access type</A> when the address lines of the DiskOnChip are connected directly to the address lines of the host without shifting. A0 of the DiskOnChip is connected to A0 of the host.</P>
+<P>Overwrite these functions implementation if your system requires specific access to DiskOnChip registers different from standard model (See <A HREF="#AccessTpEx">Access type example</A>).</P>
+<P>You specify this customization in source files <I>DOCSYS.C, DOCSYS.H.</I> General type definitions that you need to use are in file <I>DISKONC.H</P>
+</I><P>&nbsp;</P>
+<H3><A NAME="BasicTerms">6.4.1 Basic terms:</A></H3>
+<H4><A NAME="DOCmemWin"></A>DiskOnChip memory window</H4>
+<P>DOC is memory-mapped device. It requires to be mapped on the memory window of minimal size 8KBytes.</P>
+<P>&nbsp;</P>
+<H3><A NAME="_Toc403976915"></A>DiskOnChip access type </H3>
+<P>Determines the data bus width when accessing the DiskOnChip.</P>
+<H4><A NAME="AccessTpEx"></A>Access type example:</H4>
+<P>The value of this entry can be </P>
+<P><IMG SRC="Bullet2.gif" WIDTH=15 HEIGHT=12>&nbsp;"8" - 8-bit access. The DiskOnChip can be accessed on a byte boundary.</P>
+<P>Note: this means that the address lines of the DiskOnChip are connected directly to the address lines of the host without shifting. A0 of the DiskOnChip is connected to A0 of the host.</P>
+<P><IMG SRC="Bullet2.gif" WIDTH=15 HEIGHT=12>&nbsp;"0x10" - 16-bit access. The DiskOnChip can be accessed only on a word boundary.</P>
+<P>Note: this means that the address lines of the DiskOnChip are not connected directly to the address lines of the host. Instead they are shifted one position. A0 of the DiskOnChip is connected to A1 of the host.</P>
+<P><IMG SRC="Bullet2.gif" WIDTH=15 HEIGHT=12>&nbsp;"0x20" - 32-bit access. The DiskOnChip can be accessed only on a long boundary. Note: this means that the address lines of the DiskOnChip are not connected directly to the address lines of the host. Instead they are shifted two positions. A0 of the DiskOnChip is connected to A2 of the host.</P>
+<P>&nbsp;</P>
+<H3><A NAME="Interface"></A>Interface of customizable functions:</H3>
+<P>To customize your system you have to overwrite ONLY implementation of following functions. You can not change its declaration.</P>
+<P>NOTE: To improve performance it is recommended to use macros in place of functions.</P>
+<P>&nbsp;</P>
+<H3><A NAME="FuncDesc">6.4.2 Functions Description</A>:</H3>
+<H4><A NAME="flWrite8bitReg">flWrite8bitReg</A></H4>
+<B><P>See also</B> <A HREF="#Howto">How to</A></P>
+<I><P>extern void flWrite8bitReg(FLFlash* pVol, unsigned offset,Reg8bitType Data)</P>
+<B><P>Description</P>
+</B></I><P>Writes <I>Data</I> to address which is equal to (<A HREF="#DOCmemWin">DiskOnChip memory window</A> base address + offset).</P>
+<TABLE CELLSPACING=0 BORDER=0 CELLPADDING=7 WIDTH=529>
+<TR><TD WIDTH="20%" VALIGN="TOP">
+<P><B><I>Parameters</B></I></TD>
+<TD WIDTH="80%" VALIGN="TOP">
+<P>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="20%" VALIGN="TOP">
+<I><P>pVol</I></TD>
+<TD WIDTH="80%" VALIGN="TOP">
+<P>Pointer to flash data structure</TD>
+</TR>
+<TR><TD WIDTH="20%" VALIGN="TOP">
+<I><P>offset</I></TD>
+<TD WIDTH="80%" VALIGN="TOP">
+<P>Offset from the <A HREF="#DOCmemWin">DiskOnChip memory window</A> base address</TD>
+</TR>
+<TR><TD WIDTH="20%" VALIGN="TOP">
+<I><P>Data</I></TD>
+<TD WIDTH="80%" VALIGN="TOP">
+<P>Value to write</TD>
+</TR>
+</TABLE>
+
+<P><IMG SRC="Opaln.gif" WIDTH=569 HEIGHT=9></P>
+<P>&nbsp;</P>
+<H4>flRead8bitReg</H4>
+<B><P>See also</B> <A HREF="#Howto">How to</A></P>
+<I><P>extern Reg8bitType flRead8bitReg(FLFlash* pVol, unsigned offset);</P>
+<B><P>Description</P>
+</B></I><P>Reads value from address which is equal to (<A HREF="#DOCmemWin">DiskOnChip memory window</A> base address + offset ) and returns it.</P>
+<TABLE CELLSPACING=0 BORDER=0 CELLPADDING=7 WIDTH=529>
+<TR><TD WIDTH="20%" VALIGN="TOP">
+<P><B><I>Parameters</B></I></TD>
+<TD WIDTH="80%" VALIGN="TOP">
+<P>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="20%" VALIGN="TOP">
+<I><P>pVol</I></TD>
+<TD WIDTH="80%" VALIGN="TOP">
+<P>Pointer to flash data structure</TD>
+</TR>
+<TR><TD WIDTH="20%" VALIGN="TOP">
+<I><P>offset</I></TD>
+<TD WIDTH="80%" VALIGN="TOP">
+<P>Offset from the <A HREF="#DOCmemWin">DiskOnChip memory window</A> base address</TD>
+</TR>
+<TR><TD WIDTH="20%" VALIGN="TOP">
+<B><I><P>Returns </B></I></TD>
+<TD WIDTH="80%" VALIGN="TOP">
+<P>Value which was read</TD>
+</TR>
+</TABLE>
+
+<P><IMG SRC="Opaln.gif" WIDTH=569 HEIGHT=9></P>
+<P>&nbsp;</P>
+<H4><A NAME="PreInitWrite"></A>flPreInitWrite8bitReg&nbsp;</H4>
+<B><P>See also</B> <A HREF="#Howto">How to</A></P>
+<I><P>extern void flPreInitWrite8bitReg(unsigned driveNo,NDOC2window FAR0* winBase, unsigned offset,Reg8bitType Data);</P>
+<B><P>Description</P>
+</B></I><P>Writes <I>Data</I> to address which is equal to (<A HREF="#DOCmemWin">DiskOnChip memory window</A> base address + offset ). This function is called before DOC data structures are initialized.</P>
+<TABLE CELLSPACING=0 BORDER=0 CELLPADDING=7 WIDTH=529>
+<TR><TD WIDTH="20%" VALIGN="TOP">
+<P><B><I>Parameters</B></I></TD>
+<TD WIDTH="80%" VALIGN="TOP">
+<P>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="20%" VALIGN="TOP">
+<I><P>driveNo</I></TD>
+<TD WIDTH="80%" VALIGN="TOP">
+<P>DOC <A HREF="#OsakSocksAnDrives">drive number</A></TD>
+</TR>
+<TR><TD WIDTH="20%" VALIGN="TOP">
+<I><P>winBase</I></TD>
+<TD WIDTH="80%" VALIGN="TOP">
+<P>(<A HREF="#DOCmemWin">DiskOnChip memory window</A> base address</TD>
+</TR>
+<TR><TD WIDTH="20%" VALIGN="TOP">
+<I><P>offset</I></TD>
+<TD WIDTH="80%" VALIGN="TOP">
+<P>Offset from the start of <A HREF="#DOCmemWin">DiskOnChip memory window</A> base address</TD>
+</TR>
+<TR><TD WIDTH="20%" VALIGN="TOP">
+<I><P>Data</I></TD>
+<TD WIDTH="80%" VALIGN="TOP">
+<P>Value to write</TD>
+</TR>
+</TABLE>
+
+<P><IMG SRC="Opaln.gif" WIDTH=569 HEIGHT=9></P>
+<P>&nbsp;</P>
+<H4><A NAME="flPreInitRead8bitReg"></A>flPreInitRead8bitReg&nbsp;</H4>
+<B><P>See also</B> <A HREF="#Howto">How to</A></P>
+<I><P>extern Reg8bitType flPreInitRead8bitReg(unsigned driveNo,NDOC2window FAR0* winBase, unsigned offset);</P>
+<B><P>Description</P>
+</B></I><P>Reads value from address which is equal to (<A HREF="#DOCmemWin">DiskOnChip memory window</A> base address + offset ) and returns it. This function is called before DOC data structures are initialized.</P>
+<TABLE CELLSPACING=0 BORDER=0 CELLPADDING=7 WIDTH=529>
+<TR><TD WIDTH="20%" VALIGN="TOP">
+<P><B><I>Parameters</B></I></TD>
+<TD WIDTH="80%" VALIGN="TOP">
+<P>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="20%" VALIGN="TOP">
+<I><P>driveNo</I></TD>
+<TD WIDTH="80%" VALIGN="TOP">
+<P>DOC <A HREF="#OsakSocksAnDrives">drive number</A></TD>
+</TR>
+<TR><TD WIDTH="20%" VALIGN="TOP">
+<I><P>winBase</I></TD>
+<TD WIDTH="80%" VALIGN="TOP">
+<P>(<A HREF="#DOCmemWin">DiskOnChip memory window</A> base address</TD>
+</TR>
+<TR><TD WIDTH="20%" VALIGN="TOP">
+<I><P>offset</I></TD>
+<TD WIDTH="80%" VALIGN="TOP">
+<P>Offset from the start of <A HREF="#DOCmemWin">DiskOnChip memory window</A></TD>
+</TR>
+<TR><TD WIDTH="20%" VALIGN="TOP">
+<B><I><P>Returns </B></I></TD>
+<TD WIDTH="80%" VALIGN="TOP">
+<P>Value which was read</TD>
+</TR>
+</TABLE>
+
+<P><IMG SRC="Opaln.gif" WIDTH=569 HEIGHT=9></P>
+<P>&nbsp;</P>
+<H4>docread</H4>
+<B><P>See also</B> <A HREF="#Howto">How to</A></P>
+<I><P>extern void docread(FLFlash pVol,unsigned regOffset,void FAR1* dest,unsigned int count);</P>
+<B><P>Description</P>
+</B></I><P>Reads buffer of <I>count</I> bytes. Starts at address which is equal to (<A HREF="#DOCmemWin">DiskOnChip memory window</A> base address + <I>regOffset</I>).</P>
+<TABLE CELLSPACING=0 BORDER=0 CELLPADDING=7 WIDTH=529>
+<TR><TD WIDTH="20%" VALIGN="TOP">
+<P><B><I>Parameters</B></I></TD>
+<TD WIDTH="80%" VALIGN="TOP">
+<P>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="20%" VALIGN="TOP">
+<I><P>pVol</I></TD>
+<TD WIDTH="80%" VALIGN="TOP">
+<P>Pointer to flash data structure</TD>
+</TR>
+<TR><TD WIDTH="20%" VALIGN="TOP">
+<I><P>regOffset</I></TD>
+<TD WIDTH="80%" VALIGN="TOP">
+<P>Offset from the <A HREF="#DOCmemWin">DiskOnChip memory window</A> base address of the first byte to read</TD>
+</TR>
+<TR><TD WIDTH="20%" VALIGN="TOP">
+<I><P>dest</I></TD>
+<TD WIDTH="80%" VALIGN="TOP">
+<P>destination buffer to read into</TD>
+</TR>
+<TR><TD WIDTH="20%" VALIGN="TOP">
+<I><P>count</I></TD>
+<TD WIDTH="80%" VALIGN="TOP">
+<P>number of bytes to read</TD>
+</TR>
+</TABLE>
+
+<P><IMG SRC="Opaln.gif" WIDTH=569 HEIGHT=9></P>
+<P>&nbsp;</P>
+<H4>docwrite</H4>
+<B><P>See also</B> <A HREF="#Howto">How to</A></P>
+<I><P>extern void docwrite(FLFlash* pVol, void FAR1* src, unsigned int count);</P>
+<B><P>Description</P>
+</B></I><P>Writes buffer of <I>count</I> bytes to DOC. Writing starts from <A HREF="#DOCioAddr">address of DOC IO register</A></P>
+<TABLE CELLSPACING=0 BORDER=0 CELLPADDING=7 WIDTH=529>
+<TR><TD WIDTH="20%" VALIGN="TOP">
+<P><B><I>Parameters</B></I></TD>
+<TD WIDTH="80%" VALIGN="TOP">
+<P>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="20%" VALIGN="TOP">
+<I><P>pVol</I></TD>
+<TD WIDTH="80%" VALIGN="TOP">
+<P>Pointer to flash data structure</TD>
+</TR>
+<TR><TD WIDTH="20%" VALIGN="TOP">
+<I><P>src</I></TD>
+<TD WIDTH="80%" VALIGN="TOP">
+<P>buffer to write</TD>
+</TR>
+<TR><TD WIDTH="20%" VALIGN="TOP">
+<I><P>count</I></TD>
+<TD WIDTH="80%" VALIGN="TOP">
+<P>number of bytes to write</TD>
+</TR>
+</TABLE>
+
+<P><IMG SRC="Opaln.gif" WIDTH=569 HEIGHT=9></P>
+<P>&nbsp;</P>
+<H4>docset</H4>
+<B><P>See also</B> <A HREF="#Howto">How to</A></P>
+<I><P>extern void docset(FLFlash vol,unsigned int count, unsigned char val);</P>
+<B><P>Description</P>
+</B></I><P>Sets <I>count</I> bytes to the character <I>val.</I> Writing starts from <A HREF="#DOCioAddr">address of DOC IO register</A>.</P>
+<TABLE CELLSPACING=0 BORDER=0 CELLPADDING=7 WIDTH=529>
+<TR><TD WIDTH="20%" VALIGN="TOP">
+<P><B><I>Parameters</B></I></TD>
+<TD WIDTH="80%" VALIGN="TOP">
+<P>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="20%" VALIGN="TOP">
+<I><P>pVol</I></TD>
+<TD WIDTH="80%" VALIGN="TOP">
+<P>Pointer to flash data structure</TD>
+</TR>
+<TR><TD WIDTH="20%" VALIGN="TOP">
+<I><P>val</I></TD>
+<TD WIDTH="80%" VALIGN="TOP">
+<P>character to set</TD>
+</TR>
+<TR><TD WIDTH="20%" VALIGN="TOP">
+<I><P>count</I></TD>
+<TD WIDTH="80%" VALIGN="TOP">
+<P>number of bytes to write</TD>
+</TR>
+</TABLE>
+
+<P><IMG SRC="Opaln.gif" WIDTH=569 HEIGHT=9></P>
+<P>&nbsp;</P>
+<H3><A NAME="Howto"></A>How to </H3>
+<P><IMG SRC="GreenBal.gif" WIDTH=15 HEIGHT=15>get <A HREF="#DOCmemWin">DiskOnChip memory window</A> base address:</P>
+<I><P>#include "nfdc2148.h"</P>
+<P>NDOC2window FAR0* winBase = </I>NFDC21thisVars<I>-&gt;win</P>
+</I><P><IMG SRC="GreenBal.gif" WIDTH=15 HEIGHT=15>get <A HREF="#OsakSocksAnDrives">drive number</A> from FLFlash structure</P>
+<I><P>unsigned dirveNo = pVol-&gt;socket-&gt;volNo</P>
+<P><A NAME="DOCioAddr"></A><IMG SRC="GreenBal.gif" WIDTH=15 HEIGHT=15></I>get DOC IO register address:</P>
+<I><P>#include "nfdc2148.h"</P>
+<P>NDOC2window FAR0* addr = </I>NFDC21thisWin<I>+</I>NFDC21thisIO</P>
+<P><IMG SRC="GreenBal.gif" WIDTH=15 HEIGHT=15>Pass additional data</P>
+<B><P>See also </B><A HREF="#Interface">Interface of customizable functions</A></P>
+<P>Functions <A HREF="#PreInitWrite">flPreInitWrite8bitReg</A> and <A HREF="#flPreInitRead8bitReg">flPreInitRead8bitReg</A> are called before DOC data structures are initialized. These functions get as parameter only <A HREF="#OsakSocksAnDrives">drive number</A> of the DOC. All other functions get as parameter FLFlash structure. OSAK data structures (also FLFlash structure) are synchronized by <A HREF="#OsakSocksAnDrives">drive number</A> of the DOC. </P>
+<P>If you want to pass any parameters to functions described bellow then do it by following way:</P>
+<P><IMG SRC="Bullet5.gif" WIDTH=12 HEIGHT=12>&nbsp;Leave function header as it is defined. For example: <B>don't change</B> <A HREF="#PreInitWrite">flPreInitWrite8bitReg</A> (x,x,x) <B>to</B> <A HREF="#PreInitWrite">flPreInitWrite8bitReg</A> (x,x,x, MY_DATA_STRUCT myData);</P>
+<P><IMG SRC="Bullet5.gif" WIDTH=12 HEIGHT=12>&nbsp; Define global array:</P>
+<I><P>MY_DATA_STRUCT array[</I><A HREF="#defDRIVES"><I>DRIVES</I></A><I>];</P>
+</I><P><IMG SRC="Bullet5.gif" WIDTH=12 HEIGHT=12>&nbsp;Use this global array in following way:</P>
+<P><A HREF="#PreInitWrite"><I>flPreInitWrite8bitReg</I></A><I> ( unsigned driveNo,NDOC2window FAR0* winBase, unsigned offset,Reg8bitType Data);</P>
+<P>{</P>
+<P>if(array[</I><A HREF="#OsakSocksAnDrives"><I>driveNo</I></A><I>]-&gt;myData1) </P>
+<P>...</P>
+<P>}</P>
+</I><P>OR</P>
+<P><A HREF="#flWrite8bitReg"><I>flWrite8bitReg</I></A><I> (FLFlash* pVol, unsigned offset,Reg8bitType Data);</P>
+<P>{</P>
+<P>unsigned dirveNo = pVol-&gt;socket-&gt;volNo;</P>
+<P>if(array[</I><A HREF="#OsakSocksAnDrives"><I>driveNo</I></A><I>]-&gt;myData1) </P>
+<P>...</P>
+<P>}</P>
+</I><P>&nbsp;</P>
+<H2><A NAME="CusAppSer">6.5 Customizing for Your OSAK Services Requirements</A></H2>
+<P>The OSAK system functionality is highly customizable in the features and capability it provides. Many of the OSAK API functions are available only if some customization option is set. Most of the OSAK implementation limits, e.g. maximum number of drives, are also customizable.</P>
+<P>In order to build an OSAK application which contains exactly those features and implementation limits that you need, and no others, you need to set the various OSAK services customization options in FLCUSTOM.H.</P>
+<B><I><P><A NAME="defDRIVES"></A>Number of drives</P>
+</B><U><P>#define DRIVES 3</P>
+</I></U><P>Defines the maximum number of DiskOnChip sockets supported.</P>
+<B><I><P>Number of open files</P>
+</B><U><P><A NAME="defFILES"></A>#define FILES&#9;0</P>
+</I></U><P>Defines the maximum number of files that may be open at a time.</P>
+<P>When determining the number you need, remember that not only the <A HREF="#flOpenFile">flOpenFile</A> but also the <A HREF="#flFindFirstFile">flFindFirstFile</A> function needs to allocate a file handle.</P>
+<P>Setting the number of open files to 0 excludes support for all file &amp; directory related OSAK functions.</P>
+<B><I><P>Sector size</P>
+</B><U><P><A NAME="defSECSZ"></A>#define SECTOR_SIZE_BITS&#9;9</P>
+</I></U><P>Defines the base-2 log of sector size for the FAT &amp; NFTL layer. Note that the default of 512 bytes is the de-facto standard and practically the only one that provides real PC interoperability.</P>
+<B><I><P>Formatting</P>
+</B><U><P>#define FORMAT_VOLUME</P>
+</I></U><P>Selects or deselects embedded formatting with <A HREF="#flFormatVolume">flFormatVolume</A>.</P>
+<B><I><P>Defragmentation</P>
+</B><U><P>#define DEFRAGMENT_VOLUME</P>
+</I></U><P>Selects or deselects the embedded <A HREF="#Defragmentation">defragmentation</A> option with <A HREF="#flDefragmentVolume">flDefragmentVolume</A>. You will need to do defragmentation if you want to ensure faster write times in short bursts.</P>
+<B><I><P>Subdirectories</P>
+</B><U><P>#define SUB_DIRECTORY</P>
+</I></U><P>Selects or deselects support for subdirectories.</P>
+<P>If you do not include support for subdirectories, OSAK will ignore all but the first segment in your file path-names. You will still be able to work with Flash media that have a deep tree structure, but you will only be able to access the root directory.</P>
+<B><I><P>Rename file</P>
+</B><U><P>#define RENAME_FILE</P>
+</I></U><P>Selects or deselects support for renaming files with <A HREF="#flRenameFile">flRenameFile</A>.</P>
+<B><I><P>Split / Join file</P>
+</B><U><P>#define SPLIT_JOIN_FILE</P>
+</I></U><P>Selects or deselects support for splitting and joining files with <A HREF="#flJoinFile">flJoinFile</A> and <A HREF="#flSplitFile">flSplitFile</A>.</P>
+<B><I><P>12-bit FAT support</P>
+</B><U><P>#define FAT_12BIT</P>
+</I></U><P>Selects or deselects support for DOS media with 12-bit FAT. FAT file-systems automatically use or assume 12-bit FAT for media with 4085 clusters or less. For small media a cluster and a sector are often the same size, thus media of 2 Mbytes or less will use a 12-bit FAT. For media formatted by OSAK, media whose size is equal or smaller to 2Mbytes * MIN_CLUSTER_SIZE will require a 12-bit FAT. If you do not intend to support such media, you may save the code that is necessary for 12-bit FAT support. If you remove the 12-bit FAT support, however, do not try to access 12-bit FAT media. OSAK will not access them correctly and may corrupt them.</P>
+<B><I><P>Parse path function</P>
+</B><U><P>#define PARSE_PATH</P>
+</I></U><P>Selects or deselects parsing DOS-like path names with <A HREF="#flParsePath">flParsePath</A>.</P>
+<P>OSAK functions accept path-names in a simplified format as detailed in the Programmer's Interface. If you want to continue to handle DOS-like paths, you may incorporate the <A HREF="#flParsePath">fllParsePath</A> function to convert DOS-like paths to OSAK paths.</P>
+<B><I><P>Maximum supported medium size</P>
+</B><U><P>#define MAX_VOLUME_MBYTES 144</P>
+</I></U><P>Defines the largest Flash media size (in Mbytes) that your OSAK application wishes to support.</P>
+<P>This parameter affects the size of buffers that will be allocated for NFTL tables to manage the Flash media. If the maximum size is 32 MBytes or less, OSAK will also generate tighter and more economical code.</P>
+<P>In case you try to access a media whose size is larger than the selected size, you will get a flNotEnoughMemory error when mounting the volume, although in borderline cases mounting may still succeed. Other than failing to mount the card, no other damage will occur.</P>
+<B><I><P>Assumed card parameters</P>
+</B><U><P>#define ASSUMED_NFTL_UNIT_SIZE 0x2000l</P>
+</I></U><P>Defines assumptions about NFTL parameters of the Flash media. These parameters are significant only if you are using static allocation (you have MALLOC undefined in FLSYSTEM.H). They affect the size of the static heap allocated in NFTLLITE.C.</P>
+<P>ASSUMED_NFTL_UNIT_SIZE defines the assumed size of the Flash NFTL erase unit of the Flash media you want to handle. This size depends on the DiskOnChip capacity: 4 KBytes for a 2 Mbytes device, and 8 KBytes for larger devices.</P>
+<P>In case you try to access a card whose actual parameters do not fit the values you selected, you may get a flNotEnoughMemory error when mounting the card. No other damage will occur.</P>
+<B><I><P>Low-Level Flash access</P>
+</B><U><P>#define LOW_LEVEL</P>
+</I></U><P>Selects or deselects physical Flash access and programming.</P>
+<B><I><P>Application exit</P>
+</B><U><P>#define EXIT</P>
+</I></U><P>Selects whether the <A HREF="#flExit">flExit</A> function will be included.</P>
+<P>If your application ever exits, i.e. it does not run indefinitely, you will need to call the flExit routine before exiting from the application. This option incorporates flExit into OSAK.</P>
+<B><I><P>Minimum cluster size</P>
+</B><U><P>#define MIN_CLUSTER_SIZE 4</P>
+</I></U><P>Selects the minimum number of sectors-per-cluster that OSAK will use when formatting a media.</P>
+<P>OSAK automatically selects the minimum sectors-per-cluster ratio that makes the number of clusters on a newly formatted media less than 32767. You may force OSAK to use a larger cluster size on small media by setting the minimum cluster size.</P>
+<P>All fully functional FAT file-systems (including OSAK itself) should be able to support formatted media of any cluster size. This option is provided for compatibility with some limited functionality FAT file-systems available on some machines.</P>
+<P>Set minimum cluster size to 1 if you do not need to intervene in OSAK's formatting decision</P>
+<B><I><P>NFTL cash</P>
+</B><U><P>#define U_CACHE</P>
+</I></U><P>Enable U-cache (Unit Header cache). Turning on this option improves performance but requires additional RAM resources.</P>
+<P>The NAND Flash Translation Layer (NFTL) is a specification for storing data on DiskOnChip in a way that enables to access that data as a Virtual Block Device.</P>
+<P>If this option is on then NFTL keeps in RAM table of following format:</P>
+<TABLE BORDER CELLSPACING=1 CELLPADDING=7 WIDTH=638>
+<TR><TD WIDTH="33%" VALIGN="TOP">
+<P>Physical Unit number </TD>
+<TD WIDTH="33%" VALIGN="TOP">
+<P>Virtual Unit number</TD>
+<TD WIDTH="33%" VALIGN="TOP">
+<P>Replacement Unit number</TD>
+</TR>
+<TR><TD WIDTH="33%" VALIGN="TOP">
+<P>ppp</TD>
+<TD WIDTH="33%" VALIGN="TOP">
+<P>vvv</TD>
+<TD WIDTH="33%" VALIGN="TOP">
+<P>rrr</TD>
+</TR>
+</TABLE>
+
+<P>Whenever it is needed to change table entry, NFTL updates it in the RAM table and on the DiskOnChip. If NFTL has to read table entry then you can save time on reading sector from DiskOnChip. Accessing data described in the table is done when user read/write API function is called.</P>
+<I><U><P>#define S_CACHE</P>
+</I></U><P>Enable S-cache (Sector Flags cache). Turning on this option improves performance but requires additional RAM resources.</P>
+<P>If this option is on then NFTL keeps in RAM array of flags of every NFTL unit. Each flag is 8 bits. Whenever it is needed to change any unit's flag, NFTL updates it in the RAM array and on the DiskOnChip. If NFTL has to read unit's flag then you can save time on reading sector from DiskOnChip. Accessing unit flags is done when user read/write API function is called</P>
+<P>&nbsp;</P>
+<H2><A NAME="CusReg">6.6 Customizing the OSAK Registration Routine</A></H2>
+<P>Several of the OSAK component modules have to be activated before being used. These are:</P>
+<P><IMG SRC="Bullet7.gif" WIDTH=15 HEIGHT=12>&nbsp;The NFTL translation-layer NFTLLITE.C </P>
+<P><IMG SRC="Bullet7.gif" WIDTH=15 HEIGHT=12>&nbsp;The DiskOnChip MTD NFDC2148.C </P>
+<P><IMG SRC="Bullet7.gif" WIDTH=15 HEIGHT=12>&nbsp;The socket interface DOCSOC.C</P>
+<P>Each of these has a <B>registration routine</B> which should be called at initialization. A call to the module's registration routine activates the module. The activation of these module is done by the routine <I>flRegisterComponents in FLCUSTOM.C.</P>
+</I><P>Typically <I>flRegisterComponents</I> consists of the following code:</P>
+<P>&nbsp;/* Address range to search for DiskOnChip */</P>
+<I><P>#define FROM_ADDR 0xd0000l</P>
+<P>#define TO_ADDR 0xe0000l</P>
+<P>FLStatus flRegisterComponents(void)</P>
+<P>{</P>
+<P>checkStatus(flRegisterDOCSOC(FROM_ADDR, TO_ADDR));</P>
+<P>/* Register DiskOnChip socket interface Parameters specify a range of&#9; addresses where to look for the DOC controller*/ </P>
+<P>checkStatus(flRegisterNFDC2148()); /* Register DiskOnChip MTD */</P>
+<P>checkStatus(flRegisterNFTL()); /* Register NFTL translation layer */</P>
+<P>return flOK;</P>
+<P>}</P>
+</I><P>Typically, the only customization necessary is setting the low-bound and high-bound of the address range where a scan is done for the DiskOnChip (FROM_ADDR and TO_ADDR).</P>
+<P>Note that if the DiskOnChip was not found in the specified memory range, <I>flRegisterDOCSOC</I> returns a failing status <I>flAdapterNotFound, </I>and the number of registered drives <I>noOfDrives</I> remains 0<I>.</I> The routine may be called several times in several memory ranges to probe for a DiskOnChip device.</P>
+<P>This probing is typically necessary on systems where virtual memory is used. On such systems, even if the physical memory address of the DiskOnChip is known, it must be mapped to virtual memory before activating the socket interface. On a virtual memory system, <I>flRegisterDOCSOC</I> expects to receive a virtual, not a physical, address range. If a search scan should be done for the DiskOnChip, segments of physical memory should be iteratively mapped to virtual memory, and released, until a device is found, as signaled by the success of <I>flRegisterDOCSOC.</P>
+</I><P>&nbsp;</P>
+<P><IMG SRC="Leavln.gif" WIDTH=492 HEIGHT=19></P>
+<H1><A NAME="ROMRAMRequir">7. ROM and RAM Requirements</A></H1>
+<H2><A NAME="ROMRAMintroduct">7.1 Introduction</A></H2>
+<P>OSAK is small, and for any reasonably comfortable operating environment RAM and ROM requirements will not be an issue. OSAK, however, was designed for aggressively low memory requirements, suitable for low-cost embedded applications.</P>
+<P>This chapter will give an estimate of OSAK ROM and RAM requirements, to guide you in your OSAK system design and customization. The actual numbers depend greatly on the choice of processor and compiler, and on customization options selected. Therefore, we will define shortly two <B>reference systems</B> that are a typical OSAK implementation: </P>
+<P>Reference system based on block device driver API. </P>
+<P><A HREF="#FScodesize">Reference system based on file system API</A> </P>
+<P>We will show the breakdown of ROM and RAM requirements for those reference systems. We will then show how various customization options affect reference systems.</P>
+<P>&nbsp;</P>
+<H2><A NAME="bdcodesize">7.2 Reference System</A> based on Block Device system API</H2>
+<P><IMG SRC="Bullet7.gif" WIDTH=15 HEIGHT=12>&nbsp;Intel 80386 PC </P>
+<P><IMG SRC="Bullet7.gif" WIDTH=15 HEIGHT=12>&nbsp;Borland-C 3.1 compiler in C++ mode </P>
+<P><IMG SRC="Bullet7.gif" WIDTH=15 HEIGHT=12>&nbsp;Single drive </P>
+<P><IMG SRC="Bullet7.gif" WIDTH=15 HEIGHT=12>&nbsp;Static allocation used </P>
+<P><IMG SRC="Bullet7.gif" WIDTH=15 HEIGHT=12>&nbsp;DiskOnChip up to 8 MBytes supported </P>
+<P><IMG SRC="Bullet7.gif" WIDTH=15 HEIGHT=12>&nbsp;Pascal calling sequence used </P>
+<P><IMG SRC="Bullet7.gif" WIDTH=15 HEIGHT=12>&nbsp;Socket window &amp; user read/write buffers assumed far</P>
+<P>&nbsp;</P>
+<H3><A NAME="codebreak"></A>7.2.1 Code Breakdown</H3>
+<P>The total code size of the reference system is 14839 bytes, divided into OSAK modules as follows:</P>
+<TABLE BORDER CELLSPACING=1 BORDERCOLOR="#000000" CELLPADDING=7 WIDTH=340>
+<TR><TD WIDTH="73%" VALIGN="TOP">
+<H4>Module</H4></TD>
+<TD WIDTH="27%" VALIGN="MIDDLE">
+<H4>Size (bytes)</H4></TD>
+</TR>
+<TR><TD WIDTH="73%" VALIGN="TOP">
+<P>BLOCKDEV</TD>
+<TD WIDTH="27%" VALIGN="MIDDLE">
+<P>1237</TD>
+</TR>
+<TR><TD WIDTH="73%" VALIGN="TOP">
+<P>DISKONC</TD>
+<TD WIDTH="27%" VALIGN="MIDDLE">
+<P>5002</TD>
+</TR>
+<TR><TD WIDTH="73%" VALIGN="TOP">
+<P>DOCSOC</TD>
+<TD WIDTH="27%" VALIGN="MIDDLE">
+<P>&nbsp;193</TD>
+</TR>
+<TR><TD WIDTH="73%" VALIGN="TOP">
+<P>FLBASE</TD>
+<TD WIDTH="27%" VALIGN="MIDDLE">
+<P>140</TD>
+</TR>
+<TR><TD WIDTH="73%" VALIGN="TOP">
+<P>FLCUSTOM</TD>
+<TD WIDTH="27%" VALIGN="MIDDLE">
+<P>45</TD>
+</TR>
+<TR><TD WIDTH="73%" VALIGN="TOP">
+<P>FLFLASH</TD>
+<TD WIDTH="27%" VALIGN="MIDDLE">
+<P>874</TD>
+</TR>
+<TR><TD WIDTH="73%" VALIGN="TOP">
+<P>FLSOCKET</TD>
+<TD WIDTH="27%" VALIGN="MIDDLE">
+<P>587</TD>
+</TR>
+<TR><TD WIDTH="73%" VALIGN="TOP">
+<P>FLSYSTEM</TD>
+<TD WIDTH="27%" VALIGN="MIDDLE">
+<P>432</TD>
+</TR>
+<TR><TD WIDTH="73%" VALIGN="TOP">
+<P>FLTL</TD>
+<TD WIDTH="27%" VALIGN="MIDDLE">
+<P>210</TD>
+</TR>
+<TR><TD WIDTH="73%" VALIGN="TOP">
+<P>NTLLITE</TD>
+<TD WIDTH="27%" VALIGN="MIDDLE">
+<P>4880</TD>
+</TR>
+<TR><TD WIDTH="73%" VALIGN="TOP">
+<P>REEDSOL</TD>
+<TD WIDTH="27%" VALIGN="MIDDLE">
+<P>2024</TD>
+</TR>
+<TR><TD WIDTH="73%" VALIGN="TOP">
+<P>C library routines</TD>
+<TD WIDTH="27%" VALIGN="MIDDLE">
+<P>210</TD>
+</TR>
+<TR><TD WIDTH="73%" VALIGN="TOP">
+<H4>Total</H4></TD>
+<TD WIDTH="27%" VALIGN="MIDDLE">
+<P>15834</TD>
+</TR>
+</TABLE>
+
+<P>&nbsp;</P>
+<H3><A NAME="RAMbreak"></A>7.2.2 RAM Breakdown</H3>
+<P>&nbsp;The total RAM requirement for the reference system is approximately 2500 bytes, divided as follows:</P>
+<TABLE BORDER CELLSPACING=1 BORDERCOLOR="#000000" CELLPADDING=7 WIDTH=515>
+<TR><TD WIDTH="28%" VALIGN="TOP">
+<H4>Item</H4></TD>
+<TD WIDTH="53%" VALIGN="TOP">
+<H4>Details</H4></TD>
+<TD WIDTH="19%" VALIGN="TOP">
+<H4>Size(bytes)</H4></TD>
+</TR>
+<TR><TD WIDTH="28%" VALIGN="TOP">
+<P>Virtual Page Map</TD>
+<TD WIDTH="53%" VALIGN="TOP">
+<P>32 bytes per MByte volume size per drive</TD>
+<TD WIDTH="19%" VALIGN="TOP">
+<P>256</TD>
+</TR>
+<TR><TD WIDTH="28%" VALIGN="TOP">
+<P>Virtual Block Map</TD>
+<TD WIDTH="53%" VALIGN="TOP">
+<P>4 bytes per KByte VM limit per drive</TD>
+<TD WIDTH="19%" VALIGN="TOP">
+<P>256</TD>
+</TR>
+<TR><TD WIDTH="28%" VALIGN="TOP">
+<P>Unit Tables</TD>
+<TD WIDTH="53%" VALIGN="TOP">
+<P>6 bytes per erase unit per drive</TD>
+<TD WIDTH="19%" VALIGN="TOP">
+<P>384</TD>
+</TR>
+<TR><TD WIDTH="28%" VALIGN="TOP">
+<P>Control structures</TD>
+<TD WIDTH="53%" VALIGN="TOP">
+<P>130 bytes per drive</TD>
+<TD WIDTH="19%" VALIGN="TOP">
+<P>130</TD>
+</TR>
+<TR><TD WIDTH="28%" VALIGN="TOP">
+<P>Program stack</TD>
+<TD WIDTH="53%" VALIGN="TOP">
+<P>Approximate</TD>
+<TD WIDTH="19%" VALIGN="TOP">
+<P>320</TD>
+</TR>
+<TR><TD WIDTH="81%" VALIGN="TOP" COLSPAN=2>
+<H4>Total&nbsp;</H4></TD>
+<TD WIDTH="19%" VALIGN="TOP">
+<P>2526</TD>
+</TR>
+</TABLE>
+
+<P>&nbsp;</P>
+<H3><A NAME="bdEffOfCusReq"></A>7.2.3 Effect of Customization on Requirements</H3>
+<P>The following table demonstrates the effects on code and RAM requirements by varying various customization options.</P>
+<P>This table should be used as a guideline and its results treated with care. Each result is for the single change, and it does not follow that doing two changes will bring the total effect of each. In addition, in some cases the amount saved depends very much on other parameters (as an example, setting <I>DRIVES </I>to 2 simply doubles many areas, so the RAM increase depends a lot on the original size of these areas).</P>
+<TABLE BORDER CELLSPACING=1 BORDERCOLOR="#000000" CELLPADDING=7 WIDTH=590>
+<TR><TD WIDTH="52%" VALIGN="TOP">
+<H4>Change to reference system</H4></TD>
+<TD WIDTH="24%" VALIGN="TOP">
+<H4>Code difference (bytes)</H4></TD>
+<TD WIDTH="24%" VALIGN="TOP">
+<H4>RAM difference (bytes)</H4></TD>
+</TR>
+<TR><TD WIDTH="52%" VALIGN="TOP">
+<P>Target 8086 CPU</TD>
+<TD WIDTH="24%" VALIGN="TOP">
+<P>+1182</TD>
+<TD WIDTH="24%" VALIGN="TOP">
+<P>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="52%" VALIGN="TOP">
+<P>Use cdecl calling sequence</TD>
+<TD WIDTH="24%" VALIGN="TOP">
+<P>+581</TD>
+<TD WIDTH="24%" VALIGN="TOP">
+<P>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="52%" VALIGN="TOP" HEIGHT=25>
+<P>No far pointers</TD>
+<TD WIDTH="24%" VALIGN="TOP" HEIGHT=25>
+<P>-659</TD>
+<TD WIDTH="24%" VALIGN="TOP" HEIGHT=25>
+<P>-6</TD>
+</TR>
+<TR><TD WIDTH="52%" VALIGN="TOP">
+<P>Set maximum volume size to 2 MBytes</TD>
+<TD WIDTH="24%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="24%" VALIGN="TOP">
+<P>-1152</TD>
+</TR>
+<TR><TD WIDTH="52%" VALIGN="TOP">
+<P>Set maximum volume size to 40 MBytes</TD>
+<TD WIDTH="24%" VALIGN="TOP">
+<P>+235</TD>
+<TD WIDTH="24%" VALIGN="TOP">
+<P>+6150</TD>
+</TR>
+<TR><TD WIDTH="52%" VALIGN="TOP">
+<P>Include embedded formatting</TD>
+<TD WIDTH="24%" VALIGN="TOP">
+<P>+3235</TD>
+<TD WIDTH="24%" VALIGN="TOP">
+<P>+258</TD>
+</TR>
+<TR><TD WIDTH="52%" VALIGN="TOP">
+<P>Exclude embedded defragmentation</TD>
+<TD WIDTH="24%" VALIGN="TOP">
+<P>-161</TD>
+<TD WIDTH="24%" VALIGN="TOP">
+<P>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="52%" VALIGN="TOP">
+<P>Support 2 drives</TD>
+<TD WIDTH="24%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="24%" VALIGN="TOP">
+<P>+2294</TD>
+</TR>
+<TR><TD WIDTH="52%" VALIGN="TOP">
+<P>Use dynamic allocation</TD>
+<TD WIDTH="24%" VALIGN="TOP">
+<P>+837</TD>
+<TD WIDTH="24%" VALIGN="TOP">
+<P>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="52%" VALIGN="TOP">
+<P>Include physical read/write</TD>
+<TD WIDTH="24%" VALIGN="TOP">
+<P>+515</TD>
+<TD WIDTH="24%" VALIGN="TOP">
+<P>&nbsp;+30</TD>
+</TR>
+<TR><TD WIDTH="52%" VALIGN="TOP">
+<P>Minimal configuration</TD>
+<TD WIDTH="24%" VALIGN="TOP">
+<P>-820</TD>
+<TD WIDTH="24%" VALIGN="TOP">
+<P>-1158</TD>
+</TR>
+</TABLE>
+
+<P>&nbsp;</A></P>
+<H2><A NAME="FScodesize">7.3 Reference System</A> based on file system API</H2>
+<P><IMG SRC="Bullet7.gif" WIDTH=15 HEIGHT=12>&nbsp;Intel 80386 PC </P>
+<P><IMG SRC="Bullet7.gif" WIDTH=15 HEIGHT=12>&nbsp;Borland-C 3.1 compiler in C++ mode </P>
+<P><IMG SRC="Bullet7.gif" WIDTH=15 HEIGHT=12>&nbsp;Single drive </P>
+<P><IMG SRC="Bullet7.gif" WIDTH=15 HEIGHT=12>&nbsp;Static allocation used </P>
+<P><IMG SRC="Bullet7.gif" WIDTH=15 HEIGHT=12>&nbsp;All optional file-system features included except embedded formatting, split/join file. </P>
+<P><IMG SRC="Bullet7.gif" WIDTH=15 HEIGHT=12>&nbsp;DiskOnChip up to 8 MBytes supported </P>
+<P><IMG SRC="Bullet7.gif" WIDTH=15 HEIGHT=12>&nbsp;10 file handles available </P>
+<P><IMG SRC="Bullet7.gif" WIDTH=15 HEIGHT=12>&nbsp;Pascal calling sequence used </P>
+<P><IMG SRC="Bullet7.gif" WIDTH=15 HEIGHT=12>&nbsp;Socket window &amp; user read/write buffers assumed far</P>
+<P>&nbsp;</P>
+<H3><A NAME="fsCodeBreak"></A>7.3.1 Code Breakdown</H3>
+<P>The total code size of the reference system is 22085 bytes, divided into OSAK modules as follows:</P>
+<TABLE BORDER CELLSPACING=1 BORDERCOLOR="#000000" CELLPADDING=7 WIDTH=340>
+<TR><TD WIDTH="73%" VALIGN="TOP">
+<H4>Module</H4></TD>
+<TD WIDTH="27%" VALIGN="MIDDLE">
+<H4>Size (bytes)</H4></TD>
+</TR>
+<TR><TD WIDTH="73%" VALIGN="TOP">
+<P>BLOCKDEV</TD>
+<TD WIDTH="27%" VALIGN="MIDDLE">
+<P>1237</TD>
+</TR>
+<TR><TD WIDTH="73%" VALIGN="TOP">
+<P>DISKONC</TD>
+<TD WIDTH="27%" VALIGN="MIDDLE">
+<P>5002</TD>
+</TR>
+<TR><TD WIDTH="73%" VALIGN="TOP">
+<P>DOCSOC</TD>
+<TD WIDTH="27%" VALIGN="MIDDLE">
+<P>&nbsp;193</TD>
+</TR>
+<TR><TD WIDTH="73%" VALIGN="TOP">
+<P>FATLITE</TD>
+<TD WIDTH="27%" VALIGN="MIDDLE">
+<P>5883</TD>
+</TR>
+<TR><TD WIDTH="73%" VALIGN="TOP">
+<P>FLBASE</TD>
+<TD WIDTH="27%" VALIGN="MIDDLE">
+<P>140</TD>
+</TR>
+<TR><TD WIDTH="73%" VALIGN="TOP">
+<P>FLCUSTOM</TD>
+<TD WIDTH="27%" VALIGN="MIDDLE">
+<P>45</TD>
+</TR>
+<TR><TD WIDTH="73%" VALIGN="TOP">
+<P>FLFLASH</TD>
+<TD WIDTH="27%" VALIGN="MIDDLE">
+<P>874</TD>
+</TR>
+<TR><TD WIDTH="73%" VALIGN="TOP">
+<P>FLPARSE</TD>
+<TD WIDTH="27%" VALIGN="MIDDLE">
+<P>275</TD>
+</TR>
+<TR><TD WIDTH="73%" VALIGN="TOP">
+<P>FLSOCKET</TD>
+<TD WIDTH="27%" VALIGN="MIDDLE">
+<P>587</TD>
+</TR>
+<TR><TD WIDTH="73%" VALIGN="TOP">
+<P>FLSYSTEM</TD>
+<TD WIDTH="27%" VALIGN="MIDDLE">
+<P>432</TD>
+</TR>
+<TR><TD WIDTH="73%" VALIGN="TOP">
+<P>FLTL</TD>
+<TD WIDTH="27%" VALIGN="MIDDLE">
+<P>210</TD>
+</TR>
+<TR><TD WIDTH="73%" VALIGN="TOP">
+<P>NTLLITE</TD>
+<TD WIDTH="27%" VALIGN="MIDDLE">
+<P>4880</TD>
+</TR>
+<TR><TD WIDTH="73%" VALIGN="TOP">
+<P>REEDSOL</TD>
+<TD WIDTH="27%" VALIGN="MIDDLE">
+<P>2024</TD>
+</TR>
+<TR><TD WIDTH="73%" VALIGN="TOP">
+<P>C library routines</TD>
+<TD WIDTH="27%" VALIGN="MIDDLE">
+<P>210</TD>
+</TR>
+<TR><TD WIDTH="73%" VALIGN="TOP">
+<H4>Total</H4></TD>
+<TD WIDTH="27%" VALIGN="MIDDLE">
+<P>21992</TD>
+</TR>
+</TABLE>
+
+<P>&nbsp;</P>
+<H3><A NAME="fsRAMbreak">7.3.2 RAM Breakdown</A></H3>
+<P>&nbsp;The total RAM requirement for the reference system is approximately 2500 bytes, divided as follows:</P>
+<TABLE BORDER CELLSPACING=1 BORDERCOLOR="#000000" CELLPADDING=7>
+<TR><TD WIDTH=142 VALIGN="TOP">
+<H4>ItemDetails</H4></TD>
+<TD WIDTH=275 VALIGN="TOP">
+<H4>Size(bytes)</H4></TD>
+<TD VALIGN="MIDDLE">
+<P>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH=142 VALIGN="TOP">
+<P>Sector buffers</TD>
+<TD WIDTH=275 VALIGN="TOP">
+<P>520 bytes each (per drive)</TD>
+<TD WIDTH=275 VALIGN="TOP">
+<P>1040</TD>
+</TR>
+<TR><TD WIDTH=142 VALIGN="TOP">
+<P>File table</TD>
+<TD WIDTH=275 VALIGN="TOP">
+<P>14 bytes each</TD>
+<TD WIDTH=275 VALIGN="TOP">
+<P>140</TD>
+</TR>
+<TR><TD WIDTH=142 VALIGN="TOP">
+<P>Virtual Page Map</TD>
+<TD WIDTH=275 VALIGN="TOP">
+<P>32 bytes per MByte volume size per drive</TD>
+<TD WIDTH=275 VALIGN="TOP">
+<P>256</TD>
+</TR>
+<TR><TD WIDTH=142 VALIGN="TOP">
+<P>Virtual Block Map</TD>
+<TD WIDTH=275 VALIGN="TOP">
+<P>4 bytes per KByte VM limit per drive</TD>
+<TD WIDTH=275 VALIGN="TOP">
+<P>256</TD>
+</TR>
+<TR><TD WIDTH=142 VALIGN="TOP">
+<P>Unit Tables</TD>
+<TD WIDTH=275 VALIGN="TOP">
+<P>6 bytes per erase unit per drive</TD>
+<TD WIDTH=275 VALIGN="TOP">
+<P>384</TD>
+</TR>
+<TR><TD WIDTH=142 VALIGN="TOP">
+<P>Control structures</TD>
+<TD WIDTH=275 VALIGN="TOP">
+<P>130 bytes per drive</TD>
+<TD WIDTH=275 VALIGN="TOP">
+<P>130</TD>
+</TR>
+<TR><TD WIDTH=142 VALIGN="TOP">
+<P>Program stack</TD>
+<TD WIDTH=275 VALIGN="TOP">
+<P>Approximate</TD>
+<TD WIDTH=275 VALIGN="TOP">
+<P>320</TD>
+</TR>
+<TR><TD WIDTH=417 VALIGN="TOP" COLSPAN=2>
+<H4>Total&nbsp;</H4></TD>
+<TD WIDTH=275 VALIGN="TOP">
+<P>2526</TD>
+</TR>
+</TABLE>
+
+<P>&nbsp;</P>
+<H3><A NAME="EffCustomizRequir">7.3.3 Effect of Customization on Requirements</A></H3>
+<P>The following table demonstrates the effects on code and RAM requirements by varying various customization options.</P>
+<P>This table should be used as a guideline and its results treated with care. Each result is for the single change, and it does not follow that doing two changes will bring the total effect of each. In addition, in some cases the amount saved depends very much on other parameters (as an example, setting <I>DRIVES </I>to 2 simply doubles many areas, so the RAM increase depends a lot on the original size of these areas).</P>
+<TABLE BORDER CELLSPACING=1 BORDERCOLOR="#000000" CELLPADDING=7 WIDTH=590>
+<TR><TD WIDTH="52%" VALIGN="TOP">
+<H4>Change to reference system</H4></TD>
+<TD WIDTH="24%" VALIGN="TOP">
+<H4>Code difference (bytes)</H4></TD>
+<TD WIDTH="24%" VALIGN="TOP">
+<H4>RAM difference (bytes)</H4></TD>
+</TR>
+<TR><TD WIDTH="52%" VALIGN="TOP">
+<P>Target 8086 CPU</TD>
+<TD WIDTH="24%" VALIGN="TOP">
+<P>+1676</TD>
+<TD WIDTH="24%" VALIGN="TOP">
+<P>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="52%" VALIGN="TOP">
+<P>Use cdecl calling sequence</TD>
+<TD WIDTH="24%" VALIGN="TOP">
+<P>+758</TD>
+<TD WIDTH="24%" VALIGN="TOP">
+<P>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="52%" VALIGN="TOP">
+<P>No far pointers</TD>
+<TD WIDTH="24%" VALIGN="TOP">
+<P>-770</TD>
+<TD WIDTH="24%" VALIGN="TOP">
+<P>-6</TD>
+</TR>
+<TR><TD WIDTH="52%" VALIGN="TOP">
+<P>Set maximum volume size to 2 MBytes</TD>
+<TD WIDTH="24%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="24%" VALIGN="TOP">
+<P>-1152</TD>
+</TR>
+<TR><TD WIDTH="52%" VALIGN="TOP">
+<P>Set maximum volume size to 40 MBytes</TD>
+<TD WIDTH="24%" VALIGN="TOP">
+<P>+293</TD>
+<TD WIDTH="24%" VALIGN="TOP">
+<P>+6172</TD>
+</TR>
+<TR><TD WIDTH="52%" VALIGN="TOP">
+<P>Include embedded formatting</TD>
+<TD WIDTH="24%" VALIGN="TOP">
+<P>+3235</TD>
+<TD WIDTH="24%" VALIGN="TOP">
+<P>+258</TD>
+</TR>
+<TR><TD WIDTH="52%" VALIGN="TOP">
+<P>Exclude 12-bit FAT support</TD>
+<TD WIDTH="24%" VALIGN="TOP">
+<P>-387</TD>
+<TD WIDTH="24%" VALIGN="TOP">
+<P>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="52%" VALIGN="TOP">
+<P>Exclude sub-directory support</TD>
+<TD WIDTH="24%" VALIGN="TOP">
+<P>-481</TD>
+<TD WIDTH="24%" VALIGN="TOP">
+<P>-12</TD>
+</TR>
+<TR><TD WIDTH="52%" VALIGN="TOP">
+<P>Exclude embedded defragmentation</TD>
+<TD WIDTH="24%" VALIGN="TOP">
+<P>-161</TD>
+<TD WIDTH="24%" VALIGN="TOP">
+<P>&nbsp;-2</TD>
+</TR>
+<TR><TD WIDTH="52%" VALIGN="TOP">
+<P>Exclude path parsing</TD>
+<TD WIDTH="24%" VALIGN="TOP">
+<P>-229</TD>
+<TD WIDTH="24%" VALIGN="TOP">
+<P>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="52%" VALIGN="TOP">
+<P>Exclude rename file</TD>
+<TD WIDTH="24%" VALIGN="TOP">
+<P>-235</TD>
+<TD WIDTH="24%" VALIGN="TOP">
+<P>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="52%" VALIGN="TOP">
+<P>Support 2 drives</TD>
+<TD WIDTH="24%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="24%" VALIGN="TOP">
+<P>+2814</TD>
+</TR>
+<TR><TD WIDTH="52%" VALIGN="TOP">
+<P>Use dynamic allocation</TD>
+<TD WIDTH="24%" VALIGN="TOP">
+<P>+837</TD>
+<TD WIDTH="24%" VALIGN="TOP">
+<P>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="52%" VALIGN="TOP">
+<P>Include split/join file</TD>
+<TD WIDTH="24%" VALIGN="TOP">
+<P>+1514</TD>
+<TD WIDTH="24%" VALIGN="TOP">
+<P>&nbsp;</TD>
+</TR>
+<TR><TD WIDTH="52%" VALIGN="TOP">
+<P>Minimal configuration</TD>
+<TD WIDTH="24%" VALIGN="TOP">
+<P>-2263</TD>
+<TD WIDTH="24%" VALIGN="TOP">
+<P>-1172</TD>
+</TR>
+</TABLE>
+
+<I><FONT SIZE=6><P>&nbsp;</P>
+</I></FONT><H1><A NAME="samples"></A>8. Sample Applications </H1>
+<H2>8.1 <A NAME="flcopy"></A>FLCOPY &amp; FLDIR: Simple and Portable File-System Examples</H2>
+<P>The <B>EXAMPLES\FLCOPY\ </B>directory contains source-code and binary executables of two OSAK applications: <I>FLCOPY </I>and <I>FLDIR</I>. These examples show the basic usage of OSAK file system operations: mount volume, translate DOS path to OSAK path, open file for read or write, find file, and use the basic file system utilities: seek, read &amp; write. </P>
+<P>The applications make use of standard ANSI-C functions exclusively and so can be compiled and run on any target. They may be used to test and debug the customization of OSAK to the target system.</P>
+<B><P>&nbsp;</P>
+<P>About FLCOPY:</P>
+</B><I><P>FLCOPY</I> is a short example for how to write a FLite application. This short application copies a file from, or to the Flash disk.</P>
+<P>Usage:  flcopy [flite\\]source-file  [flite\\]destination-file.</P>
+<P>The prefix "flite\\" to the file name means that the file is on the DiskOnChip and accessed through OSAK. A file name without a “flite\\” prefix is accessed through standard C I/O and is on the hard disk or some other storage device. At least one of the two files must be on the DiskOnChip. The destination file will be open for write, overriding its old contents.</P>
+<B><P>&nbsp;</P>
+<P>About FLDIR:</P>
+</B><P>This short example lists the files and directory names in a given directory on the flash. This is an example for how to use the functions <I>flFindFirstFile</I> &amp; <I>flFindNextFile</I>.</P>
+<P>Usage:  fldir flite\\directory-path</P>
+<B></B></BODY>
+</HTML>

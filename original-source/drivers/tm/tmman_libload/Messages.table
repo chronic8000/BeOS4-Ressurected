@@ -1,0 +1,173 @@
+/*
+ *  +-------------------------------------------------------------------+
+ *  | Copyright (c) 1995,1996,1997 by Philips Semiconductors.           |
+ *  |                                                                   |
+ *  | This software  is furnished under a license  and may only be used |
+ *  | and copied in accordance with the terms  and conditions of such a |
+ *  | license  and with  the inclusion of this  copyright notice.  This |
+ *  | software or any other copies of this software may not be provided |
+ *  | or otherwise  made available  to any other person.  The ownership |
+ *  | and title of this software is not transferred.                    |
+ *  |                                                                   |
+ *  | The information  in this software  is subject  to change  without |
+ *  | any  prior notice  and should not be construed as a commitment by |
+ *  | Philips Semiconductors.                                           |
+ *  |                                                                   |
+ *  | This  code  and  information  is  provided  "as is"  without  any |
+ *  | warranty of any kind,  either expressed or implied, including but |
+ *  | not limited  to the implied warranties  of merchantability and/or |
+ *  | fitness for any particular purpose.                               |
+ *  +-------------------------------------------------------------------+
+ *
+ *  Module name              : Messages.table    1.81
+ *
+ *  Module type              : MESSAGE TABLE
+ *
+ *  Title                    : Message definitions
+ *
+ *  Last update              : 10:42:43 - 98/05/19
+ *
+ *  Description              : This unit defines all messages which can be reported
+ *                             using the message reporter Lib_Messages. 
+ *                             For each message, it defines a symbolic name, 
+ *                             a message class, and a textual representation with
+ *                             optional placeholders for values to be provided at
+ *                             message reporting time.
+ *
+ *                             The idea of all this is that messages/errors can be 
+ *                             reported using only the symbolic name plus some optional
+ *                             arguments a la printf, without concern of what should
+ *                             further happen with this message/error, and that a separate
+ *                             error handler decides if and what to print and if so, 
+ *                             in which format.
+ *
+ *                             Grouping the application's message descriptions in
+ *                             this way has a number of advantages: 
+ *
+ *                             * It isolates all possible messages which can be raised
+ *                               by the application. They can be documented by adding
+ *                               explanations, and hence can be included in the user 
+ *                               documentation. Either directly, or in formatted form.
+ *                             * It allows easy modification of the message representation
+ *                               of -type, without digging in the sources.
+ *                             * It allows easy grouping of messages, in order to let
+ *                               them be collectively redirected or suppressed, or by
+ *                               collectively recognising them in an output file.
+ *                             * Messages are treated in a uniform way by the reporter,
+ *                               for instance their formatting is uniform.
+ *
+ *                             See also description of module Lib_Message.                                     
+ */
+
+
+/*------------------------------------------- Message type definitions: ----------------------------------------*/
+
+
+           /*                                                        */
+           /*    name         |    representation in message texts   */
+           /* ================+====================================  */
+           /*                 |                                      */
+
+            XMT(  Msg_Info,             "info"                   )
+            XMT(  Msg_Conform,          "language conformance"   )
+            XMT(  Msg_Warn,             "warning "               )
+            XMT(  Msg_Error,            "error"                  )
+            XMT(  Msg_Fatal,            "fatal"                  )
+            XMT(  Msg_Intern,           "internal error"         )
+
+
+
+
+/*-------------------------------------------- Message definitions: --------------------------------------------*/
+
+
+
+
+/*                          ------------ test messages and reminders ------------                               */
+/*                    											        */
+/*  msg name (use in Msg_report)  |    message type    |   Parameterisable message text, printed on Msg_report  */
+/* ===============================+====================+======================================================= */
+/*                                |                    |                                                        */
+
+XAM( LibMsg_NULL,                       Msg_Info,      ""                                                   )
+
+XAM( LibMsg_Memory_Overflow,            Msg_Fatal,     "Memory overflow: failed on %d bytes"                )
+XAM( LibMsg_Assertion_Failed,           Msg_Info,      "Assertion failed in file %s, line %d"               )
+XAM( LibMsg_assertion_failed,           Msg_Fatal,     "Assertion failed: %s, file %s, line %d"        	    )
+XAM( LibMsg_Unclassified,               Msg_Fatal,     "Unclassified problem"                               )
+
+XAM( GenMsg_Aborted_Due_Errors,         Msg_Fatal,     "%s aborted due to errors"                           )
+
+XAM( LibMsg_Alignment_Error,            Msg_Fatal,     "Alignment error"                                                 )
+XAM( LibMsg_Memspace_In_Use,            Msg_Fatal,     "Memory space to be freed is not in use"                          )
+XAM( LibMsg_No_Memspace,                Msg_Fatal,     "Both specified-and default memspace NULL in malloc"              )
+XAM( LibMsg_Out_Of_Spaces,              Msg_Fatal,     "Memspace descriptor pool full"                                   )
+XAM( LibMsg_Freelist_Corruption,        Msg_Fatal,     "Freelist corruption"                                             )
+XAM( LibMsg_Negative_List_Index,        Msg_Fatal,     "Attempt to perform list lookup via negative index (%d)"          )
+XAM( LibMsg_Negative_Bag_Amount,        Msg_Fatal,     "Attempt to insert into or remove negative element from bag (%d)" )
+XAM( LibMsg_Negative_Bitset_Element,    Msg_Fatal,     "Attempt to insert negative element into bitset (%d)"             )
+XAM( LibMsg_Incompatible_Bags,          Msg_Fatal,     "Binary operation attempt on incompatible bags"                   )
+XAM( LibMsg_Incompatible_Sets,          Msg_Fatal,     "Binary operation attempt on incompatible sets"                   )
+XAM( LibMsg_Null_Set,                   Msg_Fatal,     "Attempt to operate on NULL set"                                  )
+XAM( LibMsg_Null_Mapping,               Msg_Fatal,     "Attempt to operate on NULL mapping"                              )
+
+
+/* Check the following */
+
+XAM( MDMsg_Opcode_Already_Defined,      Msg_Fatal,     "Opcode has already been defined"                                 )
+XAM( MDMsg_UnitType_Already_Defined,    Msg_Fatal,     "UnitType has already been defined"                               )
+
+XAM( MDMsg_ShortFile,    		Msg_Error,     "premature end of file (no closing comment \"*)\""                )
+XAM( MDMsg_MissingQuote,    		Msg_Error,     "Cannot find matching closing double quote"                       )
+XAM( MDMsg_QuoteOverLine,    		Msg_Error,     "Quoted strings must be on one line"                              )
+XAM( MDMsg_LongString,    		Msg_Error,     "Quoted strings cannot exceed 255 characters"                     )
+
+XAM( MDMsg_SyntaxError,                 Msg_Error,     "Error in machine description file: %s: near token %s"            )
+XAM( MDMsg_InvalidOpcode,               Msg_Error,     "not a valid opcode identifier, '%s'"                             )
+XAM( MDMsg_InvalidUnitId,               Msg_Error,     "not a valid unit type identifier, '%s'"                          )
+XAM( MDMsg_InvalidParmRange,    	Msg_Error,     "invalid parameter range, low (%d) is larger than high (%d)"      )
+XAM( MDMsg_InvalidParmStep,    		Msg_Error,     "invalid parameter step (%d), must be a power of two"             )
+XAM( MDMsg_EmptyPseudoOp,    		Msg_Error,     "pseudo operation '%s' is empty"                                  )
+XAM( MDMsg_UnknownOpInPseudoOp,   	Msg_Error,     "pseudo operation '%s' uses unknown opcode: '%s'"                 )
+XAM( MDMsg_OpOnFU,    			Msg_Error,     "opcode '%s' may be instanced on one functional unit type only"   )
+XAM( MDMsg_InvalidIssueSlotForFU,    	Msg_Error,     "invalid issue slot %d specified for unit type '%s'"              )
+XAM( MDMsg_DuplicateOpcode,    		Msg_Error,     "duplicate opcode value specified, '%s'"                          )
+XAM( MDMsg_NoUnitType,    		Msg_Error,     "A unit instance %d (of slot %d) does not have a unit type"       )
+XAM( MDMsg_UnusedFU1,    		Msg_Error,     "functional unit type '%s' does not have units instanced"         )
+XAM( MDMsg_UnusedFU2,    		Msg_Error,     "functional unit type '%s' has no opcodes"                        )
+XAM( MDMsg_WrongFULatency,    		Msg_Error,     "functional unit type '%s' has negative latency cycle (%d)"       )
+XAM( MDMsg_WrongFUDelay,    		Msg_Error,     "functional unit type '%s' has negative delay cycle (%d)"         )
+XAM( MDMsg_WrongFURecovery,    		Msg_Error,     "functional unit type '%s' has negative recovery cycle (%d)"      )
+XAM( MDMsg_WrongXBarMask,    		Msg_Error,     "functional unit type '%s' has invalid crossbar mask (0x%08x)"    )
+XAM( MDMsg_DanglingOpcode,    		Msg_Error,     "opcode '%s' is not assigned to any unit type"                    )
+XAM( MDMsg_OpcodeMustbeDangling,    	Msg_Error,     "pseudo opcode '%s' should not be assigned to any unit type"      )
+XAM( MDMsg_UnnumberedOpcode,    	Msg_Error,     "opcode '%s' does not have instruction code value"                )
+XAM( MDMsg_NumberedPseudoOpcode,    	Msg_Error,     "pseudo opcode '%s' should not have instruction code value"       )
+XAM( MDMsg_TooManyRegisters,    	Msg_Error,     "number of registers (%d) not in range of [3, 512]"               )
+XAM( MDMsg_NoNop,    			Msg_Error,     "opcode 'nop' instruction code is not defined"                    )
+XAM( MDMsg_InvalidWidth,    		Msg_Error,     "opcode bitfield width (%d) not in range of [1, 16]"              )
+XAM( MDMsg_GuardTooNarrow,    		Msg_Error,     "guard bitfield width (%d) can't hold max register index"         )
+XAM( MDMsg_Arg1TooNarrow,   		Msg_Error,     "arg1 bitfield width (%d) can't hold max register index"          )
+XAM( MDMsg_Arg2TooNarrow,    		Msg_Error,     "arg2 bitfield width (%d) can't hold max register index"          )
+XAM( MDMsg_DestTooNarrow,    		Msg_Error,     "dst bitfield width (%d) can't hold max register index"           )
+XAM( MDMsg_CantOpenMD,		        Msg_Fatal,     "opening machine description file '%s' failed"        	         )
+
+/********until here********/
+
+XAM( LdLibMsg_AncientFormat,            Msg_Fatal,     "Old generation object format (SDK 1.0 and lower)"                )
+XAM( LdLibMsg_WrongMagic,               Msg_Fatal,     "Wrong magic number detected"                                     )
+XAM( LdLibMsg_Old_Format_Version,       Msg_Fatal,     "Old version encountered in object module: %d iso. %d"        )
+XAM( LdLibMsg_Unknown_Format_Version,   Msg_Fatal,     "Unknown version encountered in object module: %d iso. %d"        )
+XAM( LdLibMsg_Inconsistent_Lifetimes,   Msg_Fatal,     "Inconsistent lifetime dependencies encountered in object module" )
+XAM( LdLibMsg_Uncovered_Sections,       Msg_Fatal,     "Section %s not completely covered by sectionunits"               )
+XAM( LdLibMsg_Output_Failed,            Msg_Fatal,     "Failure writing output file"                                     )
+XAM( LdLibMsg_Open_Failed,              Msg_Fatal,     "Failure opening output file %s"                                  )
+XAM( LdLibMsg_InvalidModule,            Msg_Fatal,     "Invalid object module"                                           )
+XAM( LdLibMsg_Non_Permanent_DefSection, Msg_Fatal,     "Default section life time should be 'permanent"                  )
+XAM( LdLibMsg_Non_Permanent_StartSym,   Msg_Fatal,     "Start symbol %s should not refer to non 'permanent' section"     )
+XAM( LdLibMsg_NotSupported,             Msg_Fatal,     "Not supported: %s"                                               )
+
+
+
+XAM( TMDLdMsg_UnresolvedSymbols,        Msg_Fatal,     "Unresolved symbol%s %s"                                          )
+XAM( TMDLdMsg_Input_Failed,             Msg_Fatal,     "Reading object file failed: %s"                                  )

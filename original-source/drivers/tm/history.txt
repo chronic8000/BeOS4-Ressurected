@@ -1,0 +1,146 @@
+000:
+	* everything but top level files and test_app directory
+
+001:
+	* removed in directory makefiles
+	* removed useless syncobj.c (contains dummy functions)
+	* removed linux binaries
+	* tmman_lib contains UNUSED "sgbuffer.c"
+	* tmman_libload MAY CONTAIN UNUSED files.
+
+002:
+	* apply formatting on what's inside "tmman_drv"
+	* submitted in perforce as change 56729
+
+003:
+	* add makefile inside tmman_drv
+	* change platform.h to tm_platform.h (and modify corresponding includes)
+	* remove inclusion of most Linux-specific headers
+	* submitted in perforce as change 56730
+
+004:
+	* add includes path to the makefile
+	* remove other include of linux-specific headers
+	* make tmhal.c compilable
+	* submitted in perforce as change 56753
+
+005:
+	* update some comments in tmhal.c
+	* add history.txt to perforce
+	* make misc.c compilable
+	* submitted in perforce as change 56774
+	
+006:
+	* makes rtal.c compilable
+	* submitted in perforce as change 56778
+	
+007:
+	* implement pci access function
+	* submitted in perforce as change 56780
+	
+008:
+	* bad parmeter in AllocateContiguous Memory (full lock instead of contiguous)
+	* makes tmman.c compilable
+	* submitted in perforce as change 56865
+	
+009:
+	* makes memory.c compilable
+	* makes osal.c compilable
+	* add definition of TMMAN_HOST to the build settings
+	* submitted in perforce as change 56882
+	
+010:
+	* makes namespc.c compilable
+	* makes channel.c compilable
+	* makes vintr.c compilable
+	* makes event.c compilable
+	* makes message.c compilable
+	* submitted in perforce as change 56887
+	
+011:
+	* makes debug.c compilable
+	* makes tmif.c compilable
+	* submitted in perforce as change 56902
+	
+012:
+	* removed linux_drv directory
+	* submitted in perforce as change 56907
+	
+013:
+	* correct bug in mydefs.c
+	* implement partially tm.c
+	* small modification to the way the interrupt handler is installed in tmhal.c
+	* init/uninit/open works
+	* submitted in perforce as change 56993
+	
+014:
+	* add call to tmmControl
+	* correct bug in mapping card SDRAM and MMIO (tmhal.c)
+	* ioctl NOT testes at all
+	* unless warning on some unimplemented yet things, everything on trace is OK
+	* submitted in perforce as change 57073
+
+015:
+	* makes libload a static library
+	* still some warnings in 'XFlatObject.c' and 'TMDownLoader.c'
+	* submitted in perforce as change 57357
+	
+
+016:
+	* add test_app and makes it compilable
+	* check if operation is supported by ioctl(tm_control)
+	* currently ends in kdl (after some unimplemented yet code)
+	* submitted in perforce as change 57411
+		
+017:
+	* add BeOS implementation of file open/close and especially buggy seek
+	* load /boot/home/ledtest.out
+	* add additional ioctl to transfer mapped address between the driver and the library
+	* load and relocate library correctly
+	* KDL when creating some event (probably related to DSPStart)
+	* submitted in perforce as change 57624
+	
+018:
+	* remove strSprintf (used only two times) and replace it by common sprintf
+	* block on wait for event "ev_to_ho"
+	* submitted in perforce as change 57667
+	
+019:
+	* add some trace (test.c, tmhal.c, osal.c)
+	* add tmdump test program (compile but don't run at this point)
+	* submitted in perforce as change xxx
+	
+020:
+	* remove all memory mapping at exit
+	* add possibility to leave some 'test' memory mappings
+	* fix tmdump test program
+	* commented out some BIU_CTL access (to have similar PCI trace to the windows one)
+	* submitted in perforce as change xxx
+	 
+
+		
+	
+
+
+todo:
+	* warning removal in some files
+	* good enum for ioctl custom operation code
+
+a eclaircir
+	* manuel: retourner systematiquement unhandled (not good because kernel protect itself)
+	* P4032_P5064INT_PCI3
+	* tmhal.c : ajout du =dummy
+	* tmhal.c : dans ResetDSP: removed two & within write_pci.
+	* tmif.c : TMIF = &TMIF_kernelspace, removed the & (case of message send and receive, around line 1080)
+	
+others:
+	* removed call to make some memory uncacheable (useless according to Dimitri)
+	
+
+
+
+
+
+
+	
+	

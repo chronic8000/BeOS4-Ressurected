@@ -1,0 +1,11 @@
+# ++++++++++
+#	FILE:	skel.exp
+#	REVS:	$Revision: 1.1 $
+#	NAME:	herold
+#	DATE:	Wed Apr 10 14:04:32 PDT 1996
+#	Copyright (c) 1996 by Be Incorporated.  All Rights Reserved.
+# +++++
+
+devices
+init_driver
+

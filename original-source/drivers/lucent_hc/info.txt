@@ -1,0 +1,87 @@
+The following information is at least partially dirivied from the International Telecommunication Union's CCITT T.35 recommendation: 'Terminal Equipment and protocols for Telematic Services - Procedure for the Allocation of CCITT Defined Codes for Non-Standard Facilities, Geneva, 1991
+
+The new commands for AT style country code selection are:
+
+at+gci?
+This command returns the hex value of the current country code
+
+at+gci=xx
+This command sets the country code to the hex value xx.  This will only work if xx is in the list of countrys known.  (See next command)
+
+at+gci=?
+This command lists all of the country codes (in hex) known to the driver.
+
+
+As of Lucent's 5.75 driver, this is the currect set of country codes:
++GCI:(09,0F,31,3C,3D,42,7B,59,7E,82,
+A0,A5,A6,B4,0A,00,26,61,6C,9C,
+A9,54,8B,B5,57,50,20,73,53,BC,
+89,46,51,AE,9F,8A,2E,69,16,1B,
+2D,52,B8,58,98,84,07,14,25,27,
+35,85,88,BB,87,B7,8C,49,2B,7F,
+68)
+
+To report the current country selection in words, use the command 'ati9',
+The above mentioned list equivalents:
+
+09 - Australia
+0F - Belgium
+31 - Denmark
+3C - Finland
+3D - France
+42 - Germany
+7B - Netherlands
+59 - Italy
+7E - New Zealand
+82 - Norway
+A0 - Spain 
+A5 - Sweden
+A6 - Switzerland
+B4 - United Kingdom
+0A - Austria
+00 - Japan
+26 - People's Republic of China
+61 - Korea 
+6C - Malaysia
+9C - Singapore
+A9 - Thailand
+54 - Indonesia
+8B - Portugal
+B5 - North America 
+57 - Ireland
+50 - Hong Kong
+20 - Canada
+73 - Mexico
+53 - India
+BC - Vietnam
+89 - Philippines
+46 - Greece
+51 - Hungary
+AE - Turkey
+9F - South Africa
+8A - Poland
+2E - Czech Republic
+69 - Luxembourg
+16 - Brazil
+1B - Bulgaria
+2D - Cyprus
+52 - Iceland
+B8 - Russia
+58 - Isreal
+98 - Saudi Arabia
+84 - Pakistan
+07 - Argentina
+14 - Boliva
+25 - Chile
+27 - Columbia
+35 - Ecuador
+85 - Panama
+88 - Peru
+BB - Venezuela
+87 - Paraguay
+B7 - Uruguay
+8C - Puerto Rico
+49 - Guatemala
+2B - Costa Rica
+7F - Nicaragua
+68 - Liechtenstein

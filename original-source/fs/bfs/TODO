@@ -1,0 +1,41 @@
+- power failure testing & log playback.  the bootloader should ignore
+  entries that have a zero length (and stop the playback there)
+
+- large files (> 36 gig).  need to do either triple indirect blocks
+  or chained i-nodes.  there is space in the i-node structure that
+  was saved explicitly for this.  triple indirect blocks will still
+  have a max file size that could be limiting (though it would probably
+  be around 18 terabytes)
+
+- handling the fragmented disk causes directory/index growth to fail
+  problem.  that is, a transaction can start and appear to have enough
+  disk blocks to succeed but because the disk is perfectly fragmented
+  and the directory or index uses double indirect blocks, growing the
+  directory/index will fail if there is no contiguous run of 4 blocks.
+  The solution to this is to keep track of (on a per allocation group 
+  basis) how many runs of 4 or larger there are.  The total number of
+  blocks is sort of irrelevant really.  We only care if there are at
+  least 20 or so block runs of length 4 or larger.  The number 20, 
+  while somewhat arbitrary, has some basis in fact (the biggest b+trees
+  I've ever seen are level 4 or 5 so assume 10 and then if you had to
+  split each level on a b+tree that used double indirect blocks that 
+  would require 20 block runs of length 4.  One has to be careful with
+  these space calculations though or else a floppy will never work.
+
+- fsync should probably also sync any attribute data
+
+- if you reboot after a file has been unlinked but before the file has
+  had remove_vnode() called you will leak disk space.  chkbfs will fix
+  this now but it would be better to deal with it properly at reboot 
+  time.  my suggestion would be to save a block or two somewhere and
+  write the i-node number of unlinked but not deleted files.  at boot
+  time after replaying the log, this block could be read in and then
+  those files deleted (as normal transactions against the log).
+
+- log replay should probably check if files need to be added/deleted or
+  modified in the indices.
+
+- it would be nice if attribute i-nodes stored the attribute data in
+  their small_data section instead of allocating data blocks (and thus
+  causing even more seeks).
+

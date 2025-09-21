@@ -1,0 +1,30 @@
+Notes from Russ on 10/16/99
+rev update 11/16/99
+
+This driver still needs some work before
+being released.
+
+1) Performance sucks. I'm getting
+   600 msec on round trip pings, I get
+   300 with lucent.
+
+a) Fixed with a rewrite of interrupt routine. We
+    were looking at IIR should be looking at LSR.
+
+2) Under the linux folder is a GPL
+   header file. This must be removed!!!
+
+a) Fixed by removing the one file and putting 
+    defines in c-src files.
+
+3) I use __GNU__ defines in a couple files
+   where at pctel it's in the makefile.
+   halwraps.c, pctios.c
+
+a) Fixed by changing makefile.
+
+4) Handle shared interrupts. 
+
+a) Fixed. Although seems that moving
+    the interrupt hook to open, does not
+    answer what was wrong???

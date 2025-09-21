@@ -1,0 +1,35 @@
+# Configuration settings for Intel 810 graphics driver.
+#
+# The Intel 810 uses system RAM for all graphics operations, *including* the
+# BIOS boot screen and legacy VGA modes.  The chip typically "takes" 1 Meg
+# at cold boot, which these days is too small to do anything interesting.
+# This driver setting file allows you to specify the total amount of system
+# RAM to set aside for graphics operations, and whether or not to attempt to
+# reclaim memory "taken" by the chip.
+#
+# The following parameters are defined:
+#
+# ->  gfxmemsize <size>
+#
+# where <size> is the *total* amount of graphics memory desired.  <size> can
+# have the suffix 'K' or 'M' to more conveniently specify amounts of
+# kilobytes or megabytes, respectively.
+#
+# If the amount of memory "taken" by the chip at cold boot isn't enough,
+# extra system memory will be allocated to make up the difference.  This
+# allocation persists for the life of the boot cycle, so don't reserve more
+# memory than you're going to use.
+#
+# Example:
+# gfxmemsize 4M
+#
+#
+# ->  reclaimtakenmem [true|false]
+#
+# By default, the driver will attempt to reclaim "taken" system memory, but
+# the method used to do this may not work on all systems.  If you're
+# experiencing lockups or other mysterious graphics failures, try setting
+# this option to 'false'.
+#
+# Example:
+# reclaimtakenmem false

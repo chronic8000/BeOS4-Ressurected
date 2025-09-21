@@ -1,0 +1,23 @@
+ACM - Abstract Control Model modem driver :
+
+- What is it ?
+It's a part of the Communication Class of the USB specifications (3.6.2). Modems supporting this 
+protocol are just understanding AT commands and raw data trough 2 bulk pipes.
+
+- Supported hardware :
+	3Com OfficeConnect 56k
+	3Com Voice FaxModem Pro
+	3Com Sportster
+	MultiTech MultiModem 56k
+	Zoom 2986L FaxModem
+	Compaq 56k FaxModem
+	ELSA Microlink 56k
+	3Com USR ISDN Pro TA
+	Lucent Technologies, Inc. Atlas Modem Board (revision 3 board and more only)
+
+- How to know if my modem is supporting ACM ?
+Simple : list the infos of your modem with "info" (a small tool coming with the usbkit), if there is 
+interface with :
+	- 1 interrupt "in" pipe (class = 2, subclass = 2, protocol = 1)
+	- 1 bulk "in" pipe (class = 10, subclass = 2, protocol = 1)
+	- 1 bulk "out" pipe (class = 10, subclass = 2, protocol = 1)

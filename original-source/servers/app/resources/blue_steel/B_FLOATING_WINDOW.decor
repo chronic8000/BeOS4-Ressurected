@@ -1,0 +1,10 @@
+t gNbWeaveMode	= sizeof(gWeaveMode)/sizeof(tWeaveMode);
+const int gNbSpeedMode	= sizeof(gSpeedMode)/sizeof(tSpeedMode);
+const int gNbMicroDot	= sizeof(gMicroDot)/sizeof(tMicroDot);
+const int gNbAllowed	= sizeof(gRes2Paper)/sizeof(tRes2Paper);
+
+
+
+MDefinePrinter *instantiate_MDefinePrinter(const driver_hooks *hooks)
+{
+	return new MDefinePrinter(

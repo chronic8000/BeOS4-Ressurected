@@ -1,0 +1,133 @@
+
+#
+# DOS make file to make nsample which reads Type 1 fonts:
+#
+#
+#  $Header: //bliss/user/archive/rcs/type1/makefile.pc,v 33.0 97/03/17 17:58:31 shawn Release $
+#
+#  $Log:	makefile.pc,v $
+#  Revision 33.0  97/03/17  17:58:31  shawn
+#  TDIS Version 6.00
+#  
+#  Revision 32.2  96/08/20  13:37:14  shawn
+#  Added RCS/Header and Log keywords.
+#  
+#
+
+cflags = -D_4D_ -DMSDOS -DNO_PROCS -DPROC_TYPE1 -I..\includes /AL /G2 /Ox /c 
+
+sd = ../speedo
+incl_dir = ../includes
+
+
+all:	nsample.exe
+
+tr_names.obj: tr_names.c \
+		$(incl_dir)/spdo_prv.h \
+		$(incl_dir)/speedo.h \
+		$(incl_dir)/useropt.h \
+		$(incl_dir)/fino.h \
+		$(incl_dir)/type1.h
+	cl $(cflags) tr_names.c
+
+tr_ldfnt.obj: tr_ldfnt.c \
+		$(incl_dir)/spdo_prv.h \
+		$(incl_dir)/speedo.h \
+		$(incl_dir)/useropt.h \
+		$(incl_dir)/fino.h \
+                $(incl_dir)/type1.h \
+		$(incl_dir)/fnt_a.h \
+		$(incl_dir)/errcodes.h \
+		$(incl_dir)/tr_fdata.h 
+	cl $(cflags) tr_ldfnt.c
+
+tr_mkchr.obj: tr_mkchr.c  \
+		$(incl_dir)/spdo_prv.h \
+		$(incl_dir)/speedo.h \
+		$(incl_dir)/useropt.h \
+		$(incl_dir)/fino.h \
+		$(incl_dir)/type1.h
+	cl $(cflags) tr_mkchr.c
+
+tr_trans.obj: tr_trans.c \
+		$(incl_dir)/speedo.h \
+		$(incl_dir)/speedo.h \
+		$(incl_dir)/useropt.h \
+		$(incl_dir)/fino.h \
+		$(incl_dir)/type1.h \
+		$(incl_dir)/fnt_a.h
+	cl $(cflags) tr_trans.c
+
+out_util.obj: $(sd)/out_util.c \
+		$(incl_dir)/spdo_prv.h \
+		$(incl_dir)/speedo.h \
+		$(incl_dir)/useropt.h \
+		$(incl_dir)/fino.h
+        cl $(cflags) $(sd)/out_util.c
+
+out_blk.obj:  $(sd)/out_blk.c \
+		$(incl_dir)/spdo_prv.h \
+		$(incl_dir)/speedo.h \
+		$(incl_dir)/useropt.h \
+		$(incl_dir)/fino.h
+	cl $(cflags) $(sd)/out_blk.c
+
+out_outl.obj: $(sd)/out_outl.c \
+		$(incl_dir)/spdo_prv.h \
+		$(incl_dir)/speedo.h \
+		$(incl_dir)/useropt.h \
+		$(incl_dir)/fino.h
+	cl $(cflags) $(sd)/out_outl.c
+
+out_scrn.obj:  $(sd)/out_scrn.c \
+		$(incl_dir)/spdo_prv.h \
+		$(incl_dir)/fino.h
+	cl $(cflags) $(sd)/out_scrn.c
+
+out_bl2d.obj:  $(sd)/out_bl2d.c \
+		$(incl_dir)/spdo_prv.h \
+		$(incl_dir)/speedo.h \
+		$(incl_dir)/useropt.h \
+		$(incl_dir)/fino.h
+	cl $(cflags) $(sd)/out_bl2d.c
+
+out_gray.obj:  $(sd)/out_gray.c \
+		$(incl_dir)/spdo_prv.h \
+		$(incl_dir)/speedo.h \
+		$(incl_dir)/useropt.h \
+		$(incl_dir)/fino.h
+	cl $(cflags) $(sd)/out_gray.c
+
+out_wht.obj:  $(sd)/out_wht.c \
+		$(incl_dir)/spdo_prv.h \
+		$(incl_dir)/speedo.h \
+		$(incl_dir)/useropt.h \
+		$(incl_dir)/fino.h
+	cl $(cflags) $(sd)/out_wht.c
+
+out_qck.obj:  $(sd)/out_qck.c \
+		$(incl_dir)/spdo_prv.h \
+		$(incl_dir)/speedo.h \
+		$(incl_dir)/useropt.h \
+		$(incl_dir)/fino.h
+	cl $(cflags) $(sd)/out_qck.c
+
+nsample.obj: nsample.c \
+		$(incl_dir)/spdo_prv.h \
+		$(incl_dir)/speedo.h \
+		$(incl_dir)/useropt.h \
+		$(incl_dir)/type1.h \
+		$(incl_dir)/fnt_a.h \
+		$(incl_dir)/tr_fdata.h \
+                $(incl_dir)/errcodes.h 
+	cl $(cflags) nsample.c
+
+nsample.exe : tr_names.obj tr_ldfnt.obj tr_mkchr.obj tr_trans.obj \
+                out_gray.obj out_blk.obj out_util.obj out_qck.obj \
+                out_outl.obj out_scrn.obj out_bl2d.obj out_wht.obj \
+                nsample.obj
+	link /STACK:3072 @nsample.lnk
+
+#misc targets:
+clean:
+	del *.obj

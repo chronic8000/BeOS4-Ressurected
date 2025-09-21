@@ -1,0 +1,125 @@
+# PCMCIA Default Driver Bindings File 
+# /boot/home/config/settings/kernel/drivers/pcmcia.default
+#
+# PLEASE DO NOT MODIFY THIS FILE -- Place any custom entries in the file:
+# /boot/home/config/settings/kernel/drivers/pcmcia
+#
+# Each "card" entry must contain a "bind" directive to indicate which driver
+# to bind the specified card to (note that the driver must already have
+# pcmcia support -- just naming a driver here doesn't magically make pcmcia
+# work with it).  The "card" entry must also have either a "manfid" specifier
+# or a "version" specifier -- the command "cardctl ident" will show the
+# manfid and version (called "product info") of any cards present in a 
+# pcmcia socket
+
+# Some pcmcia controllers have problems with some interrupts (one laptop
+# we tested just would not work with irq 9, but 10 and 11 were fine).
+# You can use a line like the following to avoid problem irqs:
+#
+# disable_irq 9
+
+card { # Linksys NetworkEverywhere 10-base-T Card
+	manfid 0x0149 0xc1ab
+	bind ne2k
+}
+
+card { # D-Link DE-660 Ethernet Card
+	version "D-Link" "DE-660"
+	bind ne2k
+}
+
+card { # Linksys EtherCard - discontinued
+	version "LINKSYS" "E-CARD" "Ver 02.00"
+	bind ne2k
+}
+
+card { # Linksys EtherCard
+	version "Linksys" "Combo PCMCIA EthernetCard (EC2T)" "2.0"
+	bind ne2k
+}
+
+card { # Kingston EtherRX
+	version "Kingston" "KNE-PC2"
+	bind ne2k
+}
+
+card { # ATA CDROM Adapter (some VAIOs have these)
+	version " " "NinjaATA-" "V1.0"
+	bind ide_cs
+}
+
+card { # SanDisk CompactFlash Adapter
+	manfid 0x0045 0x0401
+	bind ide_cs
+}
+
+card { # Advantech CompactFlash
+	version "CF" "32M" ""
+	manfid 0x000a 0x0000
+	bind ide_cs
+}
+
+card { # FIC CompactFlash
+	manfid 0x026a 0x0000
+	bind ide_cs
+}
+
+card { # Hitachi CompaqFlash
+	manfid 0x0007 0x0000
+	bind ide_cs
+}
+
+card { # Cirrus Logic 14.4L Fax Modem
+	version "CIRRUS LOGIC" "FAX MODEM"
+	bind zz
+}
+
+card { # TDK Data-Fax Modem
+	verion "TDK" "DF5600 Data-Fax Modem" "TDK Systems"
+	bind zz
+}
+
+card { # Gold Card FaxModem
+	version "Psion Dacom" "Gold Card Global 56K+Fax" "56K+Fax"
+	bind zz
+}
+
+card { # Com1 Platinum card 
+	version "COM1 SA" "MC220 CARD" 
+	bind zz 
+}
+
+card { # Cirrus Logic 56K Modem 
+	version "CIRRUS LOGIC 56K MODEM" "CL-MD56XX" 
+	bind zz 
+}
+
+card { # SohoWare
+   version "Socket Communications, Inc.", "Ethernet EA Lan Adapter",
+   bind ne2k
+}
+
+card { # Farallon clone of 3Com 3c589
+   version "Farallon" "ENet"
+   bind tcm589
+}
+
+card { # 3Com 3c589
+   manfid 0x0101 0x0589
+   bind tcm589
+}
+
+card { #Lucent Wavelan
+   version  "Lucent Technologies" "WaveLAN/IEEE"
+   bind wavelan
+}
+
+card { # SohoWare NDC card
+   version "NDC" "Ethernet" "A" "004743118001"
+   bind ne2k
+}
+
+card { # Lucent WaveLAN 802.11b
+	manfid 0x0156 0x0002
+	bind wavelan
+}

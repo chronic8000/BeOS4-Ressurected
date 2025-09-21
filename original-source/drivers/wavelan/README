@@ -1,0 +1,7 @@
+The hcf files in this directory are from Lucent under NDA
+and not for public distribution.
+
+The files are
+	hcf.c hcf.h hcfcfg.h hcfdef.h hfcio.c mdd.h mdio.h
+
+

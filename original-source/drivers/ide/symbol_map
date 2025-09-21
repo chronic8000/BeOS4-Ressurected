@@ -1,0 +1,46 @@
+#define ide $(DRVRNAME)_ide
+
+#define	init_scratch_buffer $(DRVRNAME)_init_scratch_buffer
+#define	uninit_scratch_buffer $(DRVRNAME)_uninit_scratch_buffer
+#define	driver_read $(DRVRNAME)_driver_read
+#define	driver_write $(DRVRNAME)_driver_write
+#define	driver_readv $(DRVRNAME)_driver_readv
+#define	driver_writev $(DRVRNAME)_driver_writev
+#define	get_capacity $(DRVRNAME)_get_capacity
+#define	get_blocksize $(DRVRNAME)_get_blocksize
+#define	get_bad_alignment_mask $(DRVRNAME)_get_bad_alignment_mask
+#define	get_max_transfer_size $(DRVRNAME)_get_max_transfer_size
+#define	read_blocks $(DRVRNAME)_read_blocks
+#define	write_blocks $(DRVRNAME)_write_blocks
+
+#define	publish_devices $(DRVRNAME)_publish_devices
+#define	find_device $(DRVRNAME)_find_device
+#define	init_driver $(DRVRNAME)_init_driver
+#define	uninit_driver $(DRVRNAME)_uninit_driver
+
+#define	is_supported_device $(DRVRNAME)_is_supported_device
+#define	configure_device $(DRVRNAME)_configure_device
+#define	release_device $(DRVRNAME)_release_device
+
+#define	init_devicelist $(DRVRNAME)_init_devicelist
+#define	uninit_devicelist $(DRVRNAME)_uninit_devicelist
+#define	create_devicelist $(DRVRNAME)_create_devicelist
+#define	open_device $(DRVRNAME)_open_device
+#define	close_device $(DRVRNAME)_close_device
+#define	acquire_bus $(DRVRNAME)_acquire_bus
+#define	release_bus $(DRVRNAME)_release_bus
+#define	media_changed_in_lun $(DRVRNAME)_media_changed_in_lun
+#define	kdump_devicelist $(DRVRNAME)_kdump_devicelist
+#define	kget_device_ptr $(DRVRNAME)_kget_device_ptr
+#define	ide_names $(DRVRNAME)_ide_names
+
+#define use_settings_device $(DRVRNAME)_use_settings_device
+#define read_settings_device $(DRVRNAME)_read_settings_device
+
+#define	debug_level_error $(DRVRNAME)_debug_level_error
+#define	debug_level_info $(DRVRNAME)_debug_level_info
+#define	debug_level_flow $(DRVRNAME)_debug_level_flow
+
+#define	my_free $(DRVRNAME)_my_free
+#define	my_malloc $(DRVRNAME)_my_malloc
+#define	my_memory_used $(DRVRNAME)_my_memory_used

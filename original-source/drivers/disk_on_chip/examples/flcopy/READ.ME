@@ -1,0 +1,42 @@
+
+
+              FLCOPY & FLDIR - example applications
+              -------------------------------------
+
+About FLCOPY:
+FLCOPY is a short example for how to write a FLite application.
+This short application copies a file from\to the flash disk.
+
+Usage:  FLCOPY [flite\\]source-file  [flite\\]destination-file.
+
+The prefix "flite\\" to the file name means that the file is on 
+the flash disk. The destination file will be open for write truncating its old
+contents.
+You can run FLCOPY on a DOS drive and FLite drive or different FLite drives e.g.
+	FLCOPY flite0\\t1 flite1\\t2
+
+
+About FLDIR:
+This short example lists the files and directory names in a given
+directory on the flash. This is an example for how to use the functions
+flFindFirstFile & flFindNextFile.
+
+Usage:  fldir flite\\directory-path
+
+
+General explanations:
+These examples show the basic usage of FLite file system operations:
+mount volume, translate DOS path to FLite path, open file for read
+or write, find file, and use the basic file system utilities: seek, 
+read & write. in the current configuration these examples will work on 
+PCMCIA cards with NOR flash components. The routines that will register 
+the socket interface(s), MTD(s) and flash translation layer(s) for the 
+application to use are called from the file flcustom.c. A different set 
+of components can be registered by adding calls to different registration 
+routines and removing existing ones. The list of registration routines is 
+in the file stdcomp.h. Documentation about each component can be found in 
+the manual and in the source code (directions to the right source files 
+are in stdcomp.h). The modules that contain the components registered in 
+flcustom.c should be linked to the target executable. Use the makefile 
+provided in this directory to do that.  
+

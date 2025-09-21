@@ -1,0 +1,25 @@
+ifeq (x$(BUILD_LIB), x)
+	OBJS		:= $(SRCS_LIST_TO_OBJS)
+	TARGET		:= $(OBJ)/$(DRVRNAME)
+else
+	OBJ_DIR	:= $(OBJ_DIR).lib
+	LIB_OBJS		:= $(SRCS_LIST_TO_OBJS)
+
+	CFLAGS += \
+			-D_BUILDING_root=1 \
+			-D_BUILDING_kernel=1 \
+			-DSTATIC_DRIVER_SYMBOL_MAP="\"$(FULL_DIR)/$(OBJ_DIR)/$(DRVRNAME)_private_symbols.h\""
+
+	LIB_LDFLAGS := -xml -nodefaults -o $(OBJ_DIR)/lib$(DRVRNAME).a
+
+$(OBJ_DIR)/lib$(DRVRNAME).a: $(OBJ_DIR) $(OBJ_DIR)/$(DRVRNAME)_private_symbols.h $(LIB_OBJS)
+		$(AR) $(ARFLAGS) $(OBJ_DIR)/lib$(DRVRNAME).a $(LIB_OBJS)
+
+lib:	$(OBJ_DIR)/lib$(DRVRNAME).a
+
+deps::	$(OBJ_DIR) $(OBJ_DIR)/$(DRVRNAME)_private_symbols.h
+
+$(OBJ_DIR)/$(DRVRNAME)_private_symbols.h: $(BUILDHOME)/src/drivers/ide/symbol_map
+	sed -e "s:\$$(DRVRNAME):$(DRVRNAME):g" $(BUILDHOME)/src/drivers/ide/symbol_map >$(OBJ_DIR)/$(DRVRNAME)_private_symbols.h
+
+endif

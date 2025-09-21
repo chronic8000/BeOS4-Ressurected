@@ -1,0 +1,71 @@
+M-SYSTEMS  Ltd.  P.O.B. 58036, Tel Aviv, 61580, Israel.
+
+DiskOnChip (R) Software 	January 15, 1999
+
+VERSION MARK
+------------
+Version 1.21 May 15, 1999
+Version 1.21 Service Release 2, January 15, 1999
+
+
+General
+-------
+This is an updated release of OSAK 1.21. It does not include any new
+features over the original OSAK 1.21 release, but only fixes most known bugs.
+For further information on how to use the OSAK software package, refer to the 
+manual osak.htm in the \doc directory.
+
+The bugs remaining in this release are described in the file knownbug.htm in
+the \doc directory.
+
+
+Bugs fixed
+----------
+1.  Multi-floor ECC/EDC:
+    Occurs with high profile DOC2000 (MD2201-Dxx) and cascaded Millennium devices. 
+    In the function readOneSector (diskonc.c) the page address is changed before 
+    the second read (if failed on first read). As a result, if an ECC error 
+    occurs in a floor other than the first, it may be handled incorrectly. 
+    ECC errors in the first floor are not affected, and are handled correctly.
+
+2.  EDC syndrome calculation (reedsol.c):
+    When an ECC error occurs, and is found to be correctable, and the bit-error is 
+    located within the 6 checksum bytes, the correction software makes a change to 
+    an offset beyond 512 in the input buffer (in the range 512-517). 
+    However, since the routine accepts a data buffer of length 512 bytes, this 
+    "correction" will actually unexpectedly trash bits in some 6 byte area.
+    
+
+3.  OSAK/BDK conflict (docsoc.c):
+    May occur on multi-processing systems only when two processes access
+    the DiskOnChip simultaneously. For example, if an application
+    that is based on M-Systems BDK code tries to access the binary partition and
+    at the same time the driver based on OSAK tries to access the file system 
+    partition. The effect of this problem is unpredictable.
+
+4.  Last sector write (nftllite.c):
+    Attempting to write to the last sector of the NFTL partition incorrectly
+    fails with flSectorNotFound.
+
+5.  USE_FUNC define compilation (docsys.h):
+    It was not possible to compile OSAK 1.21 when this define was activated.
+
+6.  Memory leak (blockdev.c):
+    Memory was not freed up after formatting the DiskOnChip with FAT format.
+    Affects only users that define MALLOC in flcustom.h.
+
+
+For users of the FAT file-system part of OSAK
+---------------------------------------------
+
+7.  Attribute bug 1 (fatlite.c):
+    Cannot delete files from a READ-ONLY directory, due to wrong attributes.
+
+8.  Attribute bug 2 (fatlite.c):
+    Cannot set every possible attribute to a directory.
+
+9.  Full root directory bug (fatlite.c):
+    Returns wrong status when the root directory is full.
+
+
+

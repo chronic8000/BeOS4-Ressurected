@@ -1,0 +1,46 @@
+#
+# kernel makefile
+#
+# Copyright (C) 1994 Be Inc.  All Rights Reserved
+#
+
+SHELL	:= /bin/sh
+
+#######
+include $(BUILDHOME)/buildprefs/make.pre
+#######
+
+DRVRNAME:= sis630
+SRCS	:= bena4.c driver.c setup.c sisDPMS.c sisVideoModes.c sisClock.c
+SRCS	+= sisCursor.c sisCRTC.c
+OBJ_DIR := obj.i586.sis630
+OBJS	:= $(SRCS_LIST_TO_OBJS)
+CFLAGS  += -DOBJ_SIS630=1
+INCLUDES := -I$(BUILDHOME)/src/inc/graphics_p $(INCLUDES)
+INCLUDES	+= -I$(BUILDHOME)/src/inc/graphics_p/SiS
+INCLUDES += -I$(BUILDHOME)/src/kit/surface/include
+TARGET	:= $(OBJ_DIR)/$(DRVRNAME)
+
+$(TARGET): $(OBJ_DIR) $(OBJS)
+	$(LD) -o $@ $(OBJS) $(LDFLAGS)
+	$(SETVERSION) $@ $(SYSTEM_VERSION) $(APP_VERSION)
+
+floppy: $(TARGET)
+	-bf mkdir system
+	-bf mkdir system/drivers
+	-bf copy dos:$(TARGET) system/drivers/$(DRVRNAME)
+
+dump: $(TARGET)
+	-rm -f list
+	pefdump -b 0x20000000 $(TARGET) > list
+
+clean::
+	-rm -f list
+
+install:: $(FORCE)
+	mkdir -p $(INSTALL_DRIVERS_LNK)/graphics$(TESTPATH)
+	ln -sf ../$(DRIVERS_BIN_TO_LNK)/$(DRVRNAME) $(INSTALL_DRIVERS_LNK)/graphics$(TESTPATH)/$(DRVRNAME)
+
+#######
+include $(BUILDHOME)/buildprefs/make.post
+#######

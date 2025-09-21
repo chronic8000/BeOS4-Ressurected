@@ -1,0 +1,17 @@
+nsample +
+reset +
+set_spcs +
+do_char +
+do_trns +
+out_blk +
+out_wht +
+out_scrn +
+out_outl +
+out_util +
+out_bl2d +
+out_gray +
+out_qck +
+set_trns +
+spm_fns +
+set_keys,
+nsample.exe,,,;

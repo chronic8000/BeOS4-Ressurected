@@ -1,0 +1,16 @@
+# @Eddie Workset@
+AddWorkset "memory_stick.wks" "/iad/src/drivers/memorystick/memory_stick.wks"
+AddFileGroup "Headers" "/iad/src/drivers/memorystick" -nomake
+AddFile "memory_stick.h" "/iad/src/drivers/memorystick/memory_stick.h"
+AddFile "memory_stick_commands.h" "/iad/src/drivers/memorystick/memory_stick_commands.h"
+AddFile "memory_stick_regs.h" "/iad/src/drivers/memorystick/memory_stick_regs.h"
+AddFile "tpc.h" "/iad/src/drivers/memorystick/tpc.h"
+AddFile "tpc_parallel_dma.h" "/iad/src/drivers/memorystick/tpc_parallel_dma.h"
+EndFileGroup "Headers"
+AddFileGroup "Source" "/iad/src/drivers/memorystick" -nomake
+AddFile "driver.c" "/iad/src/drivers/memorystick/driver.c"
+AddFile "memory_stick.c" "/iad/src/drivers/memorystick/memory_stick.c"
+AddFile "block_translation.c" "/iad/src/drivers/memorystick/block_translation.c"
+AddFile "tpc_parallel.c" "/iad/src/drivers/memorystick/tpc_parallel.c"
+AddFile "tpc_parallel_dma.c" "/iad/src/drivers/memorystick/tpc_parallel_dma.c"
+EndFileGroup "Source"

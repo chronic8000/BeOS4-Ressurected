@@ -1,0 +1,192 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<!-- Sitemap 1.0 -->
+</HEAD><BODY>
+<OBJECT type="text/site properties">
+	<param name="ImageType" value="Folder">
+</OBJECT>
+<UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="DOC OSAK Integrator's Manual">
+		<param name="Local" value="DOC\OSAK.htm#home">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="The DiskOnChip OSAK System overview">
+			<param name="Local" value="DOC\OSAK.htm#_Toc445477833">
+			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Block-Device Functionality">
+				<param name="Local" value="DOC\OSAK.htm#_Toc445477834">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="File-System Functionality">
+				<param name="Local" value="DOC\OSAK.htm#_Toc445477835">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Features">
+				<param name="Local" value="DOC\OSAK.htm#_Toc403976832">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Target Environments">
+				<param name="Local" value="DOC\OSAK.htm#_Toc351277781">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Customizability">
+				<param name="Local" value="DOC\OSAK.htm#_Toc351277783">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Low System Overhead">
+				<param name="Local" value="DOC\OSAK.htm#_Toc351277784">
+				</OBJECT>
+		</UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Files list">
+			<param name="Local" value="DOC\OSAK.htm#_Toc445477840">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Guide to Integrating the DiskOnChip2000">
+			<param name="Local" value="DOC\OSAK.htm#_Toc403976840">
+			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="The DiskOnChip and the OSAK">
+				<param name="Local" value="DOC\OSAK.htm#_Toc445477841">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Writing a Block-Device Interface">
+				<param name="Local" value="DOC\OSAK.htm#WrBlockDevIn">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="OSAK Sockets and Drives">
+				<param name="Local" value="DOC\OSAK.htm#OsakSocksAnDrives">
+				</OBJECT>
+		</UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Programmer's Interface">
+			<param name="Local" value="DOC\OSAK.htm#_Toc445477848">
+			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Introduction">
+				<param name="Local" value="DOC\OSAK.htm#_Toc445477849">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Interface Terms">
+				<param name="Local" value="DOC\OSAK.htm#_Toc351277793">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="OSAK Function Groups overview">
+				<param name="Local" value="DOC\OSAK.htm#funcGroups">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Basic Volume Handling function reference">
+				<param name="Local" value="DOC\OSAK.htm#VolHandFuncRef">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Basic File Operations function reference">
+				<param name="Local" value="DOC\OSAK.htm#fsfuncref">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Directory Handling function reference">
+				<param name="Local" value="DOC\OSAK.htm#dirhandfuncref">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Special Function reference">
+				<param name="Local" value="DOC\OSAK.htm#specialfuncref">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Absolute Sector I/O function reference">
+				<param name="Local" value="DOC\OSAK.htm#absiofuncref">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Physical Flash I/O function reference">
+				<param name="Local" value="DOC\OSAK.htm#physfuncref">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="OSAK Status Codes">
+				<param name="Local" value="DOC\OSAK.htm#_Toc351277815">
+				</OBJECT>
+		</UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Special Topics">
+			<param name="Local" value="DOC\OSAK.htm#_Toc403976879">
+			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Boot image partition">
+				<param name="Local" value="DOC\OSAK.htm#BDK">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Defragmentation">
+				<param name="Local" value="DOC\OSAK.htm#Defragmentation">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="&quot;Audio&quot; Editing Capability">
+				<param name="Local" value="DOC\OSAK.htm#_Toc445477845">
+				</OBJECT>
+		</UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Customization Guide">
+			<param name="Local" value="DOC\OSAK.htm#_Toc351277816">
+			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Overview">
+				<param name="Local" value="DOC\OSAK.htm#_Toc351277817">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Customizing System Services">
+				<param name="Local" value="DOC\OSAK.htm#CusSysSer">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Customizing for Your Compiler and Processor">
+				<param name="Local" value="DOC\OSAK.htm#CusComp">
+				</OBJECT>
+			<UL>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="The FLSYSTEM Module">
+					<param name="Local" value="DOC\OSAK.htm#flSysModule">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="System Functions Description">
+					<param name="Local" value="DOC\OSAK.htm#sysFunDesc">
+					</OBJECT>
+			</UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Customizing DiskOnChip access routines">
+				<param name="Local" value="DOC\OSAK.htm#cusmtd">
+				</OBJECT>
+			<UL>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Basic Terms">
+					<param name="Local" value="DOC\OSAK.htm#BasicTerms">
+					</OBJECT>
+				<LI> <OBJECT type="text/sitemap">
+					<param name="Name" value="Functions Description">
+					<param name="Local" value="DOC\OSAK.htm#FuncDesc">
+					</OBJECT>
+			</UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Customizing for Your OSAK Services Requirements">
+				<param name="Local" value="DOC\OSAK.htm#CusAppSer">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Customizing the OSAK Registration Routine">
+				<param name="Local" value="DOC\OSAK.htm#CusReg">
+				</OBJECT>
+		</UL>
+	</UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="DFormat utility">
+		<param name="Local" value="util\DFORMAT\DFORMAT.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Sample applications">
+		<param name="Local" value="DOC\OSAK.htm#samples">
+		</OBJECT>
+</UL>
+</BODY></HTML>

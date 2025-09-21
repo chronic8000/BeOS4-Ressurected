@@ -1,0 +1,5 @@
+// api.h
+
+DWORD	 StartDSP(PMONKEYINFO pMI);
+DWORD	 StopDSP(PMONKEYINFO pMI);
+

@@ -1,0 +1,60 @@
+
+#ifndef ENUMS_H
+#define ENUMS_H
+
+enum {
+	etPointerEvent	= 0x00000001,
+	etFocusedEvent 	= 0x00000002,
+	etOtherEvent	= 0x00000004,
+	etHack			= 0x80000000
+};
+
+
+enum {
+	IS_BIG_ENDIAN =		0x1000,
+	HAS_ALPHA =			0x2000,
+	IS_NONLINEAR =		0x4000
+};
+
+enum {
+	ROUND_JOIN = 0,
+	MITER_JOIN,
+	BEVEL_JOIN,
+	BUTT_JOIN,
+	SQUARE_JOIN
+};
+
+enum {
+	ROUND_CAP = 0,
+	MITER_CAP,
+	BEVEL_CAP,
+	BUTT_CAP,
+	SQUARE_CAP
+};
+
+enum {
+	PIX_INVALIDFORMAT=-1,
+	PIX_1BIT,
+	PIX_8BIT,
+	PIX_15BIT,
+	PIX_16BIT,
+	PIX_32BIT,
+	NUM_PIXEL_FORMATS
+};
+
+enum {
+	OP_COPY = 0,
+	OP_OVER,
+	OP_ERASE,
+	OP_INVERT,
+	OP_ADD,
+	OP_SUB,
+	OP_BLEND,
+	OP_MIN,
+	OP_MAX,
+	OP_SELECT,
+	OP_ALPHA,
+	NUM_OPS
+};
+
+#endif

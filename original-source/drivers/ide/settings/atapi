@@ -1,0 +1,46 @@
+# settings file for atapi driver
+# place in ~/config/settings/kernel/drivers/boot/
+#
+# the atapi driver understands the following options:
+#
+# global {
+#	debug_level_error <1-4>
+#	debug_level_info <1-4>
+#	debug_level_flow <1-4>
+# }
+#
+# deviceat <busnum> <devicenum> {
+#	<device options>
+# }
+#
+# matchdevices {
+#	# a device matching all specified fields in a "match" will use the options
+#	# in "use"
+#	match {
+#		bus <busnum>
+#		device <devicenum>
+#		model <modelstring>
+#		serial <serialstring>
+#		firmware <firmwarestring>
+#	}
+#	use {
+#		<device options>
+#	}
+# }
+#
+# where <device options> can be:
+#
+# nodma		# never use dma for this device
+# forcedma	# use dma for this device even if selected dma mode looks bad
+#
+#
+# example:
+#
+# matchdevices {	# useful if bios does not set up dma for atapi devices
+#	match {
+#		# all devices
+#	}
+#	use {
+#		forcedma
+#	}
+# }

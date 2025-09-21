@@ -1,0 +1,63 @@
+#
+# kernel makefile
+#
+# Copyright (C) 1994 Be Inc.  All Rights Reserved
+#
+
+SHELL		:= /bin/sh
+
+#######
+include $(BUILDHOME)/buildprefs/make.pre
+#######
+
+FSNAME		:= hfsr
+SRCS		:= \
+				block.c \
+				btree.c \
+				data.c \
+				file.c \
+				hfs.c \
+				kernel_interface.c \
+				low.c \
+				node.c \
+				record.c \
+				volume.c
+
+INCLUDES		:= $(INCLUDES) \
+					-I$(BUILDHOME)/src/inc/os_p \
+					-I$(BUILDHOME)/src/inc \
+					-I$(BUILDHOME)/src/nukernel/inc
+
+TARGET			:= $(OBJ)/$(FSNAME)
+REALTARGET              := $(OBJ)/$(FSNAME)
+CFLAGS			:= $(CFLAGS) -DJOE=1 -DHFS_IS_READONLY=1
+LDFLAGS			:= -G -nodefaults -export pragma \
+					$(BUILDHOME)/metro/lib/libdll.a \
+					$(BUILDHOME)/src/nukernel/obj.$(PLATFORM)/_KERNEL_
+
+OBJS	=	$(SRCS_LIST_TO_OBJS)
+
+$(REALTARGET):	$(OBJ_DIR) $(OBJS)
+		echo $(INSTALL_DIR)
+		$(LD) -o $@ $(OBJS) $(LDFLAGS)
+		setversion $@ $(SYSTEM_VERSION) $(APP_VERSION)
+
+floppy:		$(TARGET)
+		-bf mkdir system
+		-bf mkdir system/fs
+		-bf copy dos:$(TARGET) system/fs/$(FSNAME)
+
+dump:		$(TARGET)
+		-rm -f list
+		pefdump -b 0x20000000 $(TARGET) > list
+
+clean::
+		-rm -f list
+
+#######
+include $(BUILDHOME)/buildprefs/make.post
+#######
+
+install::	$(REALTARGET)
+		mkdir -p $(INSTALL_FS)/hfs_dir
+		mv $(INSTALL_FS)/hfsr* $(INSTALL_FS)/hfs_dir

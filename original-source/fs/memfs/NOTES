@@ -1,0 +1,33 @@
+********************************************************************************
+*** MEMFS DEVELOPMENT NOTES
+
+ - Initial development phase end: 08/18/2000
+
+issues:
+ - FSIL doesn't call memfs_remove_vnode to clean up deleted files.  The result
+   is that the total memory usage of a mounted memfs grows until unmounted.
+ - The mount_memfs tool must be used to mount, but the system unmount command
+   may be used normally.
+ - Got a ELOOP error from 'ln -s ...' one time, but have not been able to 
+   reproduce it.
+
+********************************************************************************
+*** ft(1) - File Tool
+
+	ft c|w|a|r|s|t [name] [length] [offset] [data|S|U|G|M|A|C]
+
+	c		create a file in write to it
+	w		write data to a file
+	a		append data to a file
+	r		read from a file
+	s		display information about a file
+	t		set file's stat struct fields Size, Uid, Gid Mode, Ctime, Atime 
+			(first letter in data[0]), numerical values in length
+	name	name of the file
+	length	number of bytes to write or read
+	offset	offset from the beginning of the file to read or write
+	data	some data to write into the file (also used to select wstat fields)
+
+	Note: only useful for small files (<256 bytes)
+
+********************************************************************************

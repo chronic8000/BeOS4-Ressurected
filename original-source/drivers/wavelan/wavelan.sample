@@ -1,0 +1,9 @@
+# Sample 802.11b Lucent wavelan driver settings file
+#
+# file  /boot/home/config/settings/kernel/drivers/wavelan 
+#
+#
+wavelan 0 {								# First card to be defined
+	network_name "Steves Network 123456"				# Name of network
+	key "123456789"							# WEP security key
+}

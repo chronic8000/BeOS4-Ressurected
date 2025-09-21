@@ -1,0 +1,7 @@
+<map name="service">
+	<object name="surface" code="/system/servers/picasso_gl" remote="false">
+		<object name="root" code="/boot/beos/apps/stella" remote="true">
+			<string name="cartridge">/boot/home/config/etc/stella/pacman.bin</string>
+		</object>
+	</object>
+</map>

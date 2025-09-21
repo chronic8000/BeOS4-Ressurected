@@ -1,0 +1,137 @@
+/*
+ * driver_basics template
+ * Copyright (c) 2000 Be, Inc.	All Rights Reserved
+ * written by Peter Folk <pfolk@be.com>
+ */
+
+#define kDevName "foo"   // the device name
+#define kDevDir  "bar"   // the device dir
+// devices will appear as /dev/bar/foo/...
+
+#define DEBUG             // if you want debug output
+#define MAX_DEVICES 4     // instances of this driver, max
+#define SINGLE_OPEN       // if only one open session per
+                          // device is allowed at a time
+
+typedef struct {
+	// Required by driver_basics.h
+	int32     devID;       // device identifier: 0-MAX_DEVICES
+	pci_info  *pciInfo;    // info about this device
+	uint32    debug;       // debugging level mask
+	
+	// Your per-device data items go here...
+} dev_info_t;
+
+#ifdef CARDBUS_SUPPORT
+#include <pcmcia/cb_enabler.h>
+/* Fill this list with all your CardBus devices' vendor and device IDs. Also,
+ * leave the 0xff's as they are. */
+cb_device_descriptor cb_descrs[] = {
+	{ YOUR_VENDOR_ID, YOUR_DEVICE_ID, 0xff, 0xff, 0xff },
+};
+#endif // CARDBUS_SUPPORT
+
+#include <driver_basics.h>
+#include <driver_basics.c>
+
+/*
+ * check_device
+ *
+ * Return B_OK iff dev is supported by this driver.
+ */
+static status_t check_device(const pci_info* dev)
+{
+	return B_OK;
+}
+
+/*
+ * open_device
+ *
+ * Fill in dev, given flags, and return B_OK if everything went
+ * as planned.
+ */
+static status_t open_device(dev_info_t *dev, uint32 flags)
+{
+	return B_OK;
+}
+
+/*
+ * stop_device
+ *
+ * The device's hardware has been removed and the driver has not
+ * been closed properly with 'close_device' just yet.  Shut down any
+ * unnecessary waiting/blocking (e.g. in the write_device hook)
+ */
+static status_t stop_device(device_info_t *dev) {
+	return B_OK;
+}
+
+/*
+ * close_device
+ *
+ * Tell all pending operations to abort and unblock all blocked ops.
+ * DO NOT deallocate anything, as some ops could still be pending.
+ */
+static status_t close_device(dev_info_t *dev)
+{
+	return B_OK;
+}
+
+/*
+ * free_device
+ *
+ * All operations have completed, no more will be called.  De-
+ * allocate anything you allocated (in open() or elsewhere).
+ */
+static status_t free_device(dev_info_t *dev)
+{
+	return B_OK;
+}
+
+/*
+ * control_device
+ *
+ * Handle ioctl().
+ */
+static status_t
+control_device(dev_info_t *dev, uint32 msg,void *buf, size_t len)
+{
+	return B_ERROR;
+}
+
+/*
+ * read_device
+ *
+ * Handle read().
+ */
+static status_t
+read_device( dev_info_t *dev, off_t pos, void *buf, size_t *len)
+{
+	*len=0;
+	return B_OK;
+}
+
+/*
+ * write_device
+ *
+ * Handle write().
+ */
+static status_t
+write_device(dev_info_t *dev, off_t pos, const void *buf, size_t *len)
+{
+	*len=0;
+	return B_OK;
+}
+
+/*
+ * device_debugcmd
+ *
+ * Implement the debugger command you wish to have available when debugging
+ * your driver...
+ */
+#ifdef DEBUG
+static int
+device_debugcmd( int argc, char **argv ) {
+
+}
+#endif

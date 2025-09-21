@@ -1,0 +1,70 @@
+ge size, in bytes */
+
+/* page-independent registers */
+#define NE2K_CR				0x00
+#define NE2K_DATA			0x10		/* NatSemi-defined Port Window offset */
+#define NE2K_RESET			0x1F		/* Read to Reset, Write to Clear */
+
+/* Remember, 0 - Low, 1 - High byte */
+
+/* Page 0 Registers - READ */
+#define NE2K0_CLDA0_R			0x01
+#define NE2K0_CLDA1_R			0x02
+#define NE2K0_BNRY_R			0x03
+#define NE2K0_TSR_R			0x04
+#define NE2K0_NCR_R			0x05
+#define NE2K0_FIFO_R			0x06
+#define NE2K0_ISR_R			0x07
+#define NE2K0_CRDA0_R			0x08
+#define NE2K0_CRDA1_R			0x09
+#define NE2K0_RSRV0_R			0x0A
+#define NE2K0_RSRV1_R			0x0B
+#define NE2K0_RSR_R			0x0C
+#define NE2K0_CNTR0_R			0x0D
+#define NE2K0_CNTR1_R			0x0E
+#define NE2K0_CNTR2_R			0x0F
+/* Page 0 Registers - WRITE */
+#define NE2K0_PSTART_W			0x01
+#define NE2K0_PSTOP_W			0x02
+#define NE2K0_BNRY_W			0x03
+#define NE2K0_TPSR_W			0x04
+#define NE2K0_TBCR0_W			0x05
+#define NE2K0_TBCR1_W			0x06
+#define NE2K0_ISR_W			0x07
+#define NE2K0_RSAR0_W			0x08
+#define NE2K0_RSAR1_W			0x09
+#define NE2K0_RBCR0_W			0x0A
+#define NE2K0_RBCR1_W			0x0B
+#define NE2K0_RCR_W			0x0C
+#define NE2K0_TCR_W			0x0D
+#define NE2K0_DCR_W			0x0E
+#define NE2K0_IMR_W			0x0F
+
+/* Page 1 Registers - READ */
+#define NE2K1_PAR0_R			0x01
+#define NE2K1_PAR1_R			0x02
+#define NE2K1_PAR2_R			0x03
+#define NE2K1_PAR3_R			0x04
+#define NE2K1_PAR4_R			0x05
+#define NE2K1_PAR5_R			0x06
+#define NE2K1_CURR_R			0x07
+#define NE2K1_MAR0_R			0x08
+#define NE2K1_MAR1_R			0x09
+#define NE2K1_MAR2_R			0x0A
+#define NE2K1_MAR3_R			0x0B
+#define NE2K1_MAR4_R			0x0C
+#define NE2K1_MAR5_R			0x0D
+#define NE2K1_MAR6_R			0x0E
+#define NE2K1_MAR7_R			0x0F
+/* Page 1 Registers - WRITE */
+#define NE2K1_PAR0_W			0x01
+#define NE2K1_PAR1_W			0x02
+#define NE2K1_PAR2_W			0x03
+#define NE2K1_PAR3_W			0x04
+#define NE2K1_PAR4_W			0x05
+#define NE2K1_PAR5_W			0x06
+#define NE2K1_CURR_W			0x07
+#define NE2K1_MAR0_W			0x08
+#define NE2K1_MAR1_W			0x09
+#define NE2K1_MAR2_W			0x0A
+#define NE2K1_

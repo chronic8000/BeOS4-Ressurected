@@ -1,0 +1,31 @@
+MAR7_W			0x0F
+
+/* Page 2 Registers - READ */
+#define NE2K2_PSTART_R			0x01
+#define NE2K2_PSTOP_R			0x02
+#define NE2K2_RNPP_R			0x03
+#define NE2K2_TPSR_R			0x04
+#define NE2K2_LNPP_R			0x05
+#define NE2K2_ACU_R			0x06
+#define NE2K2_ACL_R			0x07
+#define NE2K2_RSRV0_R			0x08
+#define NE2K2_RSRV1_R			0x09
+#define NE2K2_RSRV2_R			0x0A
+#define NE2K2_RSRV3_R			0x0B
+#define NE2K2_RCR_R			0x0C
+#define NE2K2_TCR_R			0x0D
+#define NE2K2_DCR_R			0x0E
+#define NE2K2_IMR_R			0x0F
+/* Page 2 Registers - WRITE */
+#define NE2K2_CLDA0_W			0x01
+#define NE2K2_CLDA1_W			0x02
+#define NE2K2_RNPP_W			0x03
+#define NE2K2_RSRV0_W			0x04
+#define NE2K2_LNPP_W			0x05
+#define NE2K2_ACU_W			0x06
+#define NE2K2_ACL_W			0x07
+#define NE2K2_RSRV1_W			0x08
+#define NE2K2_RSRV2_W			0x09
+#define NE2K2_RSRV3_W			0x0A
+#define NE2K2_RSRV4_W			0x0B
+#define 

@@ -1,0 +1,14 @@
+# ++++++++++
+#	FILE:	etherpci.exp
+#	REVS:	$Id:$
+#	NAME:	malyn
+#	DATE:	Mon May 18 15:03:00 PDT 1998
+#	Copyright (c) 1997 by Be Incorporated.  All Rights Reserved.
+# +++++
+
+init_hardware
+init_driver
+uninit_driver
+find_device
+publish_devices
+

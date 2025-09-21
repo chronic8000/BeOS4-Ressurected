@@ -1,0 +1,14 @@
+nsample +
+tr_names +
+tr_ldfnt +
+tr_mkchr +
+tr_trans +
+out_blk +
+out_util +
+out_outl +
+out_scrn +
+out_gray +
+out_qck +
+out_bl2d +
+out_wht,
+nsample.exe,,,;

@@ -1,0 +1,113 @@
+.AUTODEPEND
+
+#		*Translator Definitions*
+BCDIR = D:\BC
+CC = $(BCDIR)\bin\bcc +dformat.CFG
+TLINK = $(BCDIR)\bin\tlink
+LIBPATH = $(BCDIR)\LIB
+SYSTEMPATH = ..\..\systems\bc31
+SRCPATH = ..\..\src
+CUSTOMPATH = ..\..\custom
+INCLUDEPATH = $(BCDIR)\INCLUDE;$(SYSTEMPATH);$(SRCPATH);$(CUSTOMPATH)
+
+#		*Implicit Rules*
+.c.obj:
+  $(CC) -c {$< }
+
+{$(SRCPATH)}.c.obj:
+  $(CC) -c {$< }
+
+{$(SYSTEMPATH)}.c.obj:
+  $(CC) -c {$< }
+
+#		*List Macros*
+
+
+EXE_dependencies =  \
+ dformat.obj \
+ flcustom.obj \
+ fltl.obj \
+ blockdev.obj \
+ nftllite.obj \
+ diskonc.obj \
+ docsys.obj \
+ docsoc.obj \
+ reedsol.obj \
+ flflash.obj \
+ flsocket.obj \
+ flbase.obj \
+ flsystem.obj \
+ dosformt.obj
+
+#		*Explicit Rules*
+dformat.exe: dformat.cfg $(EXE_dependencies)
+  $(TLINK) /x/c/d/v/P-/C/L$(LIBPATH) @&&|
+c0l.obj+
+dformat.obj+
+flcustom.obj+
+blockdev.obj+
+flflash.obj+
+fltl.obj+
+nftllite.obj+
+diskonc.obj+
+docsys.obj+
+docsoc.obj+
+reedsol.obj+
+flsocket.obj+
+flsystem.obj+
+flbase.obj+
+dosformt.obj
+dformat
+		# no map file
+cl.lib
+|
+
+#		*Individual File Dependencies*
+dformat.obj: dformat.cfg dformat.c
+	$(CC) -c dformat.c
+
+flcustom.obj: dformat.cfg flcustom.c
+
+blockdev.obj: dformat.cfg $(SRCPATH)\blockdev.c
+
+flflash.obj: dformat.cfg $(SRCPATH)\flflash.c
+
+dosformt.obj: dformat.cfg $(SRCPATH)\dosformt.c
+
+fltl.obj: dformat.cfg $(SRCPATH)\fltl.c
+
+flbase.obj: dformat.cfg $(SRCPATH)\flbase.c
+
+flparse.obj: dformat.cfg $(SRCPATH)\flparse.c
+
+nftllite.obj: dformat.cfg $(SRCPATH)\nftllite.c
+
+diskonc.obj: dformat.cfg $(SRCPATH)\diskonc.c
+
+docsys.obj: dformat.cfg $(SRCPATH)\docsys.c
+
+docsoc.obj: dformat.cfg $(SRCPATH)\docsoc.c
+
+reedsol.obj: dformat.cfg $(SRCPATH)\reedsol.c
+
+flsocket.obj: dformat.cfg $(SRCPATH)\flsocket.c
+
+flsystem.obj: dformat.cfg $(SYSTEMPATH)\flsystem.c
+
+#		*Compiler Configuration File*
+dformat.cfg: makefile
+  copy &&|
+-ml
+-3
+-f-
+-j100
+-v
+-w
+-y
+-Z
+-p
+-I$(INCLUDEPATH)
+-L$(LIBPATH)
+-DFLITE
+-P.C
+| dformat.cfg

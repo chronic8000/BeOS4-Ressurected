@@ -1,0 +1,20 @@
+STUDI/O ALTERA FPGA GUIDE
+-------------------------
+
+program name			board rev		oper. freq.		file name
+------------			---------		-----------		----------
+2ADAT in, 2ADAT out		A-C			70.4MHz		2020k2.ttf
+2ADAT in, 2ADAT out		D-F			65MHz			2020d.ttf
+2ADAT in, 2ADAT out		A-C			65MHz			2020m.ttf (Mac DSP code)
+
+ADAT+DAT(SRC)in, ADAT+DAT out	A-C			70.4MHz		1111k.ttf
+ADAT+DAT(SRC)in, ADAT+DAT out	D-F			65MHz			1111d.ttf
+ADAT+DAT(SRC)in, ADAT+DAT out	A-C			65MHz			1111m.ttf (Mac DSP code)
+
+ADAT+DAT(SRC)in, 2ADAT  out	A-C			70.4MHz		1120k.ttf
+ADAT+DAT(SRC)in, 2ADAT  out	D-F			65MHz			1120d.ttf
+ADAT+DAT(SRC)in, 2ADAT  out	A-C			65MHz			1120m.ttf (Mac DSP code)
+
+2DAT in, DAT(SRC)+DAT out	A-C			all			0202.ttf
+2DAT in, DAT(SRC)+DAT out	D-F			all			0202a.ttf
+

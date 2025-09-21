@@ -1,0 +1,87 @@
+Durango Release Notes:
+
+-----------------------------------------------------------------------------
+2.01 (Mar 3 2000)
+- Verified Xfree86 driver version 1.1 under FreeBSD and Linux.
+- Added automatic detection of BLT buffer bases in "gfx_set_bpp" routine.
+- Fixed improper setting of VGA attrubute controller index register.
+- Moved "gfx_get_display_bpp" to always be included.
+- Moved "gfx_get_hactive" and "gfx_get_vactive" to always be included.
+- Clipped video source size if off bottom or right side.
+- Properly adjusted video offset if clipped on the top side.
+- Added "gfx_get_video_line_size" and "gfx_get_video_xclip" routines.
+-----------------------------------------------------------------------------
+2.00 (Feb 21 2000)
+- Added gfx_vga.c.
+- Added write to GP_BLIT_STATUS in "gfx_set_bpp" routine.
+- Verified alpha blending on SC1200.
+- Removed "gfx_set_blt_buffers" routine.
+-----------------------------------------------------------------------------
+1.20 (Feb 9 2000)
+- Verified display modes and graphics rendering on SC1200.
+- Updated PLL table for SC1200 to set modes.
+- DURANGO.C FILE CHANGE!: Modifed and added compiler definitions.
+- Split gfx_disp.c file into gu1_disp.c and gu2_disp.c
+- Split gfx_rndr.c file into gu1_rndr.c and gu2_rndr.c
+- Split gfx_vid.c file into vid_5530.c, vid_1400.c, and vid_1200.c
+- Split gfx_vip.c file into vip_1400.c and vip_1200.c
+- Split gfx_tv.c file into geode_tv.c and fs451_tv.c
+- Split gfx_i2c.c file into acc_i2c.c and gpio_i2c.c.
+- Split gfx_dcdr.c file to saa7114.c 
+- Added GFX_READ_ROUTINES compiler definition.  
+- Moved routines from gfx_read.c (no longer exists) to other files.
+- Abstracted display controller access in the video overlay routines.
+- Added routines to control display compression hardware.
+-----------------------------------------------------------------------------
+1.13 (Jan 28 2000)
+- Passes randomly generated rendering tests in Darwin for GXLV.
+- Fixed bug for large bitmap to screen BLTs (greater than 64K).
+- Fixed bug for pattern fills using solid source data for plane masks.
+-----------------------------------------------------------------------------
+1.12 (Jan 14 2000)
+- Added proper use of hotspot to gfx_set_cursor_position.
+- Fixed buffer size to handle all frame buffer start address alignments.
+- Added initial version of gfx_tv.c.
+-----------------------------------------------------------------------------
+1.11 (Jan 7 2000)
+- Fixed bug with transparent BLTs (loading transparent color into BB1).
+- Added definition of gfx_color_bitmap_to_screen_blt to gfx_rtns.h.
+- Added gfx_color_bitmap_to_screen_xblt (transparent bitmap to screen).
+-----------------------------------------------------------------------------
+1.10 (Dec 21 1999)
+- Added additional video decoder routines to gfx_dcdr.c.
+- Added VBI routines to gfx_vip.c.
+- Added alpha blending routines for SC1200 to gfx_vid.c
+-----------------------------------------------------------------------------
+1.00 (Oct 1 1999)
+- Added video port, video decoder, I2C, and hardware query rouines.
+- New files: gfx_vip.c, gfx_dcdr.c, gfx_i2c.c, gfx_read.c.
+-----------------------------------------------------------------------------
+0.05 (Aug 27 1999)
+- INTERFACE CHANGE: Changed "gfx_csptr[]" to "gfx_vidptr" and "gfx_vipptr".
+- Added "gfx_get_vid_register_base" and "gfx_get_vip_register_base".
+- Added initial PLL table for SC1400.
+- Verified mode set and video overlay routines work correctly on SC1400.
+- Updated initilization routines.
+- Added update of graphics engine in "gfx_set_display_pitch".
+-----------------------------------------------------------------------------
+0.04 (Aug 20 1999)
+- INTERFACE CHANGE: "gfx_load_*" routines changed to "gfx_set_*" for naming
+  consistency.  The "gfx_text_glyph" routine was removed. 
+- Added video overlay routines.
+- Added gfx_vid.c file.
+-----------------------------------------------------------------------------
+0.03 (Aug 16 1999)
+- INTERFACE CHANGE: Access to CS5530 now through separate pointer.  Project 
+  must declare and map the gfx_csptr[GFX_CSPTR_SIZE] variable.
+- Added durango.c file as template for main source file.
+- Added gfx_init.c file.
+-----------------------------------------------------------------------------
+0.02 (Aug 04 1999)
+- Additional modes in gfx_mode.h file.
+- Separated register definitions from gfx_defs.h into gfx_regs.h.
+-----------------------------------------------------------------------------
+0.01 (Jul 30 1999)
+- Initial release.
+-----------------------------------------------------------------------------
+

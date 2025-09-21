@@ -1,0 +1,21 @@
+g1;
+			const char *status;
+			if (msg->FindString("epst:status", &status) != B_OK)
+				return B_ERROR;
+
+			int32 st,er,c,m,y,k,lc,lm;					
+			st = er = c = m = y = k = lc = lm = -1;
+			const char *p;
+
+			p = strstr(status, "ST:");
+			if (p)
+			{
+				sscanf(p, "ST:%02lX", &st);
+				msg->AddInt32("epst:stat", st);
+				if (st == 0)
+				{
+					p = strstr(status, "ER:");
+					if (p)
+					{
+						sscanf(p, "ER:%02lX", &er);
+						msg->AddInt32

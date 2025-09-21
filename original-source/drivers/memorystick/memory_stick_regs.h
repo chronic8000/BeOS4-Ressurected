@@ -1,0 +1,94 @@
+#ifndef MEMORY_STICK_REGS_H
+#define MEMORY_STICK_REGS_H
+
+typedef uint8 memory_stick_regs[31];
+typedef uint8 memory_stick_wregs[15];
+
+#define REG_INT          0x01
+#define REG_STATUS0      0x02
+#define REG_STATUS1      0x03
+#define REG_SYSTEMPAR    0x10
+#define REG_BLOCKADDR2   0x11
+#define REG_BLOCKADDR1   0x12
+#define REG_BLOCKADDR0   0x13
+#define REG_CMDPAR       0x14
+#define REG_PAGEADDR     0x15
+
+#define REG_EXTRA_DATA   0x16
+#define REG_OWFLAG       0x16
+#define REG_MFLAG        0x17
+#define REG_LADDR1       0x18
+#define REG_LADDR0       0x19
+#define REG_RESERVED_1A  0x1a
+#define REG_RESERVED_1B  0x1b
+#define REG_RESERVED_1C  0x1c
+#define REG_RESERVED_1D  0x1d
+#define REG_RESERVED_1E  0x1e
+
+#define REGW_BASE        0x10
+#define REGW_SYSTEMPAR   (REG_SYSTEMPAR - REGW_BASE)
+#define REGW_BLOCKADDR2  (REG_BLOCKADDR2 - REGW_BASE)
+#define REGW_BLOCKADDR1  (REG_BLOCKADDR1 - REGW_BASE)
+#define REGW_BLOCKADDR0  (REG_BLOCKADDR0 - REGW_BASE)
+#define REGW_CMDPAR      (REG_CMDPAR - REGW_BASE)
+#define REGW_PAGEADDR    (REG_PAGEADDR - REGW_BASE)
+
+#define REGW_EXTRA_DATA  (REG_EXTRA_DATA - REGW_BASE)
+#define REGW_OWFLAG      (REG_OWFLAG - REGW_BASE)
+#define REGW_MFLAG       (REG_MFLAG - REGW_BASE)
+#define REGW_LADDR1      (REG_LADDR1 - REGW_BASE)
+#define REGW_LADDR0      (REG_LADDR0 - REGW_BASE)
+#define REGW_RESERVED_1A (REG_RESERVED_1A - REGW_BASE)
+#define REGW_RESERVED_1B (REG_RESERVED_1B - REGW_BASE)
+#define REGW_RESERVED_1C (REG_RESERVED_1C - REGW_BASE)
+#define REGW_RESERVED_1D (REG_RESERVED_1D - REGW_BASE)
+#define REGW_RESERVED_1E (REG_RESERVED_1E - REGW_BASE)
+#define REGW_EXTRA_DATA_SIZE (REGW_RESERVED_1E + 1 - REGW_EXTRA_DATA)
+
+#define REG_INT_MASK_CED            0x80
+#define REG_INT_MASK_ERR            0x40
+#define REG_INT_MASK_BREQ           0x20
+#define REG_INT_MASK_CMDNK          0x01
+
+#define REG_STATUS0_MASK_MB         0x80
+#define REG_STATUS0_MASK_FB0        0x40
+#define REG_STATUS0_MASK_BE         0x20
+#define REG_STATUS0_MASK_BF         0x10
+#define REG_STATUS0_MASK_SL         0x02
+#define REG_STATUS0_MASK_WP         0x01
+
+#define REG_STATUS1_MASK_MB         0x80
+#define REG_STATUS1_MASK_FB1        0x40
+#define REG_STATUS1_MASK_DTER       0x20
+#define REG_STATUS1_MASK_UCDT       0x10
+#define REG_STATUS1_MASK_EXER       0x08
+#define REG_STATUS1_MASK_UCEX       0x04
+#define REG_STATUS1_MASK_FGER       0x02
+#define REG_STATUS1_MASK_UCFG       0x01
+#define REG_STATUS1_MASK_CORRECTED  0x2a
+
+#define REG_SYSTEMPAR_MASK_BAMD     0x80
+#define REG_SYSTEMPAR_MASK_ATEN     0x40
+
+#define REG_CMDPAR_MASK_CP          0xe0
+#define REG_CMDPAR_BLOCK_MODE       0x00
+#define REG_CMDPAR_PAGE_MODE        0x20
+#define REG_CMDPAR_EXDATA_MODE      0x40
+#define REG_CMDPAR_FLAG_WRITE_MODE  0x80
+
+#define REG_OWFLAG_MASK_BKST        0x80
+#define REG_OWFLAG_MASK_PGST        0x60
+#define REG_OWFLAG_MASK_UDST        0x10
+
+#define REG_OWFLAG_BKST_OK          0x80
+#define REG_OWFLAG_BKST_NG          0x00
+#define REG_OWFLAG_PGST_OK          0x60
+#define REG_OWFLAG_PGST_NG          0x20
+#define REG_OWFLAG_PGST_DATAERR     0x00
+
+#define REG_MFLAG_MASK_SCMS         0x30
+#define REG_MFLAG_MASK_ATFLG        0x08
+#define REG_MFLAG_MASK_SYSFLG       0x04
+
+#endif
+

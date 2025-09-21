@@ -1,0 +1,139 @@
+#
+#       PC/Makefile for the Speedo/nsample.exe program
+#
+#  $Header: //bliss/user/archive/rcs/speedo/mknsamp.pc,v 33.0 97/03/17 17:45:31 shawn Release $
+#
+#  $Log:	mknsamp.pc,v $
+#       Revision 33.0  97/03/17  17:45:31  shawn
+#       TDIS Version 6.00
+#       
+#       Revision 32.2  96/08/20  13:18:09  shawn
+#       Added RCS/Header and Log keywords.
+#       
+#
+
+cflags = /AS /Ox /G2 -c -DMSDOS -DNO_PROCS -DPROC_SPEEDO
+
+incl_dir = ../includes
+
+inc = -I$(incl_dir)
+
+
+all: nsample.exe
+
+nsample.obj : nsample.c \
+	$(incl_dir)/speedo.h \
+	$(incl_dir)/useropt.h \
+	$(incl_dir)/keys.h
+	cl $(cflags) $(inc) nsample.c
+
+reset.obj : reset.c  \
+	$(incl_dir)/spdo_prv.h  \
+	$(incl_dir)/speedo.h  \
+	$(incl_dir)/useropt.h \
+	$(incl_dir)/fino.h \
+	$(incl_dir)/keys.h
+	cl $(cflags) $(inc) reset.c
+
+set_spcs.obj : set_spcs.c \
+	$(incl_dir)/spdo_prv.h \
+	$(incl_dir)/speedo.h  \
+	$(incl_dir)/useropt.h \
+	$(incl_dir)/fino.h
+	cl $(cflags) $(inc) set_spcs.c
+
+do_char.obj : do_char.c \
+	$(incl_dir)/spdo_prv.h \
+	$(incl_dir)/speedo.h  \
+	$(incl_dir)/useropt.h \
+	$(incl_dir)/fino.h
+	cl $(cflags) $(inc) do_char.c
+
+do_trns.obj : do_trns.c \
+	$(incl_dir)/spdo_prv.h \
+	$(incl_dir)/speedo.h  \
+	$(incl_dir)/fino.h
+	cl $(cflags) $(inc) do_trns.c
+
+out_blk.obj : out_blk.c \
+	$(incl_dir)/spdo_prv.h \
+	$(incl_dir)/speedo.h  \
+	$(incl_dir)/useropt.h \
+	$(incl_dir)/fino.h
+	cl $(cflags) $(inc) out_blk.c
+
+out_wht.obj : out_wht.c \
+	$(incl_dir)/spdo_prv.h \
+	$(incl_dir)/speedo.h  \
+	$(incl_dir)/useropt.h \
+	$(incl_dir)/fino.h
+	cl $(cflags) $(inc) out_wht.c
+
+out_gray.obj : out_gray.c \
+	$(incl_dir)/spdo_prv.h \
+	$(incl_dir)/speedo.h  \
+	$(incl_dir)/useropt.h \
+	$(incl_dir)/fino.h
+	cl $(cflags) $(inc) out_gray.c
+
+out_scrn.obj : out_scrn.c \
+	$(incl_dir)/spdo_prv.h \
+	$(incl_dir)/speedo.h  \
+	$(incl_dir)/useropt.h \
+	$(incl_dir)/fino.h
+	cl $(cflags) $(inc) out_scrn.c
+
+out_qck.obj : out_qck.c \
+	$(incl_dir)/spdo_prv.h \
+	$(incl_dir)/speedo.h  \
+	$(incl_dir)/useropt.h \
+	$(incl_dir)/fino.h
+	cl $(cflags) $(inc) out_qck.c
+
+out_outl.obj : out_outl.c \
+	$(incl_dir)/spdo_prv.h \
+	$(incl_dir)/speedo.h  \
+	$(incl_dir)/useropt.h \
+	$(incl_dir)/fino.h
+	cl $(cflags) $(inc) out_outl.c
+
+out_util.obj : out_util.c \
+	$(incl_dir)/spdo_prv.h \
+	$(incl_dir)/speedo.h  \
+	$(incl_dir)/useropt.h \
+	$(incl_dir)/fino.h
+	cl $(cflags) $(inc) out_util.c
+
+out_bl2d.obj : out_bl2d.c \
+	$(incl_dir)/spdo_prv.h \
+	$(incl_dir)/speedo.h  \
+	$(incl_dir)/useropt.h \
+	$(incl_dir)/fino.h
+	cl $(cflags) $(inc) out_bl2d.c
+
+set_trns.obj : set_trns.c \
+	$(incl_dir)/spdo_prv.h \
+	$(incl_dir)/speedo.h  \
+	$(incl_dir)/useropt.h \
+	$(incl_dir)/fino.h
+	cl $(cflags) $(inc) set_trns.c
+
+set_keys.obj: set_keys.c \
+	$(incl_dir)/speedo.h \
+	$(incl_dir)/useropt.h \
+	$(incl_dir)/fino.h
+	cl $(cflags) $(inc) set_keys.c
+
+spm_fns.obj:  spm_fns.c \
+        $(incl_dir)/spdo_prv.h \
+        $(incl_dir)/speedo.h
+	cl $(cflags) $(inc) spm_fns.c
+
+nsample.exe : nsample.obj reset.obj set_spcs.obj do_char.obj \
+                out_qck.obj do_trns.obj out_blk.obj out_wht.obj \
+                out_gray.obj out_scrn.obj out_outl.obj out_util.obj \
+                out_bl2d.obj set_trns.obj set_keys.obj spm_fns.obj
+	link /STACK:6144 @mknsamp.lnk
+
+clean:
+	del *.obj

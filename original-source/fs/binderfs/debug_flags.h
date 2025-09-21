@@ -1,0 +1,15 @@
+#ifndef DEBUG_FLAGS_H
+#define DEBUG_FLAGS_H
+
+#define TRACE_PORTS 0
+#define TRACE_REFS 0
+#define TRACE_NODES 0
+#define TRACE_FDS 0
+#define TRACE_COMMUNICATION 0
+#define TRACE_REFLECTION 0
+#define TRACE_REDIRECT 0
+#define TRACE_COMMANDS 0
+#define TRACE_LINKS 0
+
+#endif
+

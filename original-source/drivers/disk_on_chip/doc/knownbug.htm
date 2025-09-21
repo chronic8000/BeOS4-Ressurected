@@ -1,0 +1,206 @@
+<html xmlns:v="urn:schemas-microsoft-com:vml"
+xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:w="urn:schemas-microsoft-com:office:word"
+xmlns="http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=Word.Document>
+<meta name=Generator content="Microsoft Word 9">
+<meta name=Originator content="Microsoft Word 9">
+<link rel=File-List href="./knownbug_files/filelist.xml">
+<link rel=Edit-Time-Data href="./knownbug_files/editdata.mso">
+<!--[if !mso]>
+<style>
+v\:* {behavior:url(#default#VML);}
+o\:* {behavior:url(#default#VML);}
+w\:* {behavior:url(#default#VML);}
+.shape {behavior:url(#default#VML);}
+</style>
+<![endif]-->
+<title>OSAK121 BUGs pack1</title>
+<style>
+<!--
+ /* Style Definitions */
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{mso-style-parent:"";
+	margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:12.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";
+	color:black;}
+h1
+	{margin-right:0in;
+	mso-margin-top-alt:auto;
+	mso-margin-bottom-alt:auto;
+	margin-left:0in;
+	mso-pagination:widow-orphan;
+	mso-outline-level:1;
+	font-size:24.0pt;
+	font-family:"Times New Roman";
+	color:black;
+	mso-font-kerning:18.0pt;
+	font-weight:bold;}
+h3
+	{margin-right:0in;
+	mso-margin-top-alt:auto;
+	mso-margin-bottom-alt:auto;
+	margin-left:0in;
+	mso-pagination:widow-orphan;
+	mso-outline-level:3;
+	font-size:13.5pt;
+	font-family:"Times New Roman";
+	color:black;
+	font-weight:bold;}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;
+	text-underline:single;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;
+	text-underline:single;}
+p
+	{margin-right:0in;
+	mso-margin-top-alt:auto;
+	mso-margin-bottom-alt:auto;
+	margin-left:0in;
+	mso-pagination:widow-orphan;
+	font-size:12.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";
+	color:black;}
+@page Section1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.25in 1.0in 1.25in;
+	mso-header-margin:.5in;
+	mso-footer-margin:.5in;
+	mso-paper-source:0;}
+div.Section1
+	{page:Section1;}
+-->
+</style>
+<!--[if gte mso 9]><xml>
+ <o:shapedefaults v:ext="edit" spidmax="1027"/>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <o:shapelayout v:ext="edit">
+  <o:idmap v:ext="edit" data="1"/>
+ </o:shapelayout></xml><![endif]-->
+<meta name=Version content=8.0.4308>
+<meta name=Date content="7/8/97">
+</head>
+
+<body bgcolor=white lang=EN-US link=blue vlink=purple style='tab-interval:.5in'>
+
+<div class=Section1>
+
+<h1 align=center style='text-align:center'><u>OSAK121-BF<span
+style="mso-spacerun: yes">  </span>Known Bugs<o:p></o:p></u></h1>
+
+<h1 align=center style='text-align:center'><u><![if !supportEmptyParas]>&nbsp;<![endif]><o:p></o:p></u></h1>
+
+<table border=1 cellspacing=1 cellpadding=0 width=460 style='width:345.0pt;
+ mso-cellspacing:.7pt;mso-padding-alt:5.25pt 5.25pt 5.25pt 5.25pt'>
+ <tr>
+  <td width="25%" valign=top style='width:25.84%;padding:5.25pt 5.25pt 5.25pt 5.25pt'>
+  <h3>Bug ID</h3>
+  </td>
+  <td width="73%" valign=top style='width:73.56%;padding:5.25pt 5.25pt 5.25pt 5.25pt'>
+  <h3>Title</h3>
+  </td>
+ </tr>
+ <tr>
+  <td width="25%" valign=top style='width:25.84%;padding:5.25pt 5.25pt 5.25pt 5.25pt'>
+  <p>OSAK121.1.1</p>
+  </td>
+  <td width="73%" valign=top style='width:73.56%;padding:5.25pt 5.25pt 5.25pt 5.25pt'>
+  <p><a href="#osak12111">DiskOnChip registration problem</a></p>
+  </td>
+ </tr>
+</table>
+
+<p>&nbsp;</p>
+
+<p><a name=osak12111></a><img border=0 width=12 height=12 id="_x0000_i1025"
+src=Image9.gif><span style="mso-spacerun: yes"> </span><b><span
+style='font-size:18.0pt'>1. DiskOnChip registration problem<o:p></o:p></span></b></p>
+
+<p><b><i>Routine declaration:<o:p></o:p></i></b></p>
+
+<p><i>FLStatus flRegisterDOCSOC(unsigned long lowAddress, unsigned long
+highAddress)</i></p>
+
+<p style='margin:0in;margin-bottom:.0001pt'>With<b> </b><i>lowAddress</i> and <i>highAddress</i>
+as the start and end address of the DiskOnChip search area.</p>
+
+<p style='margin:0in;margin-bottom:.0001pt'>FlStatus returns 0 on success,
+otherwise failed.<b><o:p></o:p></b></p>
+
+<p style='margin-bottom:6.0pt'><b><i>Description<o:p></o:p></i></b></p>
+
+<h3 style='margin:0in;margin-bottom:.0001pt'><span style='font-size:12.0pt;
+mso-bidi-font-size:13.5pt;font-weight:normal'>Detects DiskOnChips in the system
+and initializes the data structures of the detected DiskOnChips. The routine
+can be called several times in several memory ranges.<o:p></o:p></span></h3>
+
+<h3>Bug description:</h3>
+
+<p>When the system consists of more than one DiskOnChip and the <i>flRegisterDOCSOC()
+</i>routine is called several times in different memory ranges, the socket
+identification number of the various DiskOnChips will get the same value. The
+result is that several volumes (vol1, vol2) will point to the same DiskOnChip,
+whereas the other DiskOnChips will not be pointed to at all.</p>
+
+<p><span style="mso-spacerun: yes"> </span>The following lines in the <i>flRegisterDOCSOC()</i>
+routine are causing the above described problem: </p>
+
+<p><i><span style="mso-spacerun: yes"> </span>for (<u>serialNo=0</u>;(
+noOfDrives &lt; DRIVES );serialNo++,noOfDrives++) {<o:p></o:p></i></p>
+
+<p><i><u><span style="mso-spacerun: yes"> </span>vol.volNo = serialNo</u>;<o:p></o:p></i></p>
+
+<p>...</p>
+
+<p><i>}<o:p></o:p></i></p>
+
+<h3>Recommended solution:</h3>
+
+<p>Call the <i>flRegisterDOCSOC()</i> routine once with the search area
+parameters that includes all the memory regions.</p>
+
+<p><b>Example:<o:p></o:p></b></p>
+
+<p><i>FLStatus flRegisterComponents(void)<o:p></o:p></i></p>
+
+<p><i>{<o:p></o:p></i></p>
+
+<p><i>/* Registering socket interface */<o:p></o:p></i></p>
+
+<p><i>flRegisterDOCSOC(0xd0000l, 0xd2000l); /* first DiskOnChip at D000:0,
+second at D200: 0 */<o:p></o:p></i></p>
+
+<p><i>/* Registering MTD */<o:p></o:p></i></p>
+
+<p><i>checkStatus(flRegisterDOC2000());<span style='mso-tab-count:1'>   </span>/*
+Register diskonc.c MTD */<o:p></o:p></i></p>
+
+<p><i>/* Registering translation layer */<o:p></o:p></i></p>
+
+<p><i>checkStatus(flRegisterNFTL());<span style='mso-tab-count:1'>          </span>/*
+Register nftllite.c */<o:p></o:p></i></p>
+
+<p><i>return flOK;<o:p></o:p></i></p>
+
+<p><i>}<o:p></o:p></i></p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;<a name=osak12112></a></p>
+
+</div>
+
+</body>
+
+</html>

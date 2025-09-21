@@ -1,0 +1,1306 @@
+<BASE HREF="http://home.epigram.com/driver-design/il.html">
+<!-- $Id -->
+<html>
+<head>
+	<title>InsideLine&#8482 Device Driver: Internal Design</title>
+</head>
+
+<body bgcolor=white text=black>
+
+<img src=BCMLogo.gif>
+	
+<table cellpadding=0 cellspacing=0 border=0>
+<tr>
+<td valign=top width=538><font face="Geneva, Helvetica, Arial" size=2 >
+
+<h1>InsideLine&#8482 Device Driver: Internal Design</h1>
+
+<h2>Status</h2>
+<p>
+Last modified:  $Date: 2000/01/06 00:39:01 $
+<p>
+Second draft.
+Available for external distribution.
+
+<h2>Contents</h2>
+<ul>
+	<li>
+	<a href=#audience>Audience</a>
+
+	<li>
+	<a href=#background>Background</a>
+
+	<li>
+	<a href=#chips>Chips Supported</a>
+
+	<li>
+	<a href=#portlist>Ports List</a>
+
+	<li>
+	<a href=#files>Source Files</a>
+
+	<li>
+	<a href=#datastructures>Data Structures</a>
+
+	<li>
+	<a href=#functions>Function Call Graphs</a>
+
+	<li>
+	<a href=#api>il/ilc API</a>
+
+	<li>
+	<a href=#locking>Locking Model</a>
+
+	<li>
+	<a href=#ports>Port-specific Design Notes</a>
+
+	<li>
+	<a href=#dump>il dump Example</a>
+
+	<li>
+	<a href=#frame>On-the-wire Frame Format</a>
+
+	<li>
+	<a href=#ilcp>InsideLine Control Protocol</a>
+
+	<li>
+	<a href=#fallback>Mode Switching and Fallback</a>
+
+	<li>
+	<a href=#other>Other Misc Functionality</a>
+
+	<li>
+	<a href=#porting>Porting</a>
+
+	<li>
+	<a href=#feedback>Feedback</a>
+
+	<li>
+	<a href=#links>Links</a>
+</ul>
+
+<a name=audience></a>
+<h2>Audience</h2>
+<p>
+This paper provides an introduction to the internal design and implementation
+of the Broadcom BCM42xx InsideLine&#8482 Home Phoneline Networking device driver.
+The general structure and design methodology is presented
+along with a brief description of each <i>port</i> of the driver.
+<p>
+It is assumed that the reader has the following three key resources at hand:
+<ul>
+	<li>
+	Broadcom InsideLine Driver Source Release
+
+	<li>
+	a copy of the <i>"BCM4211 iLine10 Controller Programmer's Guide"</i>
+
+	<li>
+	a copy of the HPNA 2.0 specification
+</ul>
+<p>
+You can obtain the first two under NDA from Broadcom
+at <a href=mailto:support@epigram.com>support@epigram.com</a>.
+<br>
+You can get the HPNA 2.0 spec directly from the 
+from the Home Phoneline Network Alliance
+(<a href=http://www.homepna.org>www.homepna.org</a>).
+
+<a name=background></a>
+<h2>Background</h2>
+<h3>InsideLine Technology</h3>
+<p>
+InsideLine technology includes a family of frame-oriented link, media access,
+and physical layer protocols that can scale over a large range of bandwidths
+on existing, arbitrary-topology, single-pair, residential telephone wiring
+using RJ-11 jacks.
+<ul>
+	<li>
+	no hubs or central servers are needed
+	<li>
+	4-32 Mbit/s data rates, scalable to over 100 Mbit/s
+	<li>
+	spectrum compatible: 4-10MHz band allows concurrent POTS and U. ADSL
+	<li>
+	QAM/FDQAM (frequency diverse QAM)
+	<li>
+	per-packet equalizer training
+	<li>
+	rate-adaptive constellation size (2-8 bits/baud @ 2 or 4 Mbaud)
+	<li>
+	media access is simple broadcast CSMA/CD
+	<li>
+	backwards compatible with HPNA 1.0 1Mbit/s protocol
+	<li>
+	LARQ - (Limited Automatic Retransmit reQuest) impluse error control protocol
+	<li>
+	multicast is supported using Ethernet/IEEE 802 conventions
+</ul>
+
+<h3>The Chip</h3>
+<p>
+The BCM42xx iLine10&#8482 Controller is an integrated controller for
+a 16 Mbps data-rate InsideLine HPNA 2.0 network.
+The BCM42xx provides a direct interface to the PCI bus, CardBus,
+or a Microprocessor Slave Interface for embedded systems.
+The chip supports 32bit DMA and PIO (direct fifo) accesses in PCI/CardBus modes
+and 16bit PIO access, exclusively, in MSI mode,
+with full packet buffering.
+A 4096 byte 16/32bit PCI memory space is decoded at BAR0.
+PCI IO space accesses are not supported by the chip.
+The controller is PCI function #0 of the 4210 and 4211.
+The digital chip currently interfaces with a separate,
+non-programmable,
+BCM41xx analog front end chip.
+<p>
+We'll use the term <i>DMA-mode</i> to refer
+to use of the PCI master functionality of the chip,
+<i>PIO-mode</i> to refer to direct programmed i/o use
+of the chip transmit and receive fifos
+independent of the bus (PCI or MSI),
+and <i>MSI-mode</i> when referring specifically
+of the (PIO-only) Microprocessor Slave Interface functionality.
+<p>
+There are two DMA channels, one for transmit and one for receive.
+Each dma engine is configured via a set of four registers
+to process a contiguous vector (ring) of 8 byte descriptors.
+Descriptors are read-only - never written by the chip.
+Each 8 byte descriptor consists of a 4 byte control word
+and a 4 byte 32bit PCI address word.
+Each descriptor ring must be aligned on a 4096 byte memory boundary
+and,
+given the 4096 byte maximum contiguous dma segment size,
+each ring is limited to a maximum of 4096/8=512 entries.
+The chip supports arbitrary byte alignment and length of data buffers
+with the restriction that buffers may not span 4096 byte memory boundaries.
+<p>
+There are two 16bit direct fifo channels, one for transmit and one for receive.
+Each fifo is accessed via a control and a data register.
+<p>
+There is a pair of 32bit <i>intstatus/intmask</i> registers
+which are used in DMA mode
+and a pair of 16bit <i>msiintstatus/msiintmask</i> registers
+which are used in PIO (PCI/CardBus or MSI -- not restricted to MSI) mode.
+<p>
+There is a Device Control register (<i>devcontrol</i>) at address 0x0
+which functions as a master switch to enable the modem,
+transmit and receive FIFOs, and various test functions.
+<p>
+There are many modem configuration registers
+which require only initialization-time access.
+<p>
+The chip includes two MACs:
+<ul>
+	<li>
+	DFPQ (Distributed Fair Priority Queue) MAC is the native
+	contention resolution algorithm used by InsideLine
+	<li>
+	802.3 BEB (Binary Exponential Backoff) MAC
+	is included for backwards compatibility with the HPNA 1.0 protocol.
+</ul>
+<p>
+The chip includes two modems:
+<ul>
+	<li>
+	iLine10 (HPNA 2.0) - 2-16 Mbit/s
+	<li>
+	Tut (HPNA 1.0) - 1Mbit/s
+</ul>
+<p>
+Three HPNA operating modes are supported.
+<dl>
+	<dt> <i>iLine10</i> (aka <i>Native-mode</i>, aka <i>HPNA 2.0 mode</i>)
+	<dd>
+	This is the default, high-performance mode and is used
+	when no HPNA 1.0 stations are detected.  The DFPQ MAC is used.
+
+	<dt> <i>Compatibility</i> (aka <i>Mixed-mode</i>, aka <i>Gapped-mode</i>)
+	<dd>
+	If an HPNA 1.0 station is detected on the net, the driver
+	will dynamically put the chip into compat or tut mode
+	in order to interoperate with those HPNA 1.0 stations.
+	This is a slightly modified version of native mode in which
+	periodic gaps are inserted into the modulated HPNA 2.0 frame to ensure
+	that HPNA 1.0 stations will detect carrier and defer.
+	These gaps introduce a 10-20% performance impact.
+	The Ethernet MAC is used.
+
+	<dt> <i>HPNA 1.0</i> (aka <i>Tut mode</i>)
+	<dd>
+	1 Mbit/s HPNA 1.0 modulation and framing.
+	The Ethernet MAC is used.
+</dl>
+<p>
+All three frame types can be be received while in any operating mode.
+When in native mode, only native frames can be transmitted.
+When in compat mode (mixed-mode), either gapped HPNA 2.0 frames
+or HPNA 1.0 frames can be transmitted.
+When in HPNA 1.0 mode, only HPNA 1.0 frames can be transmitted.
+<p>
+Refer to the BCM42xx data sheet or programmers guide for more details.
+
+<a name=chips></a>
+<h2>Chips Supported</h2>
+<p>
+The driver supports the following chips:
+<ul>
+  <li>
+  4210 (vendor = 0xfeda, device = 0xa0fa), "B0" (rev = 1) only
+  <li>
+  4230 is the cardbus version of the 4210 (vendor = 0xfeda, device = 0xa10e)
+  <li>
+  4211 (vendor = 0x14e4, device = 0x4211)
+  <li>
+  4231 is the cardbus version of the 4211 (vendor = 0x14e4, device = 0x4231)
+</ul>
+
+<a name=portlist></a>
+<h2>Ports List</h2>
+<p>
+The driver has been ported to the following operating systems
+and hardware platforms.
+<p>
+
+<table align=center border=3>
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>OS</th>
+			<th>Hw Platform</th>
+			<th>DMA/PIO/MSI</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<tr>
+			<td rowspan=6>NDIS</td>
+			<td>Win95</td>
+			<td>x86 PC</td>
+			<td>DMA/PIO</td>
+		</tr>
+		<tr>
+			<td>Win98</td>
+			<td>x86 PC</td>
+			<td>DMA/PIO</td>
+		</tr>
+		<tr>
+			<td>NT4 (SP4)</td>
+			<td>x86 PC</td>
+			<td>DMA/PIO</td>
+		</tr>
+		<tr>
+			<td>Win2k</td>
+			<td>x86 PC</td>
+			<td>DMA/PIO</td>
+		</tr>
+		<tr>
+			<td>CE v.2.12</td>
+			<td>BCM3310 MIPS</td>
+			<td>MSI</td>
+		</tr>
+		<tr>
+			<td>CE v.2.12</td>
+			<td>x86 PC</td>
+			<td>DMA/PIO</td>
+		</tr>
+		<tr>
+			<td rowspan=2>BSD</td>
+			<td>FreeBSD 3.x</td>
+			<td>x86 PC</td>
+			<td>DMA/PIO</td>
+		</tr>
+		<tr>
+			<td>vxWorks 5.3.x</td>
+			<td>x86 PC</td>
+			<td>DMA/PIO</td>
+		</tr>
+		<tr>
+			<td rowspan=2>Linux</td>
+			<td>2.2 kernel</td>
+			<td>x86 PC</td>
+			<td>DMA/PIO</td>
+		</tr>
+		<tr>
+			<td>2.2 kernel</td>
+			<td>StrongARM</td>
+			<td>MSI</td>
+		</tr>
+		<tr>
+			<td rowspan=2>pSOS</td>
+			<td>pSOS v2.5</td>
+			<td>x86 PC</td>
+			<td>DMA/PIO</td>
+		</tr>
+		<tr>
+			<td>pSOS v2.5</td>
+			<td>BCM3310 MIPS</td>
+			<td>MSI</td>
+		</tr>
+	</tbody>
+</table>
+
+<a name=files></a>
+<h2>Source Files</h2>
+<p>
+The driver is partitioned into os-specific ("port-specific")
+and os-independent ("common")
+source files.
+The naming convention is to use the <b>il_</b> prefix for port-specific objects
+and <b>ilc_</b> prefix for common objects.
+
+<h3>Common Files</h3>
+<p>
+<dl>
+	<dt> <b>ilc.[ch]</b>
+	<dd> Principle "common" code.
+	Shared amongst all port-specific ports of the driver.
+	Most ports of the driver should not require modifying
+	or even understanding ilc.c .
+
+	<dt> <b>constel_select.[ch]</b>
+	<dd> Constellation selection algorithm.
+
+	<dt> <b>il_stats.[ch]</b>
+	<dd> Internal driver error/stat counters.
+
+	<dt> <b>ilc_cert.c</b>
+	<dd> HPNA certification/diagnostic protocol support.
+
+	<dt> <b>crc.[ch]</b>
+	<dd> crc32/16/8 routines
+
+	<dt> <b>il_dbg.h</b>
+	<dd> Common header that defines only printf(),
+	sprintf(), ASSERT, and few trace/logging macros.
+
+	<dt> <b>ndis41.h</b>
+	<dd> Unedited local copy of the 4.1 version of NDIS.H
+	used instead of installed 4.0 version when compiling for NT4.
+
+	<dt> <b>include/bcm42xx.h</b>
+	<dd> Chip-specific manifest constants and data structures.
+
+	<dt> <b>include/bcmendian.h</b>
+	<dd> Defines a few platform-specific big/little-endian macros
+	and #includes the native endian.h
+
+	<dt> <b>include/typedefs.h</b>
+	<dd> Driver-specific common typedefs (uint32, uint16, etc).
+
+	<dt> <b>proto/iline.h</b>
+	<dd> InsideLine protocol-specific values.
+
+	<dt> <b>proto/ilcp.h</b>
+	<dd> InsideLine Control Protocol specific values.
+
+	<dt> <b>proto/ethernet.h</b>
+	<dd> Hacked version of the FreeBSD ethernet.h
+</dl>
+
+<h3>NDIS Files</h3>
+<p>
+<dl>
+	<dt> <b>il_ndis.[ch]</b>
+	<dd> main driver for NDIS 3.x/4.x/5.x
+
+	<dt> <b>il_ndis30.[ch]</b>
+	<dd> NDIS 3.0-specific shim functions
+
+	<dt> <b>il_ndisCE.[ch]</b>
+	<dd> CE-specific shim functions
+
+	<dt> <b>il_ddk.[ch]</b>
+	<dd> DDK/WDM-specific low-level functions
+
+	<dt> <b>il_ddkCE.[ch]</b>
+	<dd> CE/DDK-specific low-level functions
+
+	<dt> <b>il_classify.[ch]</b>
+	<dd> NDIS-specific packet-type heuristics
+
+	<dt> <b>il_cos.[ch]</b>
+	<dd> NDIS-specific class-of-service priority labeling
+
+	<dt> <b>include/epiioctl.h</b>
+	<dd> NDIS custom OIDs used by the user-level <b>il</b> command
+</dl>
+
+<h3>BSD Files</h3>
+<p>
+<dl>
+	<dt> <b>if_il.c</b>
+	<dd> FreeBSD/vxWorks driver
+
+	<dt> <b>include/ilsockio.h</b>
+	<dd> BSD/Linux socket ioctls - used by the user-level <b>il</b> command
+
+	<dt> <b>../vxWorks_pc/</b>
+	<dd> vxWorks Intel PC platform BSP directory
+</dl>
+
+<h3>Linux Files</h3>
+<p>
+<dl>
+	<dt> <b>il_linux.c</b>
+	<dd> Linux driver
+
+	<dt> <b>include/ilsockio.h</b>
+	<dd> BSD/Linux socket ioctls - used by the user-level <b>il</b> command
+</dl>
+
+<h3>pSOS Files</h3>
+<p>
+<dl>
+	<dt> <b>il_psos.[ch]</b>
+	<dd> pSOS driver
+
+	<dt> <b>../pSOSv217_pc/</b>
+	<dd> pSOS BSP directory
+</dl>
+
+<a name=datastructures></a>
+<h2>Data Structures</h2>
+<h3>il_info_t (port-specific)</h3>
+<p>
+This is the principle, port-specific, per-device-instance <i>softc</i>
+private structure.
+This per-port structure <b>must</b> begin with a common ilc_info_t
+because callbacks from ilc.c into the per-port routines cast their
+ilc_info_t* on the fly to the il_info_t .
+Typically, the il_info_t is tiny since it stores only
+OS- and hardware-platform-specific state.
+<p>
+Since this structure is port-specific, none of the common code
+(ilc.c, constel_select.c, etc) can #include it.
+<p>
+Most port-specific routines take a <i>il_info_t*</i> as their first argument.
+<br>
+The il_info_t pointer local variable is usually named <i>il</i>.
+
+<h3>ilc_info_t (ilc.h)</h3>
+<p>
+This is the principle, common per-device-instance
+data structure.
+<br>
+It is large and complex.
+Refer to the block comment and structure declaration in <i>ilc.h</i>
+for more details.
+<p>
+Most common routines take a <i>ilc_info_t*</i> as their first argument.
+<br>
+The ilc_info_t pointer local variable is usually named <i>ilc</i>.
+
+<h3>struct scb (ilc.h)</h3>
+<p>
+The driver maintains cached per-path state in a set of station control blocks
+hashed on the remote 6 byte MAC address.
+Typically there are 4 to 32 scbs statically compiled-in.
+There is one scb per active remote station or inuse multicast/broadcast address.
+The scb is allocated and initialized on a lookup <i>miss</i>
+and reclaimed on-demand in LRU order.
+Information stored in the scb includes advertised rate descriptor,
+rate binary exponential backoff count and limit values,
+mixed-mode/tut-mode fallback state,
+constellation history (SNR/errors over the previous N received frames),
+and several per-path stat counters.
+
+<h3>bcm42xxregs_t (bcm42xx.h)</h3>
+<p>
+Chip registers plus symbolic macros for all the register bits.
+These follow the naming conventions from the Programmers Guide pretty closely
+so it's hard to get lost.
+
+<h3>bcm42xxdd_t (bcm42xx.h)</h3>
+<p>
+DMA Transmit/Receive Ring descriptor structure.
+
+<h3>bcm42xxrxhdr_t (bcm42xx.h)</h3>
+<p>
+Received frames start with this 20 byte receive frame data header.
+There are two overlayed variations,
+bcm42xxrxhdr_t and bcm42xxv1hdr_t
+for received InsideLine and Tut frames, respectively.
+<p>
+In PIO mode, these are the first bytes read by the driver from the receive fifo.
+In DMA mode, this structure is placed (DMA written) by the chip
+at the start of the receive buffer.
+The received frame data (iline/tut frame header) starts at buf+HWRXOFF bytes
+into the receive buffer.
+
+<a name=functions></a>
+<h2>Function Call Graphs</h2>
+<p>
+In each of the function call graphs below,
+the lefthand side contains the OS-specific functions
+and the righthand side contains the OS-independent functions.
+For clarity, some of the lower-level functions are not shown.
+
+<h3>up/down/init/reset</h3>
+<sp>
+<img src=init.jpg>
+<p>
+The driver state is logically comprised as several layers,
+rings of an onion,
+in the following outer-to-inner order:
+<ul>
+	<li>
+	driver load/unload
+
+	<li>
+	device probe&alloc&attach/free 
+
+	<li>
+	up/down - be persistently operational/non-operational
+
+	<li>
+	init/reset - transient sw/hw re-initialization
+
+	<li>
+	chipinit/chipreset - transient hw re-initialization
+</ul>
+<p>
+<i>il_reset</i> and <i>ilc_reset</i> reset the logical sw/hw interface.
+<br>
+<i>il_init</i> and <i>ilc_init</i> reinitialize the logical sw/hw interface.
+<br>
+<i>ilc_chipreset</i> and <i>ilc_chipinit</i> reset and handles
+most of the chip-specific re-initialization, respectively.
+<p>
+Most mode changes and error handling
+is accomplished via a reinitialization (il_init).
+This "big hammer" approach simplifies the code
+and greatly minimizes the number of possible state interactions.
+
+<h3>Transmit</h3>
+<p>
+<img src=tx.jpg>
+<p>
+This figure shows the basic transmit code path.
+Because most of the drivers support both DMA and PIO modes
+as a runtime selection, some packet message queue
+is required in addition to the underlying chip transmit
+ring or fifo, if only for the PIO case.
+<p>
+The only exposed (non-static) functions are the driver transmit
+entry point
+(<i>il_start</i> in the case of the BSD and Linux drivers)
+and the send control function <i>il_sendctl</i>
+which is used by the several common <i>ilc_sendxxx</i> routines
+as well as by LARQ to retransmit control frames.
+<p>
+There's always an exported "start" entry point,
+sometimes a private "sendnext" intermediate function,
+and always an exported "send" hardware-transmit function.
+<p>
+There's a logical "commit point" somewhere in il_send()
+or il_sendnext() which is responsible for determining
+if it's ok to call il_send() to hand the packet buffer(s)
+to the chip or not.
+The common pointer <i>pioactive</i> indicates whether
+a transmit packet is already pending to the chip.
+In DMA mode, it will always be null.
+PIO-mode tx reclaim means just freeing the packet pointed to by <i>pioactive</i>.
+<p>
+<i>ilc_send</i> is the common send "helper" function
+which does most of the non-chip-specific transmit functionality.
+There's a surprising amount of scb lookup, link-layer control,
+priority, and queueing complexity hidden in ilc_send().
+<p>
+The Linux driver, for example, processes sk_buffs which are single contiguous
+network buffers.
+The BSD driver processes chains of mbufs.
+None of these port-specific packet buffering structures
+are accessed by the common code.
+
+<h3>Interrupt Handling</h3>
+<p>
+<img src=intr.jpg>
+<p>
+This figure shows the basic interrupt code path.
+The port-specific <i>il_intr</i>
+interrupt handler is a driver entry point called by the operating system.
+It calls the common <i>ilc_intr()</i> which just
+weeds out the three cases (tx, rx, error) and (dma, pio)
+and either calls back into the per-port code
+or calls the common chip error handling routine.
+<p>
+The BSD and Linux drivers run in DMA mode with transmit interrupts disabled
+(no need)
+and in PIO mode with transmit interrupts enabled.
+<p>
+The il_txintr() routine only needs to reclaim any completed packets
+and start the next one.
+<p>
+The il_rxintr() routine calls either il_recvdma() or il_recvpio()
+which each have a different outer-loop to remove
+received packets from the chip and call the common ilc_recv() helper routine
+which does all the non-chip-specific work.
+Of which, again, there is a surprisingly large amount..
+<p>
+ilc_recv() is responsible for all of the software receive-side ILCP
+state maintenance and calls <i>ilc_xxxupd</i> routines
+for link, rate, csa, and larq.
+When ilc_recv() returns, il_recvdma/il_recvpio package the packet buffer up
+and pass it up to the system TCP/IP stack.
+<h3>Generic Packet Routines</h3>
+<p>
+The driver offers a limited set of routines to allow common code
+including larq to allocate, adjust, and free port-specific packet buffers.
+il_pget() allocates a port-specific packet buffer and returns the
+(void*) cookie, and starting virtual and physical address.
+il_pfree() is passed the (void*) cookie and frees the packet buffer.
+
+<a name=api></a>
+<h2>il/ilc API</h2>
+<p>
+The driver is partitioned into port-specific and common source files.
+The interface between the port-specific
+and the common code in ilc.c
+deserves some description because it is this interface
+that gets ported each time.
+<h3>ilc.c Exported Routines</h3>
+<p>
+Prototypes for the exported ilc functions are declared
+at the bottom of ilc.h.
+With rare exception, all ilc functions take a ilc_info_t*
+as their first argument.
+
+<h3>Port-Specific Exported Routines</h3>
+<p>
+Remember, the common code cannot reference il_info_t
+since this data structure is port-specific.
+The common ilc.c code makes some callbacks into the port-specific driver.
+<p>
+Those port-specific functions that require an il_info_t* argument
+are declared within ilc.c
+to cast a ilc_info_t* to a il_info_t* on the fly:
+<sp>
+<pre>
+	/* imported prototypes (here instead of ilc.h so we can cast args on the fly) */
+	extern void il_init(ilc_info_t *ilc);
+	extern void il_reset(ilc_info_t *ilc);
+	extern void il_sendctl(ilc_info_t *ilc, void *p, int txpri, int txbpb);
+	extern void il_txintr(ilc_info_t *ilc);
+	extern void il_rxintr(ilc_info_t *ilc);
+	extern void il_txreclaim(ilc_info_t *ilc, bool forceall);
+	extern void il_rxreclaim(ilc_info_t *ilc);
+	extern void *il_pget(ilc_info_t *ilc, bool send, uint len, uchar **va, uchar **pa);
+	extern int il_ms(void);
+	extern void il_link_up(ilc_info_t *ilc);
+	extern void il_link_down(ilc_info_t *ilc);
+	#ifdef	_WIN32
+	extern uint __cdecl strlen(const char *string);
+	#else
+	extern uint strlen(const char *string);
+	#endif
+</pre>
+<p>
+The port-specific functions that are exported to common code
+and that don't
+require an il_info_t* arg are declared in ilc.h:
+<sp>
+<pre>
+	/*
+	 * imported externs for os-dependent functionality
+	 */
+	extern void il_bcopy(void *src, void *dst, uint len);
+	extern int il_bcmp(void *b1, void *b2, uint len);
+	extern void il_bzero(void *b1, uint len);
+	extern void il_delay(uint us);
+	extern void *il_malloc(uint size);
+	extern uint32 il_smr(volatile uint32 *addr);
+	extern void il_smw(volatile uint32 *addr, uint32 v);
+	extern void il_smbzero(volatile void *addr, uint len);
+</pre>
+
+<a name=locking></a>
+<h2>Locking Model</h2>
+<p>
+Although the specifics vary,
+all ports share the following approach towards
+restricting thread preemption and concurrent execution:
+
+<ul>
+	<li>
+	all data structures are enclosed within a single perimeter
+
+	<li>
+	this perimeter is enforced
+	either (1) transparently by the operating system,
+	(2) explicitly by the driver via a mutual-exclusion lock,
+	or (3) a combination of the two
+
+	<li>
+	the perimeter lock is acquired and released by the port-specific
+	entry points
+
+	<li>
+	the details of the perimeter lock are port-specific, therefore
+	any state associated with the perimeter lock is maintained
+	in the il_info_t data structure
+
+	<li>
+	the perimeter lock must be acquired before any common code is called
+	(common code expects the perimeter lock to be held across the call)
+
+	<li>
+	common code never explicitly references the port-specific perimeter lock
+
+	<li>
+	the perimeter lock is <i>not</i> acquired recursively
+
+</ul>
+
+<a name=ports></a>
+<h2>Port-specific Design Notes -- TBD</h2>
+<p>
+<i>
+	I'll be iteratively adding short descriptions
+	of the high-level design specifics of each port
+	mostly concentrating on the tx/rx code path
+	queueing and buffering differences.
+</i>
+
+<h3>NDIS</h3>
+
+<h3>CE</h3>
+
+<h3>FreeBSD</h3>
+
+<h3>vxWorks</h3>
+
+<h3>Linux</h3>
+
+<h3>pSOS</h3>
+
+<a name=dump></a>
+<h2>il dump Example</h2>
+<p>
+You don't have to have a debugging "dump" routine but
+it is often useful.
+<br>
+Here's an annotated output from the FreeBSD "il dump":
+<p>
+The first paragraph comes from the port-specific il_dump():
+<pre>
+	il0: Dec  9 1999 17:06:21
+	il 0xc1950000 bpfext 0 if_flags 0xffff8843
+</pre>
+<p>
+The next paragraph is the guts of all the software state of ilc_info_t.
+<pre>
+	ilc 0xc1950000 regs 0xc49b2000 msglevel 1 debugstr ""
+	up 1 promisc 0 promisctype 0 loopbk 0 linkint 1
+	txbpb -1 txpri -1 enic2inic 0 piomode 0 pioactive 0
+	larqlevel 2 larq_handle 0 nmulticast 1 allmulti 0
+	vendor 0xfeda device 0xa0fa chiprev 1
+	subvendor 0xfeda subid 0x101 boardrev 5.1 afe 3
+	perm_etheraddr 0:90:4c:5:0:7b cur_etheraddr 0:90:4c:5:0:7b
+	txd 0xc193c000 txdpa 0xd5f000 txp 0xc1950150 txin 9 txout 9
+	rxd 0xc1954000 rxdpa 0xe37000 rxp 0xc1950560 rxin 127 rxout 143
+	macmode 2 v1_detected 0 v1_signaled 0 configmode 0 localforce 0
+	fallbackmode 0 pcom 1 ctr1linkrcvd 0
+	intmask 0x1ff00 dogtimerset 0 linkstate 3 tcpboost 0
+	csa 1 csa_rtx 0 csa_configmode 0x0
+	csa_newtx 0x81000002 csa_prevtx 0x81000002 csa_oldtx 0x81000002
+	csa_newrx 0x81000002 csa_prevrx 0x81000002
+</pre>
+<p>
+We're "up".
+Link integrity is "on".
+We're in DMA mode.
+A single discrete multicast address is enabled.
+This is a rev1 (B0) bcm4210 chip.
+The interface is operating in native iLine10 (macmode 2) mode
+with no HPNA 1.0 stations detected directly (v1_detected)
+or indirectly (v1_signaled) and no local nor csa mode forcing in effect.
+csa is enabled and we're advertising only priorities 0 and 7 inuse
+and native mode.
+<p>
+Next paragraph is a dump of the software stat counters (aggregate since boot).
+<pre>
+	xmtframe 2510 xmtbyte 198613 xmterr 0 rcvframe 2687 rcvbyte 187572 rcverr 0
+	xmtctrl 2507 rcvctrl 2685 xmthdrerr 0 rcvhdrerr 0
+	xmtbpberr 0 rcvbpberr 0 hdrcrcerr 0 paycrcerr 0
+	hdrcverr 0 hdrmaxerr 0
+	csgap 0 csover 0 sat 0 trk 0
+	xmtexcol 0 rcvrunt 13 rcvgiant 0
+	pcide 0 pcida 0 dpe 0 rduflo 0 xfuflo 0 rfoflo 0
+	coll 1 collframes 1 filtered 646 missed 0
+	demoderr 0 xmt_tooshort 0 rcv_tooshort 0 linkint 1887 reset 3
+	ifgviolations 0 signalviolations 0 stackbubbles 0
+	cls 0
+</pre>
+<p>
+Another view of the priority mapping tables in use:
+<pre>
+	txpri map:	6 5 5 6 6 6 7 7
+	xmt_ll_pri:	0002510 0000000 0000000 0000000 0000000 0000000 0000000 0000000
+	xmt_dfpq_pri:	0000000 0000000 0000000 0000000 0000000 0000000 0002510 0000000
+	rcv_ll_pri:	0000000 0000000 0000000 0000000 0000000 0000000 0000000 0000000
+	rcv_dfpq_pri:	0000000 0000000 0000000 0000000 0000000 0000000 0002687 0000000
+</pre>
+<p>
+Here are all the chip BAR0 registers:
+<pre>
+	devcontrol 0x68 devstatus 0x201 compat 0x7 wakeuplength 0x0 
+	intstatus 0x0 intmask 0x1ff00 
+	afestatus 0x3 afecontrol 0x0 
+	frametrim 0x8c5d gapcontrol 0xa9d2 
+	trackerdebug 0xa5 
+	festatus 0x382 fecontrol 0x23ff fecsenseon 0xc24 fecsenseoff 0x2326 
+	cspower 0x30 
+	modcontrol 0x0 moddebug 0x8000 cdcontrol 0x2006 noisethreshold 0xff07 
+	framestatus 0x0 framecontrol 0x697142 
+	enetaddrlower 0x4c05007b enetaddrupper 0x90 
+	maccontrol 0xff pcom 0x1 
+	gpiooutput 0x0 gpioouten 0x0 gpioinput 0xffff 
+	msiintstatus 0x10 msiintmask 0x7 
+	intrecvlazy 0x1000000 
+	xmtcontrol 0x1 xmtaddr 0xd5f000 xmtptr 0x48 xmtstatus 0x2048 
+	rcvcontrol 0x3d rcvaddr 0xe37000 rcvptr 0x478 rcvstatus 0x13f8 
+	ctrcollisions 0x1 ctrcollframes 0x1 ctrshortframes 0x11 ctrfilteredframes 0x286 
+	ctrmissedframes 0x0 
+	ctrerrorframes 0x0 ctr1linkrcvd 0x0 ctrrcvtooshort 0x0 ctrxmtlinkintegrity 0x0 
+	ctr1latecoll 0x0 ctrifgviolation 0x0 ctrsignalviolation 0x0 ctrstackbubble 0x0 
+</pre>
+<p>
+And here are the Tut (HPNA 1.0) specific registers:
+<pre>
+	tutctl 0x2140 tutaidcw 0x446b tutaids 0x3 tutdt 0x2873
+	tutmc 0x0 tuttdcst 0x198 tuttaidcst 0x342 tutb 0x23f
+	tutds 0x10 tutsid 0x21 tutsctl 0x1df tutnctl 0xe03
+	tutifsc1 0x1de tutifsc2 0xed tuts1c 0xeee tutsc 0x2555
+	tutdcst 0x198 tutaidcst 0x342 tuttgdcst 0x139 tuttgaidcst 0x2e3
+	tutgaids 0xf03 tutgms 0xe04
+</pre>
+
+<a name=frame></a>
+<h2>On-the-wire Frame Format</h2>
+<p>
+An InsideLine (HPNA 2.0) frame
+is a bytestream consisting of a 4 byte HPNA 2.0 header
+followed by a payload,
+which is normally a standard ethernet frame,
+followed by the standard ethernet 4 byte CRC32 frame check sequence,
+followed by an additional 2 byte CRC16.
+The minimum frame size is 4+64+2=70 bytes.
+The maximum frame size is 4+1526+2=1532 bytes.
+Refer to the <i>iline.h</i> and <i>ilcp.h</i> header files
+and HPNA 2.0 protocol specification
+for more complete details.
+<p>
+A HPNA 1.0 (Tut) frame
+is a bytestream consisting of 4 byte pcom field
+followed by a payload which is normally a standard ethernet frame.
+
+<a name=ilcp></a>
+<h2>InsideLine Control Protocol</h2>
+<p>
+There are several link-layer control protocols
+which share an <i>ILCP</i> ethernet frame type field value of 0x886c.
+Following this 16bit ILCP ether_type is a 16bit ILCP subtype field
+with the first 8bit <i>subtype</i> field indicating the particular
+ILCP sub-prototocol and the next 8bit <i>length</i> field
+indicating the sub-protocol header length.
+The header file <i>proto/ilcp.h</i> defines ILCP symbolic structures
+and manifest constants.
+<p>
+Refer to the HPNA 2.0 specification for more details on link-layer
+control protocols.
+
+<h3>Rate Negotiation</h3>
+Each receiver actively monitors the signal-quality of received frames
+and dynamically transmits ILCP Rate control frames back to the source station
+advertising the appropriate transmit constellation (bits-per-baud) to use.
+Generally the "bits-per-baud" value is referred to instead
+of the encoded frame constellation value which includes
+attributes in addition to the bpb.
+Transmitting stations are "dumb" and simply use the most recently
+bpb value received from the remote station.
+Currently supported bpb values are in the range 2-8.
+Rate control frames have a subtype value of 1.
+
+<h3>Link Integrity</h3>
+<p>
+Each station broadcasts a small ILCP link integrity frame
+approximately once each second.
+There is also a mechanism defined by the spec which suppresses
+excess link integrity control frames when there are more than
+two stations active on a network.
+Link Integrity control frames have a subtype value of 2.
+
+<h3>CSA</h3>
+<p>
+Each station is required to broadcast a Capability and Status Announcement
+control frame approximately every 60 seconds
+and on certain events.
+CSA control frames contain a few bytes of relatively static
+information about the station version and capabilities
+plus three 32bit {cur_tx, old_tx, cur_rx} priority and mode flags.
+At present, CSA is used by our driver to provide two functions:
+(1) priority mapping and (2) network operating mode override.
+<p>
+Eight levels of physical media priority (1-8) are provided
+in the HPNA 2.0 spec and implemented in iLine10.
+Due to the contention slottime size,
+<i>as a performance optimization</i>,
+logical priority values are dynamically mapped 
+into the highest N physical priority values
+where N is the number of logical priorities used (transmitted)
+by any station within the past 120 seconds.
+Each station sends a CSA control frame whenever a new priority
+is transmitted, or every 60 seconds.
+Each station maps the logical-to-physical priority
+on transmit based on the union of all received priority sets
+in the past 120 seconds.
+It's a little more complicated than this but not much.
+<p>
+CSA also provides a method to force all stations on the network
+to Native (iLine10) , Mixed-mode (compat, gapped), or Tut (HPNA 1.0).
+This overrides the dynamic algorithms used on each station
+and is analgous to using a baseball bat.
+<p>
+Refer to the ilcp.h header file for CSA definitions.
+CSA control frames have a subtype value of 2.
+
+<h3>LARQ</h3>
+<p>
+LARQ (Limited Automatic Repeat Request)
+is a protocol that reduces the effective error rate when frame errors occur
+by detecting and retransmitting the dropped frame.
+Its goal is to significantly enhance the usability
+of networks that may,
+at least occasionally,
+have frame error rates (FER) of 1 in 10^-2 or worse.
+The protocol is based on a Negative Acknowledgement (NACK) mechanism.
+LARQ functions as an adaptation layer between the link layer (ethernet)
+and the network layer (IP).
+<p>
+The current LARQ implementation is NDIS-specific and will be
+replaced soon with a new, portable implementation which will
+be included in all ports of the driver.
+At the present time, all driver ports with the exception
+of the NDIS driver implement only receive-side LARQ header stripping.
+
+<a name=fallback></a>
+<h2>Mode Switching and Fallback</h3>
+<p>
+The driver dynamically switches between native, mixed-mode, and tut mode
+if HPNA 1.0 stations are detected on the network.
+In native mode, if a 1.0 or mixed-mode frame is detected,
+the driver will transition into 1.0 mode for a period of two minutes.
+At the end of this period, it will attempt to transition
+into mixed-mode.
+While in mixed-mode, if no 1.0 stations are detected for a period
+of two minutes, the driver will revert to native mode.
+The section below provides some detail on this complicated topic
+which you're free to skip over.
+<h3>Motivation</h3>
+<p>
+We want HPNA 2.0 stations to be interoperable with HPNA 1.0 stations, and we
+want HPNA 2.0 stations to successfully operate with one another in the
+presence of HPNA 1.0 stations.
+
+<h3>Approaches</h3>
+<p>
+To achieve the above objectives, 2.0 stations are able to send and
+receive 1.0 format frames.  However, in the presence of
+1.0 stations, 2.0 stations should not send native 2.0 format frames to one
+another, since the 1.0 stations MAC will fail to recognize these frames,
+and thus the network's MAC will fail overall.
+Instead, 2.0 stations have
+the option of sending either 1.0 format or 2.0-"gapped" format frames to
+one another.
+<p>
+Under most conditions, it is preferable for 2.0 stations to
+send gapped frames, since high throughput is still possible, with
+only 10-20% performance loss from the native 2.0 format.  However, in
+cases of high line attenuation, 2.0 stations cannot detect gapped frames
+even though they might still be able to demodulate them, and even
+though they can still detect 1.0 format frames.  Under these
+conditions, it is preferable for 2.0 stations to send 1.0 format
+frames.
+<p>
+Another case in which 2.0 stations should send 1.0 format frames
+is when 1.0 stations cannot detect gapped format frames.
+Unfortunately,
+there is no straightforward method for a 2.0 station to infer this about
+a 1.0 station, and the 1.0 station cannot explicitly notify the 2.0 station of
+this case.
+
+<h3>Mode Switching and Fallback Overview</h3>
+<i>Mode switching</i> refers to the situation when a 2.0 station either detects a
+1.0 station -- indicating that only 1.0 or gapped format frames may be sent --
+or concludes that no 1.0 stations remain "active" and
+native format frames may be sent once again.
+<p>
+<i>Fallback</i>
+refers to the situation when a 2.0 station, in the presence of 1.0 stations,
+decides to "fall back" to 1.0 format frames when it cannot detect
+gapped frames.
+<p>
+A more appropriate name is "format selection," as 1.0 /
+gapped format selection is a logical extension of rate selection.
+Much like rate selection, format selection is split into different
+tasks for data receivers and data senders.  Also, like rate selection,
+format selection requires 2.0 stations to maintain seperate state
+information on "link quality" associated with each additional 2.0
+station.  Finally, like rate selection, changes in format selection are
+communicated by data receiver to data sender using the same backed-off
+rate request message protocol used in conventional rate selection.
+Note that there is no need for format selection when communicating
+with 1.0 stations, in which case 1.0 format is always used.
+<p>
+In the process of developing a format selection technique, two
+other fallback modes were implemented as options for use in case of
+"last resort.":
+<ol>
+	<li> always send gapped format in the presence of 1.0 stations
+	<li> always send 1.0 format in the presence of 1.0 stations
+</ol>
+<p>
+These modes are self-explanantory and are not discussed herein.
+
+<h3>Per Station state vs Global state</h3>
+<p>
+In network of N+1 stations, a given 2.0 station, "Node A," simulataneously
+maintains N Data Sender state machines (one for each destination D_i,
+i = 1...N), and N Data Receiver state machines (one for each source
+S_i, i = 1...N).  These state machines are distinct, since some of the
+link quality measurements vary by source / destination pairs.
+However, as is described later, there are several global conditions
+that affect all of Node A's Sender or Receiver state machines at once:
+<ul>
+	<li>
+	changes in (V1_DETECTED or V1_SIGNALED) affect all of Node A's
+	Sender and Receiver state machines.
+
+	<li>
+	any destination indicating a desire to receive 1.0 format frames
+	affects all of Node A's Sender state machines.
+
+	<li>
+	changes in the 1.0 receiver squelch value affect all of Node A's
+	Receiver state machines.
+</ul>
+
+<a name=other></a>
+<h2>Other Misc Functionality</h2>
+<h3>Probe/Attach/Allocation</h3>
+<p>
+The mechanics of driver registration, loading, and probing,
+tend to vary from port to port.
+Both the BSD (FreeBSD 3.x) and Linux drivers
+support a loadable module interface
+as well as the option for being compiled and linked directly into the kernel.
+<p>
+Once the device has been detected,
+the sequence of operations tends to be similar:
+<ul>
+	<li>
+	allocate il_info_t memory and bind this to the ifnet/device structure
+	<li>
+	map chip registers
+	<li>
+	confirm that the chip is one of ours
+	<li>
+	read the chip revision
+	<li>
+	reset the chip
+	<li>
+	initialize spinlock or transmit queues
+	<li>
+	register our interrupt handler
+	<li>
+	determine if we're in DMA or PIO mode
+	<li>
+	if in DMA mode, allocate tx and rx descriptor rings
+	<li>
+	call <i>ilc_attach</i> which performs some common attach-time initialization
+	<li>
+	allocate and init the grotty stats data structure
+	<li>
+	optionally set/override the default local ethernet address
+	<li>
+	if_attach/enable our entry points
+</ul>
+<p>
+If any of these fail or we support unloading the driver,
+the <i>il_free</i> routine gracefully deallocates all of this.
+
+<h3>Rate Negotiation</h3>
+<p>
+TBD
+
+<h3>LARQ</h3>
+<p>
+A new "portable LARQ" is under development.
+A link to the design document will be provided here soon.
+
+<a name=porting></a>
+<h2>Porting</h2>
+<p>
+<i>Don't Panic.
+<br>
+-- Douglas Adams, "Hitchhikers guide to the galaxy"</i>
+<sp>
+<h3>To-Do Porting List</h3>
+<p>
+Starting from if_il.c or il_linux.c
+you'll need to resolve the following issues:
+<ul>
+	<li>
+	Add support for your OS name to typedefs.h,
+	and bcmendian.h.
+	<br>
+	[Yes, we need to fix this but that's how it is now.]
+
+	<li>
+	Add support for your OS name to ilc.h for the register
+	access macros (R_REG/W_REG).
+	<br>
+	[ditto]
+
+	<li>
+	Hack il_dbg.h to add your port-specific lines to
+	get printf() and sprintf() declared.
+	<br>
+	[ditto]
+
+	<li>
+	Create your port-specific il_info_t declaration which
+	should be quite small and must start with an ilc_info_t.
+	You might write a il_dump() now which calls ilc_dump()
+	for all the common state.
+
+	<li>
+	Write your port-specific driver load/unload/probe/attach gunk
+	code using the BSD driver il_attach() routine or the Linux driver
+	il_probe1() routine as reference.  If your platform is MSI
+	(not PCI) or does not include an SPROM, then you'll need to
+	deal with setting the ilc regs, cur_etheraddr, perm_etheraddr,
+	aferev, subid, and subvendor fields.
+
+	<li>
+	I tend to write il_up, il_down, il_init, and il_reset next because
+	they're pretty simple and it's nice to think that the driver/chip
+	will at least init now.
+
+	<li>
+	Arrange a periodic timer to call il_watchdog() every 1 second.
+	Put a debugging printf() in il_watchdog() to confirm that it's being called
+	when the driver is "up" and not when the driver is "down".
+
+	<li>
+	Next you might write the transmit code path,
+	starting with the transmit driver entry point, including
+	il_send(), il_sendctl(), and il_txreclaim() which are required by name,
+	and adding a port-specific "sendnext" if you need one.
+	If you're doing DMA-only or PIO-only, you can cut corners
+	slightly here.  PIO needs a transmit interrupt, DMA might not.
+
+	<li>
+	Next you might write the receive code path routines
+	beginning with your port-specific interrupt handler
+	(il_intr in the case of the BSD and Linux drivers)
+	which should be trivial, then il_rxintr and il_txintr,
+	and il_recvdma and/or il_recvpio.
+	Most of the receive work is done by the common ilc_recv()
+	routine but il_recvpio/dma has to deal with port-specific
+	packet buffers.
+
+	<li>
+	There are several miscellaneous routines required by ilc.c
+	like il_ms() which returns the current time in milliseconds,
+	il_delay() which takes the number of microseconds to spindelay,
+	and il_malloc()/il_free() which allocate and free a chunk
+	of vanilla non-dma-able memory.
+
+	<li>
+	ilc.h #defines the macros bcopy(), bcmp(), and bzero()
+	to be port-specific functions il_bcopy(), il_bcmp(), and il_bzero().
+	This inefficient indirection is embarassing but keeps ilc.h os-independent.
+
+	<li>
+	ilc.[ch] reference three wrapper routines for accessing "shared memory":
+	il_smr(), il_smw(), and il_smbzero().  The first two read/write
+	a 32bit shared memory address, the last zeros a shared-memory
+	buffer of variable length.
+
+	<li>
+	Implement support for adding and removing discrete multicast addresses
+	and/or "all multicast" addresses.
+
+	<li>
+	You may need an ioctl handler and user-level tool that issues
+	the ioctls.  
+</ul>
+
+<h3>Testing Your Port</h3>
+<p>
+Hopefully we'll make this a lot easier when the Certification software
+is in place but for now you'll need to exercise the following areas by hand:
+<ul>
+	<li>
+	load/unload/probe/attach.
+
+	<li>
+	up/down - try il_dump() to ensure that software and chip state
+	have been properly initialized.
+	Verify link integrity functionality.
+
+	<li>
+	transmit/receive path - ping, "ttcp" or comparable test app.
+	A memory-to-memory TCP transfer between two stations
+	over a point-to-point link should show a throughput
+	in the 1.2-1.3 Mbytes/s range using a negotiated rate
+	of 7 or 8 bpb.
+	<br>
+	Then send "hello world" email to management :-)
+
+	<li>
+	Verify periodic CSA control frame transmit and whenever a
+	new transmit priority is used.  ilc_dump() prints
+	the local csa state fields.
+
+	<li>
+	Stress test while resetting and introducing error frames and
+	check for memory leaks.
+
+	<li>
+	mode switching - add a HPNA 1.0 station to the net and monitor
+	the driver "macmode" and "pcom" fields.
+	Try a "il hpnamode [0-3]" to force the local station
+	into each of the operating modes while monitoring the format
+	of link integrity and data frames.
+	Try a "il csahpnamode [0-3]" to force all stations on the net
+	to a particular operating mode and back.
+</ul>
+
+<a name=feedback></a>
+<h2>Feedback</h2>
+<p>
+We're interested in your feedback on this document.
+Please send suggestions including the text that
+you'd like to see changed/added to
+<a href=mailto:support@epigram.com>support@epigram.com</a>.
+
+<a name=links></a>
+<h2>Links</h2>
+<p>
+<a href=http://www.broadcom.com>www.broadcom.com</a>
+<p>
+<a href=http://www.homepna.org>www.homepna.org</a>
+ 
+<p>
+<font size=2>
+&copy; 1999 Broadcom Corporation.  All rights reserved.
+</font>
+
+</td></tr>
+</table>
+
+</body>
+</html>
+

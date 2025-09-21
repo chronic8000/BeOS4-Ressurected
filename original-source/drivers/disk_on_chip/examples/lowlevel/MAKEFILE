@@ -1,0 +1,106 @@
+.AUTODEPEND
+
+#		*Translator Definitions*
+CC = bcc +lowlevel.CFG
+LIBPATH = C:\UTIL\BORLANDC\LIB
+SRCPATH = ..\..\src
+SYSTEMPATH = ..\..\systems\bc31
+CUSTOMPATH = ..\..\custom
+INCLUDEPATH = $(SRCPATH);$(SYSTEMPATH);$(CUSTOMPATH);C:\UTIL\BORLANDC\INCLUDE
+
+
+#		*Implicit Rules*
+.c.obj:
+  $(CC) -c $<
+
+{$(SRCPATH)}.c.obj:
+  $(CC) -c {$< }
+
+{$(SYSTEMPATH)}.c.obj:
+  $(CC) -c {$< }
+
+{$(CUSTOMPATH)}.c.obj:
+  $(CC) -c {$< }
+
+
+#		*List Macros*
+
+EXE_dependencies =  \
+  flbase.obj \
+  dosformt.obj \
+  fltl.obj \
+  flflash.obj \
+  flsocket.obj \
+  blockdev.obj \
+	flsystem.obj \
+  flcustom.obj \
+  diskonc.obj \
+  reedsol.obj \
+  docsoc.obj \
+  nftllite.obj 
+
+lowlevel.exe: lowlevel.cfg lowlevel.obj $(EXE_dependencies)
+  TLINK /x/c/P-/L$(LIBPATH) @&&|
+c0l.obj+
+flbase.obj+
+dosformt.obj+
+fltl.obj+
+flflash.obj+
+flsocket.obj+
+blockdev.obj+
+flsystem.obj+
+docsoc.obj+
+flcustom.obj+
+diskonc.obj+
+reedsol.obj+
+nftllite.obj+
+lowlevel.obj
+lowlevel
+  # no map file
+cl.lib
+|
+
+#		*Individual File Dependencies*
+flbase.obj: $(SRCPATH)\flbase.c
+
+blockdev.obj: $(SRCPATH)\blockdev.c
+
+flflash.obj: $(SRCPATH)\flflash.c
+
+dosformt.obj: $(SRCPATH)\dosformt.c
+
+fltl.obj: $(SRCPATH)\fltl.c
+
+nftllite.obj: $(SRCPATH)\nftllite.c
+
+diskonc.obj: $(SRCPATH)\diskonc.c
+
+reedsol.obj: $(SRCPATH)\reedsol.c
+
+flsocket.obj: $(SRCPATH)\flsocket.c
+
+docsoc.obj: $(SRCPATH)\docsoc.c
+
+flsystem.obj: $(SYSTEMPATH)\flsystem.c
+
+flcustom.obj: $(CUSTOMPATH)\flcustom.c
+
+
+#		*Compiler Configuration File*
+lowlevel.cfg: makefile.
+  copy &&|
+-ml
+-v-
+-O
+-Oe
+-Ob
+-Z
+-k-
+-vi-
+-wpro
+-weas
+-wpre
+-I$(INCLUDEPATH)
+-L$(LIBPATH)
+-P-.C
+| lowlevel.cfg

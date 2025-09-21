@@ -1,0 +1,58 @@
+Here is the listing of the info of my modem :
+
+[Device]
+Class .................. 2
+Subclass ............... 0
+Protocol ............... 0
+Vendor ID .............. 0x05cc
+Product ID ............. 0x2265
+Version ................ 0x0100
+Manufacturer String .... "Lucent Technologies, Inc."
+Product String ......... "ELSA Modem Board"
+Serial Number .......... ""
+  [Configuration 0]
+    [Interface 0]
+    Class .............. 255
+    Subclass ........... 255
+    Protocol ........... 255
+    [Interface 1]
+    Class .............. 255
+    Subclass ........... 255
+    Protocol ........... 255
+      [Endpoint 0]
+      MaxPacketSize .... 16
+      Interval ......... 0
+      Type ............. Bulk
+      Direction ........ Output
+      [Endpoint 1]
+      MaxPacketSize .... 63
+      Interval ......... 2
+      Type ............. Interrupt
+      Direction ........ Input
+  [Configuration 1]
+    [Interface 0]
+    Class .............. 2
+    Subclass ........... 2
+    Protocol ........... 1
+      [Endpoint 0]
+      MaxPacketSize .... 32
+      Interval ......... 128
+      Type ............. Interrupt
+      Direction ........ Input
+    Descriptor (0x24) .. 00 01 00 1b 00
+    Descriptor (0x24) .. 01 03 01 1b 00
+    Descriptor (0x24) .. 02 07 01 1b
+    [Interface 1]
+    Class .............. 10
+    Subclass ........... 2
+    Protocol ........... 1
+      [Endpoint 0]
+      MaxPacketSize .... 64
+      Interval ......... 0
+      Type ............. Bulk
+      Direction ........ Output
+      [Endpoint 1]
+      MaxPacketSize .... 64
+      Interval ......... 0
+      Type ............. Bulk
+      Direction ........ Input

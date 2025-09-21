@@ -1,0 +1,46 @@
+project : c:\work\dev\sw\embedded\tools\cwcealdr.exe\cwcealdr.exe .SYMBOLIC
+
+!define BLANK ""
+c:\work\dev\sw\embedded\tools\cwcealdr.exe\cwcealdr.obj : c:\work\dev\sw\emb&
+edded\tools\cwcealdr.exe\cwcealdr.cpp .AUTODEPEND
+ @c:
+ cd c:\work\dev\sw\embedded\tools\cwcealdr.exe
+ *wpp386 cwcealdr.cpp -i=C:\WATCOM\h -w4 -e25 -zq -od -d2 -5s -bt=dos -mf
+
+c:\work\dev\sw\embedded\tools\cwcealdr.exe\delay.obj : c:\work\dev\sw\embedd&
+ed\tools\cwcealdr.exe\delay.cpp .AUTODEPEND
+ @c:
+ cd c:\work\dev\sw\embedded\tools\cwcealdr.exe
+ *wpp386 delay.cpp -i=C:\WATCOM\h -w4 -e25 -zq -od -d2 -5s -bt=dos -mf
+
+c:\work\dev\sw\embedded\tools\cwcealdr.exe\dhwiface.obj : c:\work\dev\sw\emb&
+edded\tools\cwcealdr.exe\dhwiface.cpp .AUTODEPEND
+ @c:
+ cd c:\work\dev\sw\embedded\tools\cwcealdr.exe
+ *wpp386 dhwiface.cpp -i=C:\WATCOM\h -w4 -e25 -zq -od -d2 -5s -bt=dos -mf
+
+c:\work\dev\sw\embedded\tools\cwcealdr.exe\pcibios.obj : c:\work\dev\sw\embe&
+dded\tools\cwcealdr.exe\pcibios.cpp .AUTODEPEND
+ @c:
+ cd c:\work\dev\sw\embedded\tools\cwcealdr.exe
+ *wpp386 pcibios.cpp -i=C:\WATCOM\h -w4 -e25 -zq -od -d2 -5s -bt=dos -mf
+
+c:\work\dev\sw\embedded\tools\cwcealdr.exe\pcipnp.obj : c:\work\dev\sw\embed&
+ded\tools\cwcealdr.exe\pcipnp.cpp .AUTODEPEND
+ @c:
+ cd c:\work\dev\sw\embedded\tools\cwcealdr.exe
+ *wpp386 pcipnp.cpp -i=C:\WATCOM\h -w4 -e25 -zq -od -d2 -5s -bt=dos -mf
+
+c:\work\dev\sw\embedded\tools\cwcealdr.exe\cwcealdr.exe : c:\work\dev\sw\emb&
+edded\tools\cwcealdr.exe\cwcealdr.obj c:\work\dev\sw\embedded\tools\cwcealdr&
+.exe\delay.obj c:\work\dev\sw\embedded\tools\cwcealdr.exe\dhwiface.obj c:\wo&
+rk\dev\sw\embedded\tools\cwcealdr.exe\pcibios.obj c:\work\dev\sw\embedded\to&
+ols\cwcealdr.exe\pcipnp.obj .AUTODEPEND
+ @c:
+ cd c:\work\dev\sw\embedded\tools\cwcealdr.exe
+ @%write cwcealdr.lk1 FIL cwcealdr.obj,delay.obj,dhwiface.obj,pcibios.obj,pc&
+ipnp.obj
+ @%append cwcealdr.lk1 
+ *wlink name cwcealdr d all SYS dos4g op inc op m op maxe=25 op q op symf @c&
+wcealdr.lk1
+

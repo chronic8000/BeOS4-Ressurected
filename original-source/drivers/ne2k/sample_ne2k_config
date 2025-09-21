@@ -1,0 +1,8 @@
+ne2k 0 {
+	port 300
+	irq 5
+}
+ne2k 1 {
+	port 330
+	irq 7
+}

@@ -1,0 +1,13 @@
+# Sample settings file for the awe64 driver
+#
+# This file should be moved to the directory
+# /boot/home/config/settings/kernel/drivers/
+
+manual true {
+	base 220
+	irq 5
+	dma_p 5
+	dma_c 1
+	mpu 330
+}
+

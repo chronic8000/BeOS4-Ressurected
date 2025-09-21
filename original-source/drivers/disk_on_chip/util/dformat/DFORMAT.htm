@@ -1,0 +1,76 @@
+<HTML>
+<HEAD>
+<META NAME="Generator" CONTENT="Microsoft Word 97">
+<TITLE>DFORMAT</TITLE>
+<META NAME="Template" CONTENT="C:\PROGRAM FILES\MICROSOFT OFFICE\OFFICE\html.dot">
+</HEAD>
+<BODY LINK="#0000ff" VLINK="#800080">
+
+<H2>Table of contents</H2>
+<TABLE CELLSPACING=0 BORDER=0 CELLPADDING=7 WIDTH=328>
+<TR><TD VALIGN="TOP" COLSPAN=2>
+<P><IMG SRC="newbw.gif" WIDTH=16 HEIGHT=15>&nbsp;<A HREF="#introduct">1. Introduction</A> </TD>
+</TR>
+<TR><TD VALIGN="TOP" COLSPAN=2>
+<P><IMG SRC="newbw.gif" WIDTH=16 HEIGHT=15>&nbsp;<A HREF="#basicterms">2. Basic terms</A></TD>
+</TR>
+<TR><TD VALIGN="TOP" COLSPAN=2>
+<P><IMG SRC="openbw.gif" WIDTH=16 HEIGHT=15>&nbsp;<A HREF="#usage">3. Usage</A></TD>
+</TR>
+<TR><TD WIDTH="17%" VALIGN="TOP">
+<P>&nbsp;</TD>
+<TD WIDTH="83%" VALIGN="TOP">
+<P><IMG SRC="newbw.gif" WIDTH=16 HEIGHT=15>&nbsp;<A HREF="#flags">3.1 Flags description</A></TD>
+</TR>
+<TR><TD VALIGN="TOP" COLSPAN=2>
+<P><IMG SRC="newbw.gif" WIDTH=16 HEIGHT=15>&nbsp;<A HREF="#examples">4. Examples</A></TD>
+</TR>
+</TABLE>
+
+<P>&nbsp;</P>
+<H1><A NAME="_Toc385343156"><IMG SRC="Leavln.gif" WIDTH=492 HEIGHT=19></H1>
+<H1>DFORMAT</A></H1>
+<H2><A NAME="introduct"></A>1. Introduction</H2>
+<P>Before you can access a DiskOnChip, it must be formatted, just as a floppy disk must be formatted. Formatting initializes the media and writes to it a new and empty DOS file system. When formatting is complete, the media contains only a root directory. </P>
+<P>The DiskOnChip is fully tested and formatted before the product is shipped, but it can be formatted more than once. Each time it is formatted, all data on the media is destroyed. When reformatting, the <A HREF="../../DOC/OSAK.htm#BDK">boot-image</A> is <B>retained</B> by default.</P>
+<H2>&nbsp;</H2>
+<H2><A NAME="basicterms"></A>2. Basic terms</H2>
+<B><FONT SIZE=4><P>2.1</B></FONT> <A HREF="../../DOC/OSAK.htm#DOCmemWin">DiskOnChip memory window</A></P>
+<B><FONT SIZE=4><P>2.2 </B></FONT><A HREF="../../DOC/OSAK.htm#BDK">Boot image partition</A></P>
+<H3><A NAME="signature"></A>2.3 Signature&nbsp;</H3>
+<P>The <A HREF="../../DOC/OSAK.htm#BDK">Boot image partition</A> on the DiskOnChip is composed of units. The unit size depends on the size of the Erase Block within the flash chip. Different flash chips have different Erase Block sizes. Typically, the units are 8 KB long. Each unit is marked with a <I>signature</I>. Bad units, if any, are not used, and have no signature. The <I>signature</I> is made up of 4 distinct characters, followed by a 4-digit hexadecimal number. This number starts at 0 for the first unit and is increased by one for each consecutive unit. The last unit is always marked by the hex number FFFF, independent of it’s ordinal number.</P>
+<P>&nbsp;</P>
+<H2><A NAME="usage"></A>3. Usage:</H2>
+<P>DFORMAT [-w:<I>window</I>] [-s:{<I> bootimage | ! </I>}] [-l:<I>length</I>] [-n:<I>signature</I>]</P>
+<H2>&nbsp;</H2>
+<H3><A NAME="flags"></A>3.1 Flags description:</H3>
+<H4>-s:<I>!</I> </H4>
+<P>Create <A HREF="../../doc/osak.htm#BDK">boot-image</A> area</P>
+<H3>&nbsp;</H3>
+<H4>-s:<I>bootimage</I> </H4>
+<P>Create <A HREF="../../doc/osak.htm#BDK">boot-image</A> area and write <I>bootimage</I> file to DiskOnChip.</P>
+<H3>&nbsp;</H3>
+<H4>-l:<I>length</H4>
+</I><P><A HREF="../../doc/osak.htm#BDK">Boot-image</A> area length in bytes. Note that the length will be rounded up to the next multiple of the erase unit size.</P>
+<P>&nbsp;</P>
+<H4>-w:<I>window</H4>
+</I><P>Hexadecimal host memory address of the DiskOnChip <I>window</I>. </P>
+<H3>&nbsp;</H3>
+<H4>-n:<I>signature</H4>
+</I><P><A HREF="#signature">Signature</A> for <A HREF="../../doc/osak.htm#BDK">boot-image</A> area (default - BIPO)</P>
+<H3>&nbsp;</H3>
+<H4>-o:<I>offset</H4>
+</I><P>Offset of <A HREF="#signature">Signature</A> for <A HREF="../../doc/osak.htm#BDK">boot-image</A> area (default -8)</P>
+<H3>&nbsp;</H3>
+<H4>-h</H4>
+<P>Print help screen</P>
+<H2>&nbsp;</H2>
+<H2><A NAME="examples"></A>4. Examples</H2>
+<P><IMG SRC="GreenBal.gif" WIDTH=15 HEIGHT=15>&nbsp;Format DiskOnChip and copy <A HREF="../../doc/osak.htm#BDK">boot-image</A> from <I>filename. </I>Assuming that size of <I>filename</I> in bytes is <I>fileLengthInBytes:</P>
+</I><P>DFORMAT -w:d000 –s :<I> filename</I> –l:<I>fileLengthInBytes</P>
+</I><P><IMG SRC="GreenBal.gif" WIDTH=15 HEIGHT=15>&nbsp;Format DiskOnChip and create <A HREF="../../doc/osak.htm#BDK">boot-image</A> of size <I>BootPartitionLenInBytes</P>
+</I><P>DFORMAT -w:d000 –s :! –l:BootPartitionLenInBytes:</P>
+<P>NOTE: DFORMAT -w:d000 –s :! creates <A HREF="../../doc/osak.htm#BDK">boot-image</A> with length 0</P>
+<P><IMG SRC="GreenBal.gif" WIDTH=15 HEIGHT=15>&nbsp;Format DiskOnChip and leave an old <A HREF="../../doc/osak.htm#BDK">boot-image</A> if it exists:</P>
+<P>DFORMAT -w:d000</P></BODY>
+</HTML>

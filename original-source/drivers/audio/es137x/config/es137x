@@ -1,0 +1,11 @@
+# Sample settings file for the es137x driver
+#
+# This file should be moved to the directory
+# /boot/home/config/settings/kernel/drivers/
+
+# remove symbol "#"  from one of the followed lines for disable usage of the according address as joystick base 
+
+#disable_joyBase_0x200
+#disable_joyBase_0x208
+#disable_joyBase_0x210
+#disable_joyBase_0x218

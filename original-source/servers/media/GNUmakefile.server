@@ -1,0 +1,49 @@
+
+TARGET_NAME:=media_server
+
+SRC_DIR:=src/servers/media/server 
+
+SRCS := \
+	ServerApp.cpp \
+	MSavable.cpp \
+	MAppManager.cpp \
+	MNodeManager.cpp \
+	MBufferManager.cpp \
+	MDefaultManager.cpp \
+	MNotifierManager.cpp \
+	MMediaFilesManager.cpp \
+	MFormatRegistry.cpp \
+	str.cpp \
+	debug.cpp
+
+# Included before the source file
+MY_PREINCLUDE :=  ms_prefix.h
+
+ifneq ($(call MFLAG_IS_SET, DEBUG_BUILD),)
+MY_DFLAGS += -DDEBUG=1
+else
+MY_DFLAGS += -DNDEBUG=1
+endif
+
+MY_INCLUDES := -I$(call FULL_SRC_DIR, $(SRC_DIR)) \
+			-I$(BUILDHOME)/src/inc/media_p \
+			-I$(BUILDHOME)/src/inc/os_p \
+			-I$(BUILDHOME)/src/inc/driver \
+			-I$(BUILDHOME)/headers/drivers \
+			-I$(BUILDHOME)/gnupro/include/g++
+
+SYSTEM_LIBS:= libroot.so libbe.so \
+				libtranslation.so libmedia.so
+
+ifeq ($(COMPILER),gcc)
+SYSTEM_LIBS		+= $(LIBSTDCPP_OBJECT)
+endif
+
+RESOURCES := $(addsuffix .rsrc,$(TARGET_NAME)) $(addsuffix .r,$(TARGET_NAME))
+
+MY_INSTALL_DIR:=$(INSTALL_SERVERS)
+
+LINK_DIRS :=
+
+
+include $(SDIR_TEMPLATES)/AppTemplate.mk

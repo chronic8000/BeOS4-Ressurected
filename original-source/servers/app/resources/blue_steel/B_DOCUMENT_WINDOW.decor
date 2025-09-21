@@ -1,0 +1,10 @@
+	{"Micro dot",		1 },
+									{"Single dot",		2 },
+									{"Double dot",		3 },
+									{"Quad dot",		4 }		};
+
+// resolution, paper -> icone(3 max, niveau de qualite), microdot, microweave, speed (low=1)
+const int32 gRes2Paper_default = 0;
+const tRes2Paper gRes2Paper[] =	{
+									{1, 0, 0,	2, 0, 0 },	// 360x360 normal : double - ok
+							

@@ -1,0 +1,193 @@
+#
+#       PC/Makefile for demo program tt/ttsample.exe
+#
+#  $Header: //bliss/user/archive/rcs/true_type/makefile.pc,v 14.0 97/03/17 17:54:07 shawn Release $
+#
+#  $Log:	makefile.pc,v $
+#  Revision 14.0  97/03/17  17:54:07  shawn
+#  TDIS Version 6.00
+#  
+#  Revision 10.2  96/08/20  13:30:43  shawn
+#  Added RCS/Header and Log keywords.
+#  
+#
+
+cflags = /AL /Ot /Gy /G2 /DMSDOS /D_4D_ -I../includes -DNO_PROCS -DPROC_TRUETYPE
+
+sd = ../speedo
+incl_dir = ../includes
+
+all: ttsample.exe
+
+
+truetype.obj : truetype.c \
+		$(incl_dir)/useropt.h \
+		$(incl_dir)/speedo.h \
+		$(incl_dir)/fscdefs.h \
+                $(incl_dir)/fontscal.h \
+		$(incl_dir)/sfnt.h \
+		$(incl_dir)/fserror.h \
+		$(incl_dir)/truetype.h 
+	cl $(cflags) -c truetype.c
+
+tt_iface.obj : tt_iface.c \
+		$(incl_dir)/useropt.h \
+		$(incl_dir)/spdo_prv.h \
+		$(incl_dir)/fino.h \
+                $(incl_dir)/fscdefs.h \
+		$(incl_dir)/fontscal.h \
+		$(incl_dir)/sfnt.h \
+		$(incl_dir)/fserror.h \
+		$(incl_dir)/truetype.h
+	cl $(cflags) -c tt_iface.c
+
+tt_specs.obj : tt_specs.c \
+		$(incl_dir)/useropt.h \
+		$(incl_dir)/spdo_prv.h \
+		$(incl_dir)/fino.h \
+                $(incl_dir)/fscdefs.h \
+		$(incl_dir)/fontscal.h \
+		$(incl_dir)/truetype.h 
+	cl $(cflags) -c tt_specs.c
+
+fontscal.obj : fontscal.c \
+		$(incl_dir)/useropt.h \
+		$(incl_dir)/fino.h \
+		$(incl_dir)/fserror.h \
+		$(incl_dir)/fscdefs.h \
+                $(incl_dir)/fontmath.h \
+		$(incl_dir)/sfnt.h \
+		$(incl_dir)/sc.h \
+		$(incl_dir)/fnt.h \
+		$(incl_dir)/fontscal.h \
+		$(incl_dir)/fsglue.h \
+                $(incl_dir)/privsfnt.h \
+		$(incl_dir)/privfosc.h
+	cl $(cflags) -c fontscal.c
+
+fsglue.obj : fsglue.c \
+		$(incl_dir)/useropt.h \
+		$(incl_dir)/fino.h \
+		$(incl_dir)/fserror.h \
+		$(incl_dir)/fscdefs.h \
+                $(incl_dir)/fontmath.h \
+		$(incl_dir)/sfnt.h \
+		$(incl_dir)/sc.h \
+		$(incl_dir)/fnt.h \
+		$(incl_dir)/fontscal.h \
+		$(incl_dir)/fsglue.h \
+                $(incl_dir)/privsfnt.h
+	cl $(cflags) -c fsglue.c
+
+
+out_blk.obj : $(sd)/out_blk.c \
+                $(incl_dir)/spdo_prv.h \
+                $(incl_dir)/fino.h \
+                $(incl_dir)/speedo.h
+	cl $(cflags) -c ..\speedo\out_blk.c
+
+out_bl2d.obj : $(sd)/out_bl2d.c \
+                $(incl_dir)/spdo_prv.h \
+                $(incl_dir)/fino.h \
+                $(incl_dir)/speedo.h
+	cl $(cflags) -c ..\speedo\out_bl2d.c
+
+out_outl.obj : $(sd)/out_outl.c \
+                $(incl_dir)/spdo_prv.h \
+                $(incl_dir)/fino.h \
+                $(incl_dir)/speedo.h
+	cl $(cflags) -c ..\speedo\out_outl.c
+
+out_scrn.obj : $(sd)/out_scrn.c \
+                $(incl_dir)/spdo_prv.h \
+                $(incl_dir)/fino.h \
+                $(incl_dir)/speedo.h
+	cl $(cflags) -c ..\speedo\out_scrn.c
+
+out_util.obj : $(sd)/out_util.c \
+                $(incl_dir)/spdo_prv.h \
+                $(incl_dir)/fino.h \
+                $(incl_dir)/speedo.h
+	cl $(cflags) -c ..\speedo\out_util.c
+
+out_wht.obj : $(sd)/out_wht.c \
+                $(incl_dir)/spdo_prv.h \
+                $(incl_dir)/fino.h \
+                $(incl_dir)/speedo.h
+	cl $(cflags) -c ..\speedo\out_wht.c
+
+out_gray.obj : $(sd)/out_gray.c \
+                $(incl_dir)/spdo_prv.h \
+                $(incl_dir)/fino.h \
+                $(incl_dir)/speedo.h
+	cl $(cflags) -c ..\speedo\out_gray.c
+
+out_qck.obj : $(sd)/out_qck.c \
+                $(incl_dir)/spdo_prv.h \
+                $(incl_dir)/fino.h \
+                $(incl_dir)/speedo.h
+	cl $(cflags) -c ..\speedo\out_qck.c
+
+fnt.obj : fnt.c \
+		$(incl_dir)/useropt.h \
+		$(incl_dir)/fino.h \
+		$(incl_dir)/fscdefs.h \
+		$(incl_dir)/fontmath.h \
+		$(incl_dir)/sc.h \
+		$(incl_dir)/spdo_prv.h \
+		$(incl_dir)/speedo.h \
+                $(incl_dir)/fnt.h \
+		$(incl_dir)/fserror.h 
+	cl $(cflags) -c fnt.c
+
+sfntd.obj : sfntd.c \
+                $(incl_dir)/useropt.h \
+                $(incl_dir)/fino.h \
+                $(incl_dir)/fserror.h \
+                $(incl_dir)/fscdefs.h \
+                $(incl_dir)/fontmath.h \
+                $(incl_dir)/spdo_prv.h \
+                $(incl_dir)/speedo.h \
+                $(incl_dir)/sfnt.h \
+                $(incl_dir)/fnt.h \
+                $(incl_dir)/sc.h \
+                $(incl_dir)/fontscal.h \
+                $(incl_dir)/fsglue.h \
+                $(incl_dir)/privsfnt.h \
+                $(incl_dir)/mapstrng.h
+	cl $(cflags) -c sfntd.c
+
+mapstrng.obj : mapstrng.c \
+		$(incl_dir)/useropt.h \
+		$(incl_dir)/fino.h \
+		$(incl_dir)/fscdefs.h \
+		$(incl_dir)/mapstrng.h \
+		$(incl_dir)/spdo_prv.h \
+		$(incl_dir)/speedo.h 
+	cl $(cflags) -c mapstrng.c
+
+newscan.obj : newscan.c \
+		$(incl_dir)/useropt.h \
+		$(incl_dir)/fino.h \
+		$(incl_dir)/spdo_prv.h \
+		$(incl_dir)/speedo.h \
+                $(incl_dir)/fscdefs.h \
+		$(incl_dir)/fontscal.h 
+	cl $(cflags) -c newscan.c
+
+fixed_pt.obj : fixed_pt.c \
+		$(incl_dir)/fino.h \
+		$(incl_dir)/fixed.h \
+		$(incl_dir)/spdo_prv.h \
+		$(incl_dir)/speedo.h 
+	cl $(cflags) -c fixed_pt.c
+
+ttsample.exe : truetype.obj tt_iface.obj tt_specs.obj fontscal.obj \
+                fsglue.obj out_blk.obj out_util.obj fnt.obj sfntd.obj \
+                mapstrng.obj newscan.obj fixed_pt.obj out_outl.obj \
+                out_scrn.obj out_gray.obj out_bl2d.obj out_wht.obj out_qck.obj
+	link /STACK:4096 @ttsample.lnk
+
+clean:
+	del *.obj
+

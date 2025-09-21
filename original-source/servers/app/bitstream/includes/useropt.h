@@ -1,0 +1,357 @@
+/*****************************************************************************
+*                                                                            *
+*  Copyright 1989, as an unpublished work by Bitstream Inc., Cambridge, MA   *
+*                         U.S. Patent No 4,785,391                           *
+*                           Other Patent Pending                             *
+*                                                                            *
+*         These programs are the sole property of Bitstream Inc. and         *
+*           contain its proprietary and confidential information.            *
+*                                                                            *
+*****************************************************************************/
+
+/***************************  U S E R O P T . H  *****************************
+ *                                                                           *
+ * This overrides the Speedo default settings.                               *
+ *                                                                           *
+ ********************** R E V I S I O N   H I S T O R Y **********************
+ * $Header: //bliss/user/archive/rcs/4in1/useropt.h,v 14.0 97/03/17 17:24:07 shawn Release $
+ *
+ * $Log:	useropt.h,v $
+ * Revision 14.0  97/03/17  17:24:07  shawn
+ * TDIS Version 6.00
+ * 
+ * Revision 13.2  97/03/11  11:45:53  shawn
+ * INCL_COMPRESSED_PFR is now the default and was removed from this file.
+ * 
+ * Revision 13.1  96/12/12  15:51:18  shawn
+ * Added #define statement for INCL_COMPRESSED_PFR for compressed PFR processing.
+ * Added #define statement for INCL_UNDOCUMENTED_API for the _4D_ demo condition.
+ * Removed unnecessary #define for BASELINE_IMPROVE (default).
+ * 
+ * Revision 13.0  95/02/15  16:44:22  roberte
+ * Release
+ * 
+ * Revision 12.1  95/01/04  16:51:40  roberte
+ * Release
+ * 
+ * Revision 11.2  94/11/11  10:48:13  roberte
+ * Shortened _4DEMO_ macro to _4D_.
+ * Make use of convenience macro INCL_ALL_WRITERS for demo software.
+ * INCL_CACHE, INCL_STROKE AND INCL_BOLD now defined in csp_opt.h
+ * with INCL_TPS build option.
+ * 
+ * Revision 11.1  94/11/07  11:59:16  roberte
+ * Changed options, first pass, for TrueDoc inclusion.
+ * Not using SHORT_LISTS anymore, instead direct define of MAX_INTERCEPTS.
+ * Making use of INCL_ALL_WRITERS convenience flag for all output modules.
+ * 
+ * Revision 11.0  94/05/04  09:47:25  roberte
+ * Release
+ * 
+ * Revision 10.2  94/04/08  14:45:14  roberte
+ * Release
+ * 
+ * Revision 10.0  94/04/08  12:45:58  roberte
+ * Release
+ * 
+ * Revision 9.2  93/08/30  16:05:09  roberte
+ * Release
+ * 
+ * Revision 2.21  93/07/26  12:51:28  ruey
+ * change INCL_QUICK as 1
+ * 
+ * 
+ * Revision 2.20  93/07/08  16:13:25  ruey
+ * add and define INCL_QUICK as 0
+ * 
+ * Revision 2.19  93/03/15  14:00:19  roberte
+ * Release
+ * 
+ * Revision 2.7  93/03/11  20:39:44  roberte
+ * #define HAVE_MSL2INDEX for all demo packages.
+ * Turn on PROTOS_AVAIL. This is essential for IBM PC at this time.
+ * 
+ * Revision 2.6  93/03/11  11:40:18  roberte
+ * Added define of INTEL as 1 if MSDOS defined. For shortening command lines on PC makefiles.
+ * 
+ * Revision 2.5  93/03/11  11:20:53  roberte
+ * Restored STACKFAR, FONTFAR and GLOBALFAR as "far" ifdef MSDOS in the _4DEMO_ compile.
+ * 
+ * Revision 2.4  93/03/10  17:20:23  weili
+ * Removed spurious defines of INCL_WHITE, REENTRANT_ALLOC and
+ * etc that were causing problems if this file was included twice.
+ * 
+ * Revision 2.3  93/02/23  17:29:44  roberte
+ * Shut off INCL_APPLESCAN flags.  These should normally be set to 0,
+ * unless implementor wants to use the AppleScan rasterizer for
+ * some reason.
+ * 
+ * Revision 2.2  93/02/08  15:23:21  roberte
+ * Turned setting for INCL_APPLESCAN to 0
+ * 
+ * Revision 2.1  93/01/29  08:58:25  roberte
+ * Changed value of PROTOS_AVAIL for non-INTEL builds to 0.  Doesn't work
+ * properly on the APOLLO with standard K&R function declartions.
+ * 
+ * Revision 2.0  92/11/19  15:42:25  roberte
+ * Release
+ * 
+ * Revision 1.13  92/11/18  12:49:06  roberte
+ * Got rid of extraneous #defines of WDECL, FONTFAR, STACKFAR and GLOBALFAR
+ * 
+ * Revision 1.12  92/11/17  15:53:55  laurar
+ * changes that only affect compilation for DLL. (WINDOWS_4IN1)
+ * 
+ * Revision 1.6  92/10/01  15:22:17  roberte
+ * Added define INCL_MS_SETS to leave Microsoft encoding arrays defined in
+ * msstglob.c
+ * 
+ * Revision 1.5  92/10/01  13:57:53  roberte
+ * Put in ifdefs to shut off MSL's, Unicode, PSNames, and User in the 4DEMO
+ * block (for the IBM PC port).
+ * 
+ * Revision 1.4  92/10/01  13:30:10  laurar
+ * define INTEL explicitly as 1.
+ * 
+ * Revision 1.3  92/09/30  11:19:29  roberte
+ * Removed CTRL-Z at end of file!
+ * 
+ * Revision 1.2  92/09/29  16:32:42  laurar
+ * add defines for 4demo (PC test program)
+ * 
+ * Revision 26.1  92/06/26  10:27:07  leeann
+ * Release
+ * 
+ * Revision 25.1  92/04/06  11:43:31  leeann
+ * Release
+ * 
+ * Revision 24.1  92/03/23  14:11:50  leeann
+ * Release
+ * 
+ * Revision 23.1  92/01/29  17:03:08  leeann
+ * Release
+ * 
+ * Revision 22.1  92/01/20  13:34:29  leeann
+ * Release
+ * 
+ * Revision 21.1  91/10/28  16:46:50  leeann
+ * Release
+ * 
+ * Revision 20.1  91/10/28  15:30:33  leeann
+ * Release
+ * 
+ * Revision 18.1  91/10/17  11:42:04  leeann
+ * Release
+ * 
+ * Revision 17.1  91/06/13  10:46:49  leeann
+ * Release
+ * 
+ * Revision 16.1  91/06/04  15:37:19  leeann
+ * Release
+ * 
+ * Revision 15.1  91/05/08  18:09:26  leeann
+ * Release
+ * 
+ * Revision 14.1  91/05/07  16:31:24  leeann
+ * Release
+ * 
+ * Revision 13.1  91/04/30  17:06:02  leeann
+ * Release
+ * 
+ * Revision 12.1  91/04/29  14:56:23  leeann
+ * Release
+ * 
+ * Revision 11.1  91/04/04  11:00:19  leeann
+ * Release
+ * 
+ * Revision 10.1  91/03/14  14:33:02  leeann
+ * Release
+ * 
+ * Revision 9.1  91/03/14  10:07:40  leeann
+ * Release
+ * 
+ * Revision 8.1  91/01/30  19:04:31  leeann
+ * Release
+ * 
+ * Revision 7.1  91/01/22  14:29:04  leeann
+ * Release
+ * 
+ * Revision 6.1  91/01/16  10:54:41  leeann
+ * Release
+ * 
+ * Revision 5.1  90/12/12  17:21:16  leeann
+ * Release
+ * 
+ * Revision 4.1  90/12/12  14:47:08  leeann
+ * Release
+ * 
+ * Revision 3.1  90/12/06  10:29:29  leeann
+ * Release
+ * 
+ * Revision 2.1  90/12/03  12:58:15  mark
+ * Release
+ * 
+ * Revision 1.5  90/11/29  17:06:22  leeann
+ * use speedo defaults
+ * 
+ * Revision 1.4  90/11/19  17:30:19  joyce
+ * set screen, outline, 2d output modes to 0 for testing
+ * 
+ * Revision 1.3  90/11/19  15:58:07  joyce
+ * set speedo output mode includes (black, outline, 2d)
+ * 
+ * Revision 1.2  90/09/17  17:09:01  roger
+ * changed to comply with RCS
+ * 
+ * Revision 1.1  90/08/13  15:31:00  arg
+ * Initial revision
+ * 
+ *                                                                           *
+ *  1) 23 Apr 90  jsc  Created                                               *
+ *                                                                           *
+ ****************************************************************************/
+
+#ifndef useropt_h
+#define useropt_h
+
+static char useropt_h_rcsid[] = "$Header: //bliss/user/archive/rcs/4in1/useropt.h,v 14.0 97/03/17 17:24:07 shawn Release $";
+
+
+/* This must be set for all 4-in-1 builds */
+#ifndef	INCL_TPS
+#define	INCL_TPS        1
+#endif
+
+/* This conditional must be set for all INTEL implementations */
+#ifdef	MSDOS
+#define	INTEL	1
+#endif
+
+#if __INTEL__
+#define INTEL 1
+#endif
+
+/* This conditional groups the requirements for the 4in1 demo programs. */
+
+#ifdef	_4D_
+
+#define	INCL_UNDOCUMENTED_API	1
+#define	HAVE_MSL2INDEX		1		
+#define	INCL_KEYS		1
+
+/* good intercept list size for 600 dpi printers */
+/*#define	MAX_INTERCEPTS		2000 */
+
+#define	MAX_INTERCEPTS		512
+
+#define	INCL_ALL_WRITERS	1
+#define	PFR_ON_DISK		1
+#define	PROTOS_AVAIL		1
+#define	INCL_PFB		1
+#define	INCL_APPLESCAN		0
+
+#define	CMT_MSL		1
+#define	CMT_UNI		1
+#define	CMT_PS		1
+#define	CMT_USR		0
+
+#ifdef	MSDOS
+#define	FONTFAR		far
+#define	STACKFAR	far
+#define	GLOBALFAR	far
+#endif /* MSDOS */
+
+#else   /* !_4D_ */
+
+#define	INCL_MS_SETS
+
+#endif  /*  _4D_ */
+
+
+/* This conditional groups the requirements for Windows/4in1 implementations. */
+
+#if	WINDOWS_4IN1
+
+#define	PROC_TYPE1	1
+#define	PROC_PCL	0
+#define	PROC_TRUETYPE	0
+
+#define	INCL_PFB		1
+#define	RESTRICTED_ENVIRON	1
+
+#define	MAX_INTERCEPTS	2000
+#define	SPEEDO_CODE	1
+#define	PROTOS_AVAIL	1
+#define	RC_INVOKED	1 
+
+#define	INCL_LCD	1
+#define	INCL_KEYS	1
+#define	INCL_BLACK	1
+#define	INCL_WHITE	0
+#define	INCL_APPLESCAN	0
+
+#define	NOCOLOR		1
+#define	NOWINSTYLES	1
+#define	NOWINOFFSETS	1
+#define	NOMDI		1
+#define	NOHELP		1
+
+#define	FONTFAR		_far
+#define	STACKFAR	_far
+#define	GLOBALFAR	_far
+#define	WDECL		_far _pascal _export
+
+#endif  /* WINDOWS_4IN1 */
+
+#define	NOT_ON_THE_MAC	1
+#endif
+
+/******************************************************
+ *
+ * Specific options for current BeOS implementation.
+ *
+ */
+
+/* set only support for unicode character mapping table. */
+#define     CMT_BCID      0
+#define     CMT_MSL       0
+#define     CMT_PS        0
+#define     CMT_USR       0
+
+/* set only support for true-type and type 1 fonts. */
+#define     PROC_SPEEDO   0
+#define     PROC_PCL      0
+#define     PROC_TRUEDOC  0
+
+/* set only support for black writer, 2D writer and gray writer. */
+#define     INCL_2D        1
+#define     INCL_GRAY      1
+#define     INCL_USEROUT   1
+#undef      INCL_OUTLINE  
+#define     INCL_OUTLINE   1
+#undef      INCL_ALL_WRITERS  
+#define     INCL_ALL_WRITERS  0
+
+#undef      INCL_PFB  
+#define		INCL_PFB		1
+
+#define     MODE_USER       MODE_GRAY + INCL_GRAY
+
+#define     STATIC_ALLOC    0
+#define     DYNAMIC_ALLOC   0
+#define     REENTRANT_ALLOC 1
+
+#ifdef      VAL_TTDIR
+#undef      VAL_TTDIR
+#endif
+#define     VAL_TTDIR       1
+
+
+
+
+
+
+
+
+
+

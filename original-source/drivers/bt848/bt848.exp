@@ -1,0 +1,14 @@
+# ++++++++++
+#	FILE:	bt848.exp
+#	REVS:	$Revision: 1.1 $
+#	NAME:	herold
+#	DATE:	Mon Mar 24 17:24:30 PST 1997
+#	Copyright (c) 1997 by Be Incorporated.  All Rights Reserved.
+# +++++
+
+#init_hardware
+init_driver
+uninit_driver
+find_device
+publish_devices
+

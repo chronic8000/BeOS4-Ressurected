@@ -1,0 +1,12 @@
+  _Distance __len11 = 0;
+  _Distance __len22 = 0;
+  if (__len1 > __len2) {
+    __len11 = __len1 / 2;
+    advance(__first_cut, __len11);
+    __second_cut = lower_bound(__middle, __last, *__first_cut);
+    distance(__middle, __second_cut, __len22);
+  }
+  else {
+    __len22 = __len2 / 2;
+    advance(__second_cut, __len22);
+    __first_cut = upper_bound(__first, __middle, *__second_c

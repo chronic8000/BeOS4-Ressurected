@@ -1,0 +1,102 @@
+#  EXTERNAL SOURCE RELEASE on 05/16/2000 - Subject to change without notice.
+#  Copyright 2000, Broadcom Corporation
+#  All Rights Reserved.
+#  
+#  This is UNPUBLISHED PROPRIETARY SOURCE CODE of Broadcom Corporation;
+#  the contents of this file may not be disclosed to third parties, copied or
+#  duplicated in any form, in whole or in part, without the prior written
+#  permission of Broadcom Corporation.
+#  
+$Id: README,v 1.7 2000/03/08 05:30:17 abagchi Exp $
+
+Linux Release 2.25
+
+Linux network device driver for the Broadcom BCM42XX PCI
+InsideLine 10Mbps Home Phoneline Networking chip.
+
+This release includes:
+- support for Portable LARQ
+- support for HPNA 2.0 Certification Testing
+- bugfixes
+
+This distribution includes all source files
+plus two executables:
+	il.o - loadable driver module for Intel RedHat 6.1 (2.2.12 kernel)
+	il - executable user-level tool for Intel Redhat 6.1
+
+Install by:
+- copy il.o to /lib/modules/2.2.12-*/net
+- copy il to /usr/sbin
+- add the following line to /etc/conf.modules
+		alias eth<n> il
+	where <n> is the number of other ethernet devices present
+- create the file /etc/sysconfig/network-scripts/ifcfg-eth<n>
+	copy ifcfg-eth0 and edit it changing DEVICE to "eth<n>"
+	and IPADDR your IP address
+- test (substitute your ip addresses below)
+	# insmod il.o
+	# lsmod
+	# ifconfig eth<n> 10.100.58.22 netmask 255.255.255.0 up
+	# ifconfig -a
+	# ping <remotehost>
+- reboot - will "up" this new ethernet device automatically
+
+We're interested in your feedback:  support@epigram.com
+
+--
+
+SOURCE FILES
+The source files are partitioned
+into os-independent "common" files and port/os-specific files.
+The only linux-specific file is il_linux.c .
+
+Driver:
+il_linux.c - linux-specific
+ilc.[ch] - os-independent common code
+ilc_cert.[ch] - common HPNA certification/test protocol support
+pe_select.h, pe_select_meanse.c - common payload encoding selection
+crc.c - common crc8/16/32
+il_stats.c - common internal stats counters
+plarq.[ch] - common Portable LARQ protocol
+
+Tools:
+il.c - simple user-level app that issues useful debugging ioctls
+
+COMPILE BY
+Type "gmake" .  By default the il.o loadable module
+and il user-level command are built.  i386 binaries for 2.2.12
+are included for your enjoyment.
+
+REFERENCE
+Refer to the "InsideLine Device Driver Internal Design" document
+and the "BCM4210/BCM4211 iLine10 Controller Programmers Guide".
+
+PORTING
+The chip supports two bus interfaces - PCI (either DMA or PIO)
+and MSI (Microprocessor Slave Interface) which is PIO-only.
+If CONFIG_PCI is not defined or a pci bus is not present,
+then MSI mode is assumed.
+
+XXX
+For MSI mode you must edit il_linux.c and re-define the
+MSI register base physical address and IRQ values:
+	#define MSI_BASEADDR    -1              /* chip register physical address */
+	#define MSI_IRQ         -1              /* chip interrupt irq */
+
+XXX
+For non-SPROM applications, you must edit il_linux.c and 
+define a unique local ethernet address:
+	static struct ether_addr ether_default = {{ 0, 1, 2, 3, 4, 0 }};
+
+IL COMMAND USE
+- "il dump" dump driver internal state to stdout
+- "il msglevel <val>" to change the driver printf msg bit vector:
+	1 - (default) print errors
+	2 - print function-level tracing
+	3 - print one-line summaries of each packet
+	4 - hex dump each packet
+- "il linkint [0|1]" to enable/disable 1-second link integrity frames (default on)
+- "il txbpb [1-8]" force tx bits-per-baud
+- "il txpri [0-7]" force tx priority
+...
+

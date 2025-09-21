@@ -1,0 +1,31 @@
+###############################################################################
+## BeOS Generic Driver Skeleton
+##
+##    This file contains a list of objects that need to be built for the
+## generic kernel driver.
+##
+###############################################################################
+
+
+###############################################################################
+## Sources ####################################################################
+###############################################################################
+
+## Note on use: You need to reference this in a manner that adds the
+##   appropriate prefix.
+
+## List of generic kernel driver objects.
+
+GDS_KERN_SRCS :=                                \
+  driver_file_hooks.c          \
+  driver_gen_ioctl.c           \
+  driver_gen_vbi.c             \
+  driver_globals.c             \
+  driver_init.c                \
+  driver_kernel_hooks.c        \
+  driver_util.c
+
+
+###############################################################################
+## This Is The End Of The File ################################################
+###############################################################################

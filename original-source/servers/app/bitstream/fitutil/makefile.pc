@@ -1,0 +1,101 @@
+#################################################################
+#		PC Makefile for building FIT utility and test programs
+#
+# $Header: //bliss/user/archive/rcs/fit/makefile.pc,v 6.0 97/03/17 17:36:29 shawn Release $
+#
+# $Log:	makefile.pc,v $
+#  Revision 6.0  97/03/17  17:36:29  shawn
+#  TDIS Version 6.00
+#  
+#  Revision 4.4  97/03/11  11:36:21  shawn
+#  Changed compile options (CFLAGS) to reflect new defaults.
+#  Added Emulation control macro (EFLAG) default is PCL6.
+#  
+#  Revision 4.3  97/02/03  09:56:31  shawn
+#  Make TrueDoc Compressed PFRs the default output format.
+#  
+#  Revision 4.2  96/08/20  13:08:00  shawn
+#  Added RCS/Header keyword.
+#  
+#  Revision 4.1  95/02/16  15:18:10  shawn
+#  Changed finfotest.obj to finfotes.obj
+#  
+#  Revision 4.0  95/02/15  16:49:44  shawn
+#  Release
+#  
+#  Revision 3.3  95/02/13  11:20:21  roberte
+#  Added alternate build CFLAGS macros, commented out.
+#  
+#  Revision 3.2  95/01/04  16:31:33  roberte
+#  Release
+#  
+#  Revision 3.1  95/01/04  11:45:30  roberte
+#  Release
+#  
+#  Revision 2.1  94/11/14  13:25:35  roberte
+#  Rewrite for new includes sub-directory distribution disk layout.
+#  
+#  Revision 2.0  94/05/04  09:26:16  roberte
+#  Release
+#  
+#  Revision 1.22  94/04/08  11:28:13  roberte
+#  Release
+#  
+#  Revision 1.13  93/03/15  12:41:44  roberte
+#  Release
+#  
+#  Revision 1.8  93/03/09  15:31:54  roberte
+#  Fall back to large model, add -DMSDOS
+#  
+#  Revision 1.7  93/03/09  11:18:27  weili
+#  Change memory model to huge to match memory model of 4demo package.
+#  
+#  Revision 1.6  93/02/12  15:18:48  roberte
+#  Arrgh!
+#  
+#  Revision 1.5  93/02/12  14:59:52  roberte
+#  Corrected RCS checkin error caused by this makefile listed
+#  as "c" file type in  project.lst
+#  
+#  Revision 1.4  93/02/02  14:57:37  roberte
+#  Added comment header and RCS log string. Changed "utils_dir" 
+#  to ../type1.  Removed /W3 warning option from command line.
+#  
+#
+
+all: fitutil finfotes
+
+
+# for standard Speedo or TrueDoc, or compressed Speedo fonts, use this CFLAGS:
+#CFLAGS = /Ox -c /AL /G2 -DMSDOS
+# for Merged Font Technology, use this CFLAGS:
+#CFLAGS = /Ox -c /AL /G2 -DMSDOS -DINCL_MFT
+# for compressed TrueDoc PFR, use this CFLAGS:
+CFLAGS = /Ox -c /AL /G2 -DMSDOS -DNO_PROCS -DPROC_TRUEDOC
+
+# Emulation Control Macro
+#EFLAG = -DPCL5
+#EFLAG = -DPCL5e
+EFLAG = -DPCL6
+
+incl_dir = ../includes
+
+#
+incl = -I$(incl_dir)
+
+fitutil : finfotbl.obj
+	link finfotbl.obj,fitutil.exe,,;
+
+# general rule for making objects:
+
+finfotbl.obj : finfotbl.c \
+		$(incl_dir)/pclhdrs.h
+	cl $(CFLAGS) $(EFLAG) $(incl) $*.c
+ 
+#test program target:
+finfotes : finfotes.obj
+	link finfotes.obj, finfotes.exe,,,;
+
+finfotes.obj : finfotes.c \
+		$(incl_dir)/pclhdrs.h
+	cl $(CFLAGS) $(EFLAG) $(incl) $*.c

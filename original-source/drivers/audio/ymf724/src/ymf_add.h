@@ -1,0 +1,10 @@
+extern card_descrtiptor_t ymf724f_descriptor;
+extern card_descrtiptor_t ymf734_descriptor;
+extern card_descrtiptor_t ymf737_descriptor;
+extern card_descrtiptor_t ymf738_descriptor;
+extern card_descrtiptor_t ymf738_teg_descriptor;
+extern card_descrtiptor_t ymf740_descriptor;
+extern card_descrtiptor_t ymf740c_descriptor;
+extern card_descrtiptor_t ymf744_descriptor;
+extern card_descrtiptor_t ymf754_descriptor;
+

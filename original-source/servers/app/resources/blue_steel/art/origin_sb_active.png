@@ -1,0 +1,29 @@
+*******\ 
+ * Hardware specific register, descriptors, & defines 
+\*****************************************************************************/
+
+#define NE2K__MAX_FRAME_SIZE		1514	/* 1500 + 4 bytes checksum added by card hardware */
+#define NE2K__MIN_FRAME_SIZE		60
+
+#define NE2K__MAX_MULTI			32
+#define NE2K__ETHER_ADDR_LEN		6
+
+/* Bus Types */
+#define NE2K__BUS_MSK			0x0007
+#define NE2K__BUS_ISA			0x0001
+#define NE2K__BUS_PCI			0x0002
+#define NE2K__BUS_PCMCIA		0x0004
+
+/* Page locations */
+#define NE2K__NE2000_BUFFER_START	0x4000
+#define NE2K__NE2000_BUFFER_LENGTH	0x4000
+
+/* Number of TX pages (double for double buffering) */
+#define NE2K__TX_SINGLE_PAGE		6
+//#define NE2K__TX_PAGES		NE2K__TX_SINGLE_PAGE
+#define NE2K__TX_PAGES			NE2K__TX_SINGLE_PAGE * 2
+#define NE2K__TX_TIMEOUT		40000	/* 40ms should suffice here */
+
+/* Number of buffered rx packets to store */
+#define NE2K__RX_BUFFERS		16
+#define NE2K__RX

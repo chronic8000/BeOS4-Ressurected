@@ -1,0 +1,64 @@
+//////////////////////////////////////////////////////////////////////////////
+// IOCTL Handling Code
+//
+//    This file contains a handler for hardware-specific IOCTL calls that
+// reach the kernel driver.
+//////////////////////////////////////////////////////////////////////////////
+
+
+//////////////////////////////////////////////////////////////////////////////
+// Includes //////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
+
+#include <common_includes.h>
+#include <driver_includes.h>
+
+
+//////////////////////////////////////////////////////////////////////////////
+// Functions /////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+// Hardware Specific IOCTL Handler
+//    This function handles IOCTL calls with non-standard opcodes, used for
+// implementing device-specific features. If the main IOCTL handler doesn't
+// recognize the opcode passed to it, it calls this function, giving a
+// pointer to the device_info structure of the device that the calling
+// accelerant is managing.
+
+status_t Handle_Hardware_Specific_Ioctl(DEVICE_INFO *di, uint32 opcode,
+  void *buf, size_t len)
+{
+   status_t retval = B_DEV_INVALID_IOCTL;
+
+  // Tattletale.
+  ddprintf(("[R128 GFX]  Handle_Hardware_Specific_Ioctl() called.\n"));
+
+  // We have no clue what this IOCTL opcode is. Return failure.
+
+  switch (opcode)
+  {
+  case B_R128_READ_CRYSTAL_FREQ:
+  		// read clock frequecy from ATi r128 Bios rom.
+  		retval = B_ERROR;
+  		ddprintf((" R128 IOCTL :B_R128_READ_CRYSTAL_FREQ\n"));
+ 		if ( map_bios(di)== B_OK )	// map bios rom,
+  		{				  			// write Clock frequency into 
+	 								// shared info structure
+  			unmap_bios(di);			// release bios rom
+  			retval = B_OK;
+  		}
+  	break;
+  	
+  default:
+    break;
+  }    	
+
+
+  return retval;
+}
+
+
+//////////////////////////////////////////////////////////////////////////////
+// This Is The End Of The File ///////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////

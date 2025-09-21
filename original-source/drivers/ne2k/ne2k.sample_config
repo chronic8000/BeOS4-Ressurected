@@ -1,0 +1,26 @@
+# Sample ne2k driver settings file
+#
+# This file should reside in your /boot/home/config/settings/kernel/drivers 
+# directory along with the rest of the driver settings files.
+#
+# Currently, the driver supports multiple jumpered cards (max. 4) provided 
+# they are defined in this settings file using the given structure below.
+#
+# NOTES: 
+# ======
+# *  3Com cards don't seem to have settable irq's and therefore either
+#    use IRQ 5 or IRQ 2.
+# 
+# *  For jumpered ISA cards, you must ensure that another device does not
+#    occupy the same IRQ that you plan to use.  If this is the case, most
+#    BIOSes have the ability to assign your desired IRQ(s) to the ISA bus.
+
+ne2k 0 {			# First card to be defined
+	port 300		# Resides at port 300 (hex)
+	irq 7			# on IRQ 7 (decimal)
+}
+ne2k 1 {			# Second card to be defined
+	port 330		# Resides at port 330 (hex)
+	irq 5			# on IRQ 5 (decimal)
+	address C8000	# Memory address for 3Com cards
+}

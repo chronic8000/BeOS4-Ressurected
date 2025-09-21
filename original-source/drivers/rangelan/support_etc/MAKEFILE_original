@@ -1,0 +1,171 @@
+#-------------------------------------------------------------------------
+#
+# The make utility we use is:    PolyMake V3.3 for MSDOS by Sage Software
+#                                Copyright 1984-1990.
+# The compiler we use is:        Microsoft Visual C/C++ Version 8.0
+# The linker we use is:          Microsoft Segmented Executable Linker V 5.50
+# The library manager we use is: Microsoft Library Manager V3.31
+#
+# Other: msym = MAP File to Symbol Converter Version 2.4
+#               Copyright Nu-Meg Technologies, 1989
+#
+#
+# This makefile will make an ISA/PCMCIA/OEM RL2DIAG.exe program, a SERIAL
+# RL2DIAG.exe program, or an ISA/PCMCIA/OEM RL2DIAG.exe FCC program.
+#
+# The tree structure is:
+#
+#                     ProjectName
+#                          |
+#          +---------------+------------------+
+#          |               |                  |
+#         DOC            SOURCE              BIN
+#          |               |                  |
+#      RL2DIAG.DOC    +-------+      +--------+--------+
+#     	             |       |      |        |        |
+#         	   	  RL2DIAG  LLD  SRL2DIAG  RL2DIAG  RL2FCC
+#
+#
+#-------------------------------------------------------------------------
+
+C_DIR		=j:\sw\common\msvc
+STD_DIR	=
+STD_LIB	=$(C_DIR)\lib
+LIB		=$(C_DIR)\bin\lib
+LLDDIR	=
+
+#				 
+# Common CLLD Source Files
+#
+LLDCCODE		=  $(LLDDIR)\lldinit.c $(LLDDIR)\lldpack.c $(LLDDIR)\lldisr.c
+LLDCCODE		+= $(LLDDIR)\lldsend.c $(LLDDIR)\blld.c $(LLDDIR)\lldrx.c 
+LLDCCODE 	+=	$(LLDDIR)\lldctrl.c $(LLDDIR)\lldqueue.c $(LLDDIR)\lld.c
+
+#-------------------------------------------------------------------------
+# FCC ISA and PCMCIA Specific Source Files
+#-------------------------------------------------------------------------
+%if %defined(CLLDFCC) || %defined(CLLDFCC)
+
+LLDCCODE		+= $(LLDDIR)\hardware.c $(LLDDIR)\port.c
+LLDCCODE 	+=	$(LLDDIR)\css.c $(LLDDIR)\pcmcia.c
+LLDTYPE		=FCC
+OBJDIR		= ..\..\BIN\RL2FCC
+
+all: ISALLD.LIB
+
+%elseif %defined(SERIAL) || %defined(serial)
+
+#-------------------------------------------------------------------------
+# Serial Specific Source Files
+#-------------------------------------------------------------------------
+LLDCCODE += $(LLDDIR)\slldbuf.c $(LLDDIR)\slld.c $(LLDDIR)\slldport.c $(LLDDIR)\slldhw.c
+LLDTYPE	=SERIAL
+OBJDIR	= ..\..\BIN\SRL2DIAG
+
+all: SERLLD.LIB
+
+%else
+
+#-------------------------------------------------------------------------
+# ISA and PCMCIA Specific Source Files
+#-------------------------------------------------------------------------
+LLDTYPE		=NORMAL
+LLDCCODE		+= $(LLDDIR)\hardware.c $(LLDDIR)\port.c
+LLDCCODE 	+=	$(LLDDIR)\css.c $(LLDDIR)\pcmcia.c
+OBJDIR		= ..\..\BIN\RL2DIAG
+
+all: ISALLD.LIB
+
+%endif
+
+
+#-------------------------------------------------------------------------
+# Armadillo's Wireless Backbone Specific Source Files
+#-------------------------------------------------------------------------
+#%if %defined(WBRP) || %defined(wbrp)
+#WBRPDEF	=WBRP
+#LLDCCODE +=	$(LLDDIR)\wbrp.c $(LLDDIR)\rptable.c $(LLDDIR)\lldwbrp.c
+#OBJDIR	= ..\..\BIN\WBRP
+#%endif
+
+
+#-------------------------------------------------------------------------
+# Multi-Card LLD
+#-------------------------------------------------------------------------
+%if %defined(MULTI) || %defined(multi)
+LLDDEF		=MULTI
+%else
+LLDDEF		=NOMULTI
+%endif
+
+
+#-------------------------------------------------------------------------
+# ODI Driver Specific Source Files and Compiler Flags
+#-------------------------------------------------------------------------
+%if %defined(ODI) || %defined(odi)
+LLDCCODE		+= $(LLDDIR)\lldend.c
+LLDASMCODE	= $(LLDDIR)\LLDASM.ASM
+DRVRTYPE		=ODI
+
+CFLAGS	= /Zi /AT /Gs /Oi /O1 /W1 /c /D$(LLDDEF) /D$(LLDTYPE) /D$(DRVRTYPE)
+
+%if %defined(SERIAL) || %defined(serial)
+LINKFLAGS= /ST:8192 /LINE /NOI /MAP /ONERR:NOEXE /TINY /CO /LINE
+OBJDIR		= ..\..\BIN\SERODI
+
+%elseif %defined(PCM) || %defined(pcm)
+LINKFLAGS= /ST:8192 /LINE /NOI /MAP /ONERR:NOEXE /TINY
+OBJDIR		= ..\..\BIN\PCMODI
+
+%else
+LINKFLAGS= /ST:8192 /LINE /NOI /MAP /ONERR:NOEXE /TINY
+OBJDIR		= ..\..\BIN\ISAODI
+%endif
+
+#-------------------------------------------------------------------------
+# RL2DIAG Specific Source Files and Compiler Flags
+#-------------------------------------------------------------------------
+%else
+
+LLDCCODE		+= $(LLDDIR)\asm.c
+
+CFLAGS	= /Zdi /Zp1 /W4 /ALfd /c /Gs /D$(LLDDEF) /D$(LLDTYPE)
+LINKFLAGS= /ST:8192 /LINE /NOI /MAP /ONERR:NOEXE
+
+%endif
+
+
+#-------------------------------------------------------------------------
+# Linker Flags
+#-------------------------------------------------------------------------
+
+WARNINGS	=
+INCLUDES	= 
+
+ASMFLAGS = /T /Z /B4 /ML /MX /X
+LINK		= $(C_DIR)\bin\link
+LIBS 		= serlld.lib isalld.lib
+
+.PATH.c	=.
+.PATH.obj=$(OBJDIR)
+.PATH.lib=$(OBJDIR)
+.SOURCE.obj : $(OBJDIR)
+
+
+ASMCODE		= 
+LLDOBJ		= $[f,"",$(LLDCCODE),obj]
+SOURCEOBJ	= $(LLDOBJ)
+
+
+#
+# Executables
+#
+
+
+$(LIBS): $(SOURCEOBJ)
+	!$(LIB) $@ -+ $?;
+
+	
+$(LLDCCODE).OBJ: 
+	cl $(CFLAGS) $(INCLUDES) $*.c
+

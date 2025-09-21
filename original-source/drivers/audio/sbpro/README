@@ -1,0 +1,36 @@
+This driver had MANY MANY bugs, some of which could be quite fatal. 
+It has been fixed up and partly redone (to sync to interrupts) by 
+hplus@be.com. 4/18/99
+
+
+Sound Blaster Pro Driver v0.1a
+Joseph Wang <joe@timewarp.net>
+4/11/99
+
+Installation
+Double click on the file "install".  This will copy the driver the "~/config/add-ons/kernel/drivers/bin" and
+link this to "~/config/add-ons/kernel/drivers/dev/audio/raw" and "~/config/add-ons/kernel/drivers/dev/audio/old"
+
+The default configuration for the SBPro is
+	I/O		0x220
+	IRQ		5
+	DMA8	1
+	DMA16	5
+	MIDI I/O	0x338
+
+If your configuration is different, edit the file "sbpro" with the correct values and move the file to the "edit "sbpro" and move it here folder.
+
+Bugs
+Static and echos.  If anyone can help me fix these, it will be apprciated.
+
+References
+Sound Blaster Series Hardware Programming Guide
+
+Greets
+Mom, Dad
+Jon Watte for the sonic_vibes source code
+Takayuki ITO for his PC Card Enabler
+Be for introducing BeOS and the BeBox
+
+Mail
+If you use this driver or source code, send me mail.  If you would like to comment or critcize this driver or source code, send me mail.

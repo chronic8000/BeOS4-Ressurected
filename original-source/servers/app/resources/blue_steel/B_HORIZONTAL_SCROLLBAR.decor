@@ -1,0 +1,138 @@
+interInfo.gName;
+}
+
+int MDefinePrinter::ID(void)
+{
+	return gPrinterInfo.gID;
+}
+
+int32 MDefinePrinter::DefaultPage(void)
+{
+	return gPrinterInfo.gDefaultPage;
+}
+
+uint32 MDefinePrinter::NbBlackNozzle(void)
+{
+	return gPrinterInfo.gNbBlackNozzle;
+}
+
+uint32 MDefinePrinter::NbColorNozzle(void)
+{
+	return gPrinterInfo.gNbColorNozzle;
+}
+
+uint32 MDefinePrinter::Memory(void)
+{
+	return gPrinterInfo.gMemory;
+}
+
+
+status_t MDefinePrinter::Page(tPageFormat *page, int32 index)
+{
+	if ((index < 0) || (index >= gNbPages))
+		return B_ERROR;	
+	page->PageName			= gPage[index].name;
+	page->left_margin 		= gPage[index].lm;
+	page->printable_width 	= gPage[index].pw;
+	page->right_margin 		= gPage[index].rm;
+	page->top_margin 		= gPage[index].tm;
+	page->printable_height 	= gPage[index].ph;
+	page->bottom_margin 	= gPage[index].bm;
+	return B_OK;
+}
+
+status_t MDefinePrinter::PageLimits(tPageFormat *min, tPageFormat *max)
+{
+	min->PageName			= gPageLimits[0].name;
+	min->left_margin 		= gPageLimits[0].lm;
+	min->printable_width 	= gPageLimits[0].pw;
+	min->right_margin 		= gPageLimits[0].rm;
+	min->top_margin 		= gPageLimits[0].tm;
+	min->printable_height 	= gPageLimits[0].ph;
+	min->bottom_margin 		= gPageLimits[0].bm;
+
+	max->PageName			= gPageLimits[1].name;
+	max->left_margin 		= gPageLimits[1].lm;
+	max->printable_width 	= gPageLimits[1].pw;
+	max->right_margin 		= gPageLimits[1].rm;
+	max->top_margin 		= gPageLimits[1].tm;
+	max->printable_height 	= gPageLimits[1].ph;
+	max->bottom_margin 		= gPageLimits[1].bm;
+	return B_OK;
+}
+
+status_t MDefinePrinter::Res(const tPrinterRes **res, int32 index)
+{
+	if ((index < 0) || (index >= gNbRes))
+		return B_ERROR;
+	*res = gRes + index;
+	return B_OK;
+}
+
+status_t MDefinePrinter::Paper(const tPrinterPaper **paper, int32 index)
+{
+	if ((index < 0) || (index >= gNbPaper))
+		return B_ERROR;
+	*paper = gPaper + index;
+	return B_OK;
+}
+
+status_t MDefinePrinter::ColorMode(const tColorMode **color, int32 index)
+{
+	if ((index < 0) || (index >= gNbColorMode))
+		return B_ERROR;
+	*color = gColorMode + index;
+	return B_OK;
+}
+
+status_t MDefinePrinter::WeaveMode(const tWeaveMode **weave, int32 index)
+{
+	if ((index < 0) || (index >= gNbWeaveMode))
+		return B_ERROR;
+	*weave = gWeaveMode + index;
+	return B_OK;
+}
+
+status_t MDefinePrinter::SpeedMode(const tSpeedMode **speed, int32 index)
+{
+	if ((index < 0) || (index >= gNbSpeedMode))
+		return B_ERROR;
+	*speed = gSpeedMode + index;
+	return B_OK;
+}
+
+status_t MDefinePrinter::DotSize(const tMicroDot **dot, int32 index)
+{
+	if ((index < 0) || (index >= gNbMicroDot))
+		return B_ERROR;
+	*dot = gMicroDot + index;
+	return B_OK;
+}
+
+status_t MDefinePrinter::Version(int32 *maj, int32 *mid, int32 *min)
+{
+ 	app_info appInfo;
+ 	version_info info;
+
+	image_info imgInfo;
+	status_t err = get_image_for_pc("__application__x_printer_addon", __application__x_printer_addon, &imgInfo);
+	if (err == B_OK)
+	{
+		BFile file(imgInfo.name, B_READ_ONLY);
+		BAppFileInfo afi;
+		afi.SetTo(&file); 
+		afi.GetVersionInfo(&info, B_APP_VERSION_KIND);
+		*maj = info.major;
+		*mid = info.middle;
+		*min = info.minor;
+		return B_OK;
+
+	}
+	return B_ERROR;
+}
+
+status_t MDefinePrinter::FindRes2Paper(const tRes2Paper **res, int32 index)
+{
+	if (index == M_DEFAULT)
+	{
+		*res = gRes2Paper + gRes2Paper_defa
