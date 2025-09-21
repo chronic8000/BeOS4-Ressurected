@@ -163,4 +163,4 @@ Boot `images/beos_working_final.img` in your favorite x86 emulator to see BeOS 4
 
 ---
 
-*From 1990s source code to 2024 bootable system - BeOS lives again!* 🚀
+*From 1990s source code to 2025 bootable system - BeOS lives again!* 🚀
