@@ -132,7 +132,7 @@ cd ../build
 
 ## 🏅 Achievement Unlocked
 
-**Successfully booted BeOS 4.0 from original source code in 2024!**
+**Successfully booted BeOS 4.0 from original source code in 2025!**
 
 This represents a significant achievement in:
 - Operating system archaeology
