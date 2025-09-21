@@ -154,6 +154,11 @@ This project uses original BeOS source code that was open-sourced. All assembly 
 
 ## 🎬 Demo
 
+## 🎥 Video Demonstration
+
+Watch BeOS 4.0 Resurrection in action: [**BeOS 4.0 Resurrection Demo**](https://www.youtube.com/watch?v=elqsNvy3KNI)
+
+
 Boot `images/beos_working_final.img` in your favorite x86 emulator to see BeOS 4.0 spring back to life!
 
 ---
